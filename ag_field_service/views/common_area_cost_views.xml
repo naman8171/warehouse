@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	    <record id="view_common_area_cost_tree" model="ir.ui.view">
+            <field name="name">common.area.cost.tree</field>
+            <field name="model">common.area.cost</field>
+            <field name="arch" type="xml">
+                <tree string="Common Area Cost">
+                    <field name="currency_id" invisible="1"/>
+                    <field name="flat_type_id" options="{'no_create': True, 'no_create_edit': True}" required="1"/>
+                    <field name="branch_id"/>
+                    <field name="effective_date"/>
+                    <field name="amount" widget="monetary"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_common_area_cost_search" model="ir.ui.view">
+            <field name="name">common.area.cost.search</field>
+            <field name="model">common.area.cost</field>
+            <field name="arch" type="xml">
+                <search string="Common Area Cost">
+                    <field name="flat_type_id"/>
+                    <field name="effective_date"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_common_area_cost" model="ir.actions.act_window">
+            <field name="name">Common Area Cost</field>
+            <field name="res_model">common.area.cost</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="context">{'group_by': ['branch_id','effective_date:month']}</field>
+        </record>
+
+        <menuitem id="menu_common_area_cost" action="action_common_area_cost" name="Common Area Cost" parent="ag_multi_branch.menu_branch_root" sequence="10"/>
+
+</odoo>

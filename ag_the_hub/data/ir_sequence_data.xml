@@ -1,0 +1,69 @@
+<odoo>
+	<data noupdate="0">
+
+
+		<record id="sequence_warehouse_receive_order" model="ir.sequence">
+			<field name="name">Warehouse Receive Order</field>
+			<field name="code">warehouse.receive.order</field>
+			<field name="prefix">WRO</field>
+			<field name="active">TRUE</field>
+			<field name="padding">5</field>
+			<field name="number_next">1</field>
+		</record>
+
+		<record id="sequence_thehub_workorder" model="ir.sequence">
+			<field name="name">Workorder</field>
+			<field name="code">thehub.workorder</field>
+			<field name="prefix">WO/OUT/</field>
+			<field name="active">TRUE</field>
+			<field name="padding">6</field>
+			<field name="number_next">1</field>
+		</record>
+		<record id="sequence_thehub_workorder_return" model="ir.sequence">
+			<field name="name">Workorder</field>
+			<field name="code">thehub.workorder</field>
+			<field name="prefix">WO/IN/</field>
+			<field name="active">TRUE</field>
+			<field name="padding">6</field>
+			<field name="number_next">1</field>
+		</record>
+
+		<record id="sequence_single_sku_per_box_line" model="ir.sequence">
+			<field name="name">WRO Single SKU per box line</field>
+			<field name="code">single.sku.per.box.line</field>
+			<field name="prefix">WROSSPB</field>
+			<field name="active">TRUE</field>
+			<field name="padding">6</field>
+			<field name="number_next">1</field>
+		</record>
+
+		<record id="sequence_single_sku_per_pallet" model="ir.sequence">
+			<field name="name">WRO Single SKU per pallet line</field>
+			<field name="code">single.sku.per.pallet.line</field>
+			<field name="prefix">WROSSPP</field>
+			<field name="active">TRUE</field>
+			<field name="padding">6</field>
+			<field name="number_next">1</field>
+		</record>
+
+		<record id="sequence_res_partner_custom" model="ir.sequence">
+			<field name="name">Res Partner</field>
+			<field name="code">res.partner</field>
+			<field name="prefix">MO</field>
+			<field name="active">TRUE</field>
+			<field name="padding">3</field>
+			<field name="number_next">1</field>
+		</record>
+
+
+		<record id="sequence_package_lines" model="ir.sequence">
+			<field name="name">Package Lines</field>
+			<field name="code">thehub.workorder.lines.package</field>
+			<field name="prefix">P#</field>
+			<field name="active">TRUE</field>
+			<field name="padding">4</field>
+			<field name="number_next">1</field>
+		</record>
+
+	</data>
+</odoo>

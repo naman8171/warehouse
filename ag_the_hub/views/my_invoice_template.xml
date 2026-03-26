@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="my_invoices_custom" name="My invoices">
+        <t t-call="portal.frontend_layout">
+                <nav aria-label="breadcrumb flex justify-between" style="background-color:#e9ecef;margin-left: 0%;">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item "><a class="bold text-danger" href="/my">THL</a></li>
+                      <li class="breadcrumb-item active" aria-current="page" style="background: transparent;">Invoicing</li>
+                    </ol>
+                  </nav>
+            <section>
+                <div class="container-fuild p-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="flex justify-between items-center">
+                                        <h4 class="card-title"> Invoicing</h4>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    
+                                    <div class="card-header pl-1 pr-1 bg-light">
+                                        <div class="flex justify-between items-center">
+                                            <div class="d-flex justify-content-end mr-3">
+                                                <form action="" method="get" class="navbar-search ml-auto pagination form-inline">
+                             <div t-attf-class="input-group #{_classes}" role="search">
+        <t t-set="search_placeholder">Search...</t>
+        <input type="search" name="search" t-att-class="'search-query form-control oe_search_box %s' % _input_classes" t-att-placeholder="placeholder if placeholder else search_placeholder" t-att-value="search"/>
+        <div class="input-group-append">
+            <button type="submit" t-att-class="'btn oe_search_button %s' % (_submit_classes or 'btn-primary')" aria-label="Search" title="Search"><i class="fa fa-search"/></button>
+        </div>
+    </div>
+                    </form>
+                                                
+
+                                               
+                                                
+                                                
+                                                 <t t-set="list_price_desc_label">Filter by None</t>
+                                                 <t t-set="website_sale_sortable" t-value="[
+                                                    ('None', 'None'),
+                ('Payment Status', 'payment_state asc'),
+                ('Newly Created', 'create_date asc'),
+                
+                
+            ]"/>
+            <t t-set="website_sale_sortable_current" t-value="[sort for sort in website_sale_sortable if sort[1]==request.params.get('order', '')]"/>
+                                                 <div class="o_sortby_dropdown dropdown dropdown_sorty_by ml-3 " style="margin-right: 2%;">
+                <span class="d-none d-lg-inline font-weight-bold text-muted">Filter By:</span>
+                <a role="button" href="#" class="dropdown-toggle btn btn-light border-0 px-0 text-muted align-baseline" data-toggle="dropdown">
+                    <span class="d-none d-lg-inline">
+                        <t t-if='website_sale_sortable_current'>
+                            <t t-esc="website_sale_sortable_current[0][0]"/>
+                        </t>
+                        <t t-else='1'>
+                            Featured
+                        </t>
+                    </span>
+                    <i class="fa fa-sort-amount-asc d-lg-none"/>
+                </a>
+               <!--  <div class="dropdown-menu dropdown-menu-right" role="menu">
+                    <t t-foreach="website_sale_sortable" t-as="sortby">
+                        <a role="menuitem" rel="noindex,nofollow" t-att-href="keep('/my/invoices/custom', order=sortby[1])"  class="dropdown-item">
+                            <span t-out="sortby[0]"/>
+                        </a>
+                    </t>
+                </div> -->
+            </div>
+                                                
+                                              </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="">
+                                        <table class="table table-hover">
+                                            <thead class="bg-light">
+                                              <tr>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Name</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Order ID</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Invoice ID</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" > Amount</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" > Payment Status</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr  t-foreach="invoice_ids" t-as="invoice" >
+                                                <t t-set="total_amount" t-value="0"/>
+                                                    <t t-foreach="invoice['invoice_id'].invoice_line_ids" t-as="line">
+                                                        <t t-if="line.price_total>0">
+                                                            <t t-set="total_amount" t-value="total_amount+line.price_total"/>
+                                                    
+                                                        </t>
+                                                    </t>
+                                                <td class="px-6 py-4 ">
+                                                    <span t-field="invoice['invoice_id'].partner_id"/>
+                                                    <p><span t-field="invoice['invoice_id'].date"/></p>
+                                                </td>
+                                                <td class="px-6 py-4 ">
+                                                    <span t-esc="invoice['order_id']"/>
+                                                </td>
+                                                <td class="px-6 py-4 "><a t-att-href="invoice['invoice_id'].get_portal_url()"><span t-field="invoice['invoice_id'].name"/></a></td>
+                                                <td class="px-6 py-4 ">
+                                                    
+                                                    <span t-esc="total_amount"
+                                                t-options="{'widget': 'monetary', 'display_currency': invoice['invoice_id'].currency_id}"/></td>
+
+                                                <td class="px-6 py-4 "><span t-field="invoice['invoice_id'].payment_state"/></td>
+                                               
+                                              </tr>
+                                              
+                                              
+                                            </tbody>
+                                          </table>
+                                          
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <t t-call="portal.pager"/>
+                            
+                    </div>
+                    <br/>
+                    
+                </div>
+            </div>
+            </section>
+           
+        </t>
+    </template>
+
+
+
+    <template id="portal_my_home_menu_invoice_custom" name="Portal layout : invoice menu entries" inherit_id="account.portal_my_home_menu_invoice" >
+        <xpath expr="//a[@t-if='invoice']" position="replace">
+            
+                <a t-if="invoice" t-attf-href="/my/invoices/custom?{{ keep_query() }}">Invoices &amp; Bills</a>
+                
+            </xpath>
+           
+    </template>
+
+
+
+     <template id="account.portal_my_home_invoice" name="Show Invoices &amp; Bills" inherit_id="portal.portal_my_home" customize_show="True" priority="30">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Invoices &amp; Bills</t>
+                <t t-set="url" t-value="'/my/invoices/custom'"/>
+                <t t-set="placeholder_count" t-value="'invoice_count'"/>
+            </t>
+        </xpath>
+    </template>
+
+     <template id="portal_record_sidebar_custom"  inherit_id="portal.portal_record_sidebar" >
+        <xpath expr="//div[hasclass('card-footer')]" position="replace">
+            <div class="card-footer small text-center text-muted border-top-0 pt-1 pb-1 d-none d-lg-block">
+                    Powered by OMS
+                </div>
+        </xpath>
+           
+    </template>
+
+
+        <!-- explicit list view definition -->
+</data>
+</odoo>

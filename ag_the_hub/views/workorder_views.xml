@@ -1,0 +1,363 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+        <record model="ir.ui.view" id="thehub_workorder_lines_list_view">
+            <field name="name">thehub.workorder.lines.list.view</field>
+            <field name="model">thehub.workorder.lines</field>
+            <field name="arch" type="xml">
+               <tree decoration-success="is_validated == True" decoration-danger="is_validated == False" editable="bottom" delete="0" create="0">
+                            <header>
+                                <button name="action_cascade_wo_line" string="Cascade WO Lines" type="object" class="btn btn-primary"/>
+                            </header>
+                            <field name="is_validated" invisible="1"/>
+                            <field name="payment_type" invisible="1"/>
+                            <field name="custom_show_packing_done_btn" invisible="1"/>
+                            <field name="show_picking_done_btn" invisible="1"/>
+                            <field name="show_packing_done_btn" invisible="1"/>
+                            <field name="select" invisible="1"/>
+                            <field name="product_id"  readonly="1"/>
+                            <field name="package_id"  readonly="1"/>
+                            <field name="send_qty" string="Available Quantity" readonly="1"/>
+                            <field name="product_qty"  string="Transfer Quantity" readonly="1"/>
+                            
+                            <field name="delivery_address" />
+                            <field name="source_location" readonly="1" />
+                            <!-- <field name="packing_categ"  attrs="{'column_invisible':['|',('parent.show_packing_done_btn','=',False),('parent.shipping_to','=','same_address')]}"/> -->
+                            <!-- <field name="packing_type_id"  attrs="{'column_invisible':['|',('parent.show_packing_done_btn','=',False),('parent.shipping_to','=','same_address')],'required':[('packing_categ','!=',False)]}" options="{'no_create': True, 'no_create_edit':True,'no_open': True}"/> -->
+                            
+                            <!-- <field name="carton_packing"  attrs="{'invisible':['|','|',('show_packing_done_btn','=',False),('packing_type','=','same_address'),('packing_categ','!=','Carton Sizes')],'required':[('packing_categ','=','Carton Sizes')]}"/>
+                            <field name="flyer_packing" attrs="{'invisible':['|','|',('show_packing_done_btn','=',False),('packing_type','=','same_address'),('packing_categ','!=','Flyer Size')],'required':[('packing_categ','=','Flyer Size')]}"/>
+                            <field name="pallet_packing" attrs="{'invisible':['|','&amp;',('show_packing_done_btn','=',False),('packing_type','=','same_address'),('packing_categ','!=','Pallet')],'required':[('packing_categ','=','Pallet')]}"/> -->
+                            
+                            <field name="location_label" attrs="{'invisible': [('show_picking_done_btn', '=', False)],'readonly': [('is_validated', '!=', False)]}"/>
+                            <field name="scan_package_number" attrs="{'invisible': [('show_picking_done_btn', '=', False)],'readonly': [('is_validated', '!=', False)]}"/>
+                            <field name="scanned_qty" attrs="{'invisible': [('show_picking_done_btn', '=', False)],'readonly': [('is_validated', '!=', False)]}"/>
+
+
+                            <field name="weight" attrs="{'readonly':[('custom_show_packing_done_btn','=',False)]}"/>
+
+
+                            <field name="scanned_shipping_label" attrs="{'column_invisible': [('parent.show_dispatch_not_done_btn', '=', False)]}"/>
+                            <button name="validate" string="Validate" type="object"  attrs="{'invisible': ['|',('is_validated', '=', True),('show_picking_done_btn','=',False)]}"/>
+
+
+                            <!-- <button name="print_shipping_label" string="Print shipping Label" type="object"  attrs="{'invisible': [('custom_show_packing_done_btn','=',False)]}"/> -->
+
+
+                        </tree>
+            </field>
+        </record>
+
+        <record id="view_thehub_workorder_lines_search" model="ir.ui.view">
+            <field name="name">thehub.workorder.lines.search</field>
+            <field name="model">thehub.workorder.lines</field>
+            <field name="arch" type="xml">
+                <search string="Workorder Lines">
+                    <field name="product_id"/>
+                    <field name="package_id"/>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="thehub_workorder_list_view">
+            <field name="name">thehub.workorder.list.view</field>
+            <field name="model">thehub.workorder</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="whom_to_ship"/>
+                    <field name="partner_id"/>
+                    <field name="third_party_ref"/>
+                    <field name="shipping_type"/>
+                    <field name="payment_type"/>
+                    <field name="date_create" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="thehub_workorder_form_view">
+            <field name="name">thehub.workorder.form.view</field>
+            <field name="model">thehub.workorder</field>
+            <field name="arch" type="xml">
+            <form>
+                <field name="wo_type" invisible="1"/>
+                <header attrs="{'invisible': [('wo_type', '!=', 'return')]}">
+                    <field name="show_packing_done_btn" invisible="1"/>
+                    <field name="show_receive_btn_done" invisible="1"/>
+                    <button name="action_packing_verify" type="object" string="Package Received" class="oe_highlight" attrs="{'invisible': [('show_receive_btn_done', '=', False)]}"/>
+                    <button name="action_receive_return" type="object" string="Package Stored" class="oe_highlight" attrs="{'invisible': [('show_picking_done_btn', '=', False)]}"/>
+                    <field name="status_return" widget="statusbar" statusbar_visible="return_gen,return_rec,return_done"/>
+                </header>
+                <header attrs="{'invisible': [('wo_type', '!=', 'delivery')]}">
+                    <field name="show_picking_done_btn" invisible="1"/>
+                    <field name="show_receive_btn_done" invisible="1"/>
+                    <field name="show_packing_done_btn" invisible="1"/>
+                    <field name="dispute_raised" invisible="1"/>
+                    <field name="show_dispatch_done_btn" invisible="1"/>
+                    <field name="show_dispatch_not_done_btn" invisible="1"/>
+                    <button name="action_picking_done" type="object" string="Picking Done" class="oe_highlight" attrs="{'invisible': [('show_picking_done_btn', '=', False)]}"/>
+                    <button name="action_packing_done" type="object" string="Packing Done" class="oe_highlight" attrs="{'invisible': [('show_packing_done_btn', '=', False)]}"/>
+                    <button name="action_dispatch_done" type="object" string="Dispatch Done" class="oe_highlight" attrs="{'invisible': [('show_dispatch_done_btn', '=', False)]}"/>
+                    <button name="action_print_wo_manifest" type="object" string="Print WO Manifest" class="oe_highlight" attrs="{'invisible': [('status', 'not in', ['Dispatched', 'Delivered', 'Returned'])]}"/>
+                    <button name="action_delivery_done" type="object" string="Delivery Done" class="oe_highlight" attrs="{'invisible': ['|',('status', '!=', 'Dispatched'),('payment_type','=','My own 3PL Arrangement')]}"/>
+                     <button name="action_delivery_return" type="object" string="Generate Return" class="oe_highlight" attrs="{'invisible': ['|',('status', '!=', 'Dispatched'),('payment_type','=','My own 3PL Arrangement')]}"/>
+                   
+                    <!-- <button name="action_dispatch_not_done" type="object" string="Not Delivered" class="oe_highlight" attrs="{'invisible': [('show_dispatch_not_done_btn', '=', False)]}"/> -->
+                    <field name="status" widget="statusbar" statusbar_visible="Pending,Awaiting,Delivered,Returned"/>
+                </header>
+                <sheet>
+                    <field name="return_wo_id" invisible="1"/>
+                    <field name="date_create" invisible="1"/>
+                     <div class="oe_button_box" name="button_box">
+                         <button name="action_raise_dispute" type="object" class="oe_stat_button" icon="fa-legal" style="background: red;color: white;" attrs="{'invisible': ['|',('return_wo_id', '=', False),('status','!=','Pending')]}">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Raise Dispute</span>
+                                
+                            </div>
+                        </button>
+                        <button name="action_view_sale_order" type="object" class="oe_stat_button" icon="fa-dollar" attrs="{'invisible': [('sale_order_count', '=', 0)]}">
+                            <field name="sale_order_count" widget="statinfo" string="Sale Order"/>
+                        </button>
+                        
+                        <!-- <button name="action_raise_dispute_open" type="object" class="oe_stat_button" icon="fa-legal" style="background: red;color: white;" attrs="{'invisible': ['|',('show_received_done_btn', '=', False),('dispute_raised','=',False)]}">
+                                <field name="ticket_count" widget="statinfo" string="Raise Dispute"/>
+                                
+                            
+                        </button> -->
+
+
+                        <button name="action_open_return_order" type="object" class="oe_stat_button" icon="fa-truck" string="Return WorkOrder"  attrs="{'invisible': [('return_wo_id', '=', False)]}">
+
+                                
+                            
+                        </button>
+                        <button name="action_open_picking" type="object" class="oe_stat_button" icon="fa-truck"  attrs="{'invisible': [('wo_type', '!=', 'return')]}">
+                                <field name="picking_count" widget="statinfo" string="Transfer"/>
+                                
+                            
+                        </button>
+                        <button name="action_open_picking" type="object" class="oe_stat_button" icon="fa-truck"  attrs="{'invisible': [('status', 'in', ['Pending'])]}">
+                                <field name="picking_count" widget="statinfo" string="Transfer"/>
+                                
+                            
+                        </button>
+                        
+                    </div>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" class="oe_inline" readonly="1"/>
+                            </h1>
+                        </div>
+                    <group>
+                        <group>
+                            <field name="whom_to_ship"/>
+                            <field name="partner_id"/>
+                            <field name="shipping_type"/>
+                            <field name="wo_packing_done" invisible="1"/>
+                            <field name="seal_number" attrs="{'invisible': [('wo_packing_done', '=', False)]}"/>
+                            <field name="wo_dispatch_date" attrs="{'invisible': [('status', 'not in', ['Dispatched', 'Delivered', 'Returned'])]}"/>
+                            <field name="third_party_ref"/>
+                        </group>
+                        <group>
+                            <!-- <field name="shipping_to"/> -->
+                            <field name="delivered_date"/>
+                            <field name="payment_type"/>
+                            <field name="three_plcompany" string="3PL Company" attrs="{'invisible':[('payment_type','=','The Hub Buys')]}"/>
+                            <field name="shipping_to" string="Packaging type" attrs="{'readonly':[('show_packing_done_btn','=',False)]}"/>
+                            <field name="packing_categ"  attrs="{'invisible':[('shipping_to','!=','same_address')],'readonly':[('show_packing_done_btn','=',False)]}"/>
+                            <field name="packing_type_id" attrs="{'invisible':['|',('packing_categ','=',False),('shipping_to','!=','same_address')],'required':[('packing_categ','!=',False),('shipping_to','=','same_address')]}" widget='selection'/>
+                            <!-- <field name="carton_packing"  attrs="{'invisible':[('packing_categ','!=','Carton Sizes')],'required':[('packing_categ','=','Carton Sizes')]}"/>
+                            <field name="flyer_packing" attrs="{'invisible':[('packing_categ','!=','Flyer Size')],'required':[('packing_categ','=','Flyer Size')]}"/>
+                            <field name="pallet_packing" attrs="{'invisible':[('packing_categ','!=','Pallet')],'required':[('packing_categ','=','Pallet')]}"/> -->
+                            <field name="merchand_id" attrs="{'readonly': [('status', '!=', 'Pending')]}"/>
+                            
+                            <field name="schedule_pickup" string="Scheduled Fulfillment Date" attrs="{'invisible':[('payment_type','=','The Hub Buys')],'readonly':[('status','!=','Pending')]}"/>
+                            <field name="dispute_description" attrs="{'readonly':[('status','!=','Awaiting')]}"/>
+                        </group>
+                        <field name="packaging_instructions"/>
+                    </group>
+                    <notebook>
+                        <page string="Lines" attrs="{'invisible':[('wo_type','=','return')]}">
+                            <button name="action_select_all_line" type="object" string="Select All Line" class="oe_highlight" attrs="{'invisible': [('show_picking_done_btn', '=', False)]}"/>
+
+
+                            <button name="action_delete_selected_line" type="object" string="Delete Selected Line" class="oe_highlight" attrs="{'invisible': [('show_picking_done_btn', '=', False)]}" style="margin-left: 2%;"/>
+                            <button name="action_mark_as_validate" type="object" string="Validate Selected Lines" class="oe_highlight" attrs="{'invisible': [('show_picking_done_btn', '=', False)]}" style="margin-left: 2%;"/>
+                            <button name="action_add_line" type="object" string="Add Line" class="oe_highlight" attrs="{'invisible': [('status', '!=', 'Pending')]}" style="margin-left: 2%;"/>
+                            <button name="action_bulk_add_lines" type="object" string="Add Bulk Lines" class="oe_highlight" attrs="{'invisible': [('status', '!=', 'Pending')]}" style="margin-left: 2%;"/>
+
+                            <button name="action_open_line_list" type="object" string="Open Line List" class="oe_highlight"  style="margin-left: 2%;"/>
+
+                            <button name="action_scann_package_wizard" type="object" string="Scan Package" class="oe_highlight"  style="margin-left: 2%;" attrs="{'invisible': ['|',('show_picking_done_btn', '=', False),('status', '!=', 'Pending')]}"/>
+                            
+
+                            
+                            
+
+                             <field name="wo_line_ids" editable="bottom" attrs="{'readonly': [('status', '!=', 'Pending')]}">
+                        <tree decoration-success="is_validated == True" decoration-danger="is_validated == False" editable="bottom" delete="0" create="0">
+                            <field name="is_validated" invisible="1"/>
+                            <field name="payment_type" invisible="1"/>
+                            <field name="custom_show_packing_done_btn" invisible="1"/>
+                            <field name="show_picking_done_btn" invisible="1"/>
+                            <field name="show_packing_done_btn" invisible="1"/>
+                            <field name="select"/>
+                            <field name="product_id"  readonly="1"/>
+                            <field name="package_id"  readonly="1"/>
+                            <field name="send_qty" string="Available Quantity" readonly="1"/>
+                            <field name="product_qty"  string="Transfer Quantity" readonly="1"/>
+                            
+                            <field name="delivery_address" />
+                            <field name="source_location" readonly="1" />
+                            <!-- <field name="packing_categ"  attrs="{'column_invisible':['|',('parent.show_packing_done_btn','=',False),('parent.shipping_to','=','same_address')]}"/> -->
+                            <!-- <field name="packing_type_id"  attrs="{'column_invisible':['|',('parent.show_packing_done_btn','=',False),('parent.shipping_to','=','same_address')],'required':[('packing_categ','!=',False)]}" options="{'no_create': True, 'no_create_edit':True,'no_open': True}"/> -->
+                            
+                            <!-- <field name="carton_packing"  attrs="{'invisible':['|','|',('show_packing_done_btn','=',False),('packing_type','=','same_address'),('packing_categ','!=','Carton Sizes')],'required':[('packing_categ','=','Carton Sizes')]}"/>
+                            <field name="flyer_packing" attrs="{'invisible':['|','|',('show_packing_done_btn','=',False),('packing_type','=','same_address'),('packing_categ','!=','Flyer Size')],'required':[('packing_categ','=','Flyer Size')]}"/>
+                            <field name="pallet_packing" attrs="{'invisible':['|','&amp;',('show_packing_done_btn','=',False),('packing_type','=','same_address'),('packing_categ','!=','Pallet')],'required':[('packing_categ','=','Pallet')]}"/> -->
+                            
+                            <field name="location_label" attrs="{'column_invisible': [('parent.show_picking_done_btn', '=', False)],'readonly': [('is_validated', '!=', False)]}"/>
+                            <field name="scan_package_number" attrs="{'column_invisible': [('parent.show_picking_done_btn', '=', False)],'readonly': [('is_validated', '!=', False)]}"/>
+                            <field name="scanned_qty" attrs="{'column_invisible': [('parent.show_picking_done_btn', '=', False)],'readonly': [('is_validated', '!=', False)]}"/>
+
+
+                            <field name="weight" attrs="{'readonly':[('custom_show_packing_done_btn','=',False)]}"/>
+
+
+                            <field name="scanned_shipping_label" attrs="{'column_invisible': [('parent.show_dispatch_not_done_btn', '=', False)]}"/>
+                            <button name="validate" string="Validate" type="object"  attrs="{'invisible': ['|',('is_validated', '=', True),('show_picking_done_btn','=',False)]}"/>
+
+
+                            <!-- <button name="print_shipping_label" string="Print shipping Label" type="object"  attrs="{'invisible': [('custom_show_packing_done_btn','=',False)]}"/> -->
+
+
+                        </tree>
+                    </field>
+                        </page>
+                        <page string="lines" attrs="{'invisible':[('wo_type','=','delivery')]}">
+                   
+
+                 <field name="wo_return_line_ids" >
+                        <tree decoration-success="is_validated == True" decoration-danger="is_validated == False" editable="bottom" create="0" edit="0" delete="0">
+                            <field name="is_validated" invisible="1"/>
+                            <field name="payment_type" invisible="1"/>
+                            <field name="custom_show_packing_done_btn" invisible="1"/>
+                            <field name="show_picking_done_btn" invisible="1"/>
+                            <field name="show_packing_done_btn" invisible="1"/>
+                            <field name="validate_shipping_label" invisible="1"/>
+                            <field name="show_receive_btn_done" invisible="1"/>
+                            <field name="product_id" readonly="1"/>
+                            <field name="package_id" readonly="1"/>
+                            <field name="send_qty" string="Available Quantity" readonly="1"/>
+                            <field name="product_qty" readonly="1" string="Transfer Quantity"/>
+                            <field name="delivery_address" string="Source Location" readonly="1"/>
+                            <field name="source_location" string="Destination Location"  attrs="{'readonly': [('show_receive_btn_done', '=', False)]}"/>
+                            <field name="packing_categ"  attrs="{'column_invisible':['|',('parent.show_packing_done_btn','=',False),('parent.shipping_to','=','same_address')]}"/>
+                            <field name="packing_type_id"  attrs="{'column_invisible':['|',('parent.show_packing_done_btn','=',False),('parent.shipping_to','=','same_address')],'required':[('packing_categ','!=',False)]}" options="{'no_create': True, 'no_create_edit':True,'no_open': True}"/>
+                            
+                            <!-- <field name="carton_packing"  attrs="{'invisible':['|','|',('show_packing_done_btn','=',False),('packing_type','=','same_address'),('packing_categ','!=','Carton Sizes')],'required':[('packing_categ','=','Carton Sizes')]}"/>
+                            <field name="flyer_packing" attrs="{'invisible':['|','|',('show_packing_done_btn','=',False),('packing_type','=','same_address'),('packing_categ','!=','Flyer Size')],'required':[('packing_categ','=','Flyer Size')]}"/>
+                            <field name="pallet_packing" attrs="{'invisible':['|','&amp;',('show_packing_done_btn','=',False),('packing_type','=','same_address'),('packing_categ','!=','Pallet')],'required':[('packing_categ','=','Pallet')]}"/> -->
+                            
+                            <field name="location_label" attrs="{'column_invisible': [('parent.show_picking_done_btn', '=', False)],'readonly': [('is_validated', '!=', False)]}"/>
+                            <!-- <field name="scan_package_number" attrs="{'column_invisible': [('parent.show_picking_done_btn', '=', False)],'readonly': [('is_validated', '!=', False)]}"/> -->
+                            <field name="scanned_qty" attrs="{'column_invisible': [('parent.show_picking_done_btn', '=', False)],'readonly': [('is_validated', '!=', False)]}"/>
+
+
+
+
+                            <field name="scanned_shipping_label" invisible="1"/>
+                            <!-- <button name="validate_return" string="Validate" type="object"  attrs="{'invisible': ['|',('is_validated', '=', True),('parent.show_picking_done_btn','=',False)]}"/> -->
+
+                             <!-- <button name="action_validate_shipping_label" string="Validate Shipping Label" type="object"  attrs="{'invisible': ['|',('validate_shipping_label', '=', True),('parent.show_packing_done_btn','=',False)]}"/> -->
+
+
+                            
+
+
+                        </tree>
+                    </field>
+                </page>
+                <page string="Package Lines" attrs="{'invisible':[('wo_type','=','return')]}">
+                    
+                    <button name="action_update_package" type="object" string="Update Package" class="oe_highlight" attrs="{'invisible': ['|',('show_packing_done_btn', '=', False),('shipping_to','=','diff_addres')]}" style="margin: 2%;"/>
+
+                    <button name="action_scann_package_wizard_packages" type="object" string="Scan Package" class="oe_highlight"  style="margin-left: 2%;" attrs="{'invisible': ['|',('show_dispatch_done_btn', '=', False),('status', '!=', 'Awaiting')]}"/>
+
+                     <button name="action_add_package" type="object" string="Add Package" class="oe_highlight" attrs="{'invisible': ['|',('show_packing_done_btn', '=', False),('shipping_to','=','same_address')]}" style="margin: 2%;"/>
+                    <button name="action_delete_package" type="object" string="Delete Package" class="oe_highlight" attrs="{'invisible': [('show_packing_done_btn', '=', False)]}"/>
+                    <field name="package_lines"  create="0" edit="0" delete="0">
+                        <tree editable="bottom" create="0" edit="1" delete="0" decoration-success="is_validated == True" decoration-danger="is_validated == False">
+                            <field name="select" attrs="{'column_invisible': [('parent.show_packing_done_btn', '=', False)]}"/>
+                            <field name="non_billable" attrs="{'column_invisible': [('parent.show_packing_done_btn', '=', False)]}"/>
+                            <!-- <field name="show_packing_done_btn"/> -->
+                            <field name="name" readonly="1"/>
+                            <field name="packing_categ" readonly="1"/>
+                            <field name="packing_type_id" readonly="1"/>
+
+                        <!-- <field name="name"/> -->
+                        <field name="address" readonly="1"/>
+                        <field name="is_validated" invisible="1"/>
+                        <field name="product_lines" widget="many2many_tags" readonly="1"/>
+                        <field name="scan_package_number" attrs="{'column_invisible': [('parent.show_dispatch_done_btn', '=', False)],'readonly': [('is_validated', '!=', False)]}"/>
+                        <button name="validate_packing" string="Validate" type="object"  attrs="{'invisible': ['|',('is_validated', '=', True),('parent.show_dispatch_done_btn','=',False)]}"/>
+                        <button name="print_shipping_label" string="Print shipping Label" type="object"  />
+                    </tree>
+                    </field>
+                </page>
+                </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="thehub_workorder_action_window">
+        <field name="name">Workorder</field>
+        <field name="res_model">thehub.workorder</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'default_wo_type':'delivery'}</field>
+         <field name="domain">[('wo_type','=', 'delivery')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Workorder
+            </p>
+        </field>
+    </record>
+
+
+    <!-- actions opening views on models Workorder return -->
+    <record model="ir.actions.act_window" id="thehub_workorder_return_action_window">
+        <field name="name">Workorder Return</field>
+        <field name="res_model">thehub.workorder</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'default_wo_type':'return'}</field>
+        <field name="domain">[('wo_type','=', 'return')]</field>
+        
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Workorder
+            </p>
+        </field>
+    </record>
+    
+    <!-- Top menu item -->
+    <menuitem id="menu_thehub_workorder" name="Workorders" action="thehub_workorder_action_window"
+    parent="menu_wro_root" sequence="2"/>
+    <!-- Top menu item -->
+    <menuitem id="menu_thehub_workorder_eturn" name="Workorders Return" action="thehub_workorder_return_action_window"
+    parent="menu_wro_root" sequence="3"/>
+
+
+    <menuitem id="menu_thehub_config" name="Configuration" 
+    parent="menu_wro_root" sequence="4"/>
+
+
+  </data>
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_move_form_inherit_isn_approval" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.isn.approval</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+        	<group name="misc_group" position="after">
+        		<group name="approval" string="Approval" attrs="{'invisible':[('isn_approval_id', 'in', [None,False])]}">
+        			<field name="isn_approval_id"/>
+        		</group>
+        	</group>
+            <field name="partner_bank_id" position="after">
+                <field name="department_id"/>
+            </field>
+        </field>
+    </record>
+</odoo>

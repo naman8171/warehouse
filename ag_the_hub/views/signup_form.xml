@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Inherit Signup Page To Add New Fields -->
+    <template id="signup_fields" inherit_id="auth_signup.fields" name="Auth Signup form fields">
+        <xpath expr="//div[hasclass('field-name')]" position="replace"/>
+        <xpath expr="//div[hasclass('field-login')]" position="before">
+            <div class="form-group field-fname" t-if="not only_passwords">
+                <label for="name">First Name</label>
+                <input type="text" name="first_name" t-att-value="first_name" id="first_name" class="form-control form-control-sm" placeholder="e.g. John" required="required"/>
+            </div>
+            <div class="form-group field-lname" t-if="not only_passwords">
+                <label for="name">Last Name</label>
+                <input type="text" name="last_name" t-att-value="last_name" id="last_name" class="form-control form-control-sm" placeholder="e.g. Doe" required="required"/>
+            </div>
+            <div class="form-group field-business-name" t-if="not only_passwords">
+                <label for="name">Business Name</label>
+                <input type="text" name="business_name" t-att-value="business_name" id="business_name" class="form-control form-control-sm" required="required"/>
+            </div>
+            <div class="form-group field-business-website" t-if="not only_passwords">
+                <label for="name">Business Website</label>
+                <input type="text" name="business_website" t-att-value="business_website" id="business_website" class="form-control form-control-sm" required="required"/>
+            </div>
+            <div class="form-group field-phone" t-if="not only_passwords">
+                <label for="name">Phone Number</label>
+                <input type="tel" name="phone_number" required="required" t-att-value="phone_number" id="phone_number" class="form-control form-control-sm"/>
+            </div>
+            <div class="form-group field-order-count" t-if="not only_passwords">
+                <label for="name">How Many Orders Are You Shipping Per Month?</label>
+                <input type="text" name="order_count" t-att-value="order_count" id="order_count" class="form-control form-control-sm" required="required"/>
+            </div>
+        </xpath>
+        
+        <xpath expr="//div[hasclass('field-confirm_password')]" position="after">
+            <div class="form-group field-order-count" t-if="not only_passwords">
+                <input type="checkbox" id="terms_and_condition" name="terms_and_condition" value="1" required='required'/>
+                <label for="terms_and_condition">click to agree with terms and conditions</label>
+            </div>
+        </xpath>
+
+    </template>
+
+</odoo>

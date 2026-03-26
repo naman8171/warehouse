@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_zeroization_wizard,access_zeroization_wizard,model_inventory_zeroization_wizard,base.group_system,1,1,1,1
+access_effective_date_wizard,access_effective_date_wizard,model_inventory_effective_date_wizard,base.group_system,1,1,1,1
+access_zeroization_log,access_zeroization_log,model_inventory_zeroization_log,base.group_system,1,1,1,1
+access_zeroization_log_line,access_zeroization_log_line,model_inventory_zeroization_log_line,base.group_system,1,1,1,1

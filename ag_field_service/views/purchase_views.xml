@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_purchase_order_form_inherit_ag_field_service" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.ag.fs</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@id='bid_confirm']" position="replace">
+                <field name="invisible_submit_offer" invisible="1"/>
+                <field name="invisible_btn_confirm2" invisible="1"/>
+                <button name="action_po_submit_offer" type="object" string="Submit Offer" class="oe_highlight" attrs="{'invisible': [('invisible_submit_offer', '=', True)]}"/>
+                <button name="button_confirm" type="object" string="Confirm Order" class="oe_highlight" id="bid_confirm" data-hotkey="v" attrs="{'invisible': [('invisible_btn_confirm2', '=', True)]}"/>
+                <button name="action_return_offer_for_review" type="object" string="Return for Review" attrs="{'invisible': [('invisible_btn_confirm2', '=', True)]}"/>
+            </xpath>
+            <xpath expr="//header/button[@name='button_approve']" position="replace">
+                <field name="invisible_approve" invisible="1"/>
+                <field name="invisible_button_receive_orders" invisible="1"/>
+                <button name="button_approve" type="object" string="Approve Order" class="oe_highlight" attrs="{'invisible': [('invisible_approve', '=', True)]}" data-hotkey="z"/>
+                <button name="button_receive_orders" type="object" string="Receive Order" class="oe_highlight" attrs="{'invisible': [('invisible_button_receive_orders', '=', True)]}"/>
+                <button name="action_admin_approve" type="object" string="Approve Order" class="oe_highlight" groups="base.group_no_one"/>
+            </xpath>
+            <xpath expr="//header/button[@name='action_create_invoice'][1]" position="replace">
+                <field name="invisible_create_bill" invisible="1"/>
+                <button name="action_create_invoice" string="Create Bill" type="object" class="oe_highlight" context="{'create_bill':True}" attrs="{'invisible': [('invisible_create_bill', '=', True)]}" data-hotkey="w"/>
+            </xpath>
+            <xpath expr="//header/button[@name='action_create_invoice'][2]" position="replace"/>
+            <xpath expr="//header/button[@id='draft_confirm']" position="replace">
+                <field name="invisible_btn_confirm" invisible="1"/>
+                <button name="button_confirm" type="object" string="Confirm Order" id="draft_confirm" attrs="{'invisible': [('invisible_btn_confirm', '=', True)]}"/>
+            </xpath>
+            <field name="currency_id" position="after">
+                <field name="project_task_id" string="Job Order" invisible="1"/>
+            </field>
+            <field name="origin" position="after">
+                <field name="scope_of_work" attrs="{'required':[('state', '!=', 'draft')]}"/>
+                <label for="duration_number" string="Scope Duration"/>
+                <div>
+                    <field name="duration_number" class="oe_inline" attrs="{'required':[('state', '!=', 'draft')]}"/>
+                    <field name="duration_type" class="oe_inline" attrs="{'required':[('state', '!=', 'draft')]}"/>
+                </div>
+                <field name="penalty_non_compilance" attrs="{'required':[('state', '!=', 'draft')]}"/>
+                <label for="warranty_number" string="Warranty Period"/>
+                <div>
+                    <field name="warranty_number" class="oe_inline" attrs="{'required':[('state', '!=', 'draft')]}"/>
+                    <field name="warranty_type" class="oe_inline" attrs="{'required':[('state', '!=', 'draft')]}"/>
+                </div>
+            </field>
+            <field name="payment_term_id" position="attributes">
+                <attribute name="attrs">{'required':[('state', '!=', 'draft')]}</attribute>
+            </field>
+            <field name="fiscal_position_id" position="after">
+                <field name="other_term_conditions" attrs="{'required':[('state', '!=', 'draft')]}"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_purchase_stock_order_form_inherit_ag_field_service" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherit.ag.fs.stock</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase_stock.purchase_order_view_form_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_view_picking'][1]" position="replace">
+                <field name="invisible_button_receive_products" invisible="1"/>
+                <button name="action_view_picking" string="Receive Products" class="oe_highlight" type="object" attrs="{'invisible': [('invisible_button_receive_products', '=', True)]}" data-hotkey="y"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

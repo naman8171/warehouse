@@ -1,0 +1,154 @@
+<templates id="template" xml:space="preserve">
+
+  <t t-name="WorkOrderLineRows">
+      <tr class="wo_line_row" style="border-bottom: 0.5px solid #DEE2E6;">
+        <t t-set="wo_id" t-value="id"/>
+          <td colspan="1">
+              <div class="form-field product">
+                <select t-if="product_ids" class="multi_select product_id" id="select_multi_product" t-attf-name="product_#{wo_id}"  multiple="multiple" style="margin:8px auto;min-width: 176px;min-height: 40px;">
+                                                        <t t-foreach="product_ids" t-as="product" t-key='product.id'>
+                                                            <option t-att-value="product.id">
+                                                                <t t-esc='product.name'/>
+                                                            </option>
+                                                        </t>
+                                                    </select>
+                
+              </div>
+          </td>
+          <td colspan="1">
+              <div class="form-field quantity">
+                  <input required="required" type="number"  class="form-control o_required_modifier text-left" value="1"  t-attf-name="quantity_#{wo_id}" min="1"/>
+              </div>
+          </td>
+          <!-- <td colspan="1">
+              <div class="form-field street2">
+                  <input required="required" type="text"  class="form-control o_required_modifier text-left"  t-attf-name="street2_#{wo_id}"/>
+              </div>
+          </td>
+          <td colspan="1">
+              <div class="form-field city">
+                  <input required="required" type="text"  class="form-control o_required_modifier text-left"  t-attf-name="city_#{wo_id}"/>
+              </div>
+          </td>
+          <td colspan="1">
+              <div class="form-field state">
+                <select t-if="state_ids" class="form-control state_id" t-attf-name="state_id_#{wo_id}" id="state_id">
+                    <option t-foreach="state_ids" t-as="state" t-att-value="state.id">
+                        <t t-esc="state.name"/>
+                    </option>
+                </select>
+              </div>
+          </td>
+          <td colspan="1">
+              <div class="form-field country">
+                <select t-if="country_ids" class="form-control country_id" t-attf-name="country_id_#{wo_id}" id="country_id">
+                    <option t-foreach="country_ids" t-as="country" t-att-value="country.id">
+                        <t t-esc="country.name"/>
+                    </option>
+                </select>
+              </div>
+          </td>
+          <td colspan="1">
+              <div class="form-field zip">
+                  <input required="required" type="text"  class="form-control o_required_modifier text-left"  t-attf-name="zip_#{wo_id}"/>
+              </div>
+          </td>
+          <td colspan="1">
+              <div class="form-field isCorrespondence">
+                  <input type="checkbox" class="form-control text-left" value="True" t-attf-name="isCorrespondence_#{wo_id}"/>
+              </div>
+          </td> -->
+          <td class="line_workorder_delete" width="50px">
+              <span style="font-size:24px" class="fa fa-trash-o" name="delete"/>
+          </td>
+      </tr>
+  </t>
+
+
+  
+
+
+<!--   <t t-name="EmployeeRows">
+      <tr class="employee_row" style="border-bottom: 0.5px solid #DEE2E6;">
+          <td colspan="1">
+              <div class="form-field from_date">
+                  <input required="required" type="date"  class="form-control o_required_modifier text-left"  t-attf-name="from_date_#{id}"/>
+              </div>
+          </td>
+          <td colspan="1">
+              <div class="form-field to_date">
+                  <input required="required" type="date"  class="form-control o_required_modifier text-left"  t-attf-name="to_date_#{id}"/>
+              </div>
+          </td>
+          <td colspan="1">
+              <div class="form-field position">
+                  <input required="required" type="text"  class="form-control o_required_modifier text-left"  t-attf-name="position_#{id}"/>
+              </div>
+          </td>
+          <td colspan="1">
+              <div class="form-field organization">
+                  <input required="required" type="text"  class="form-control o_required_modifier text-left"  t-attf-name="organization_#{id}"/>
+              </div>
+          </td>
+          <td colspan="1">
+              <div class="form-field ref_name">
+                  <input required="required" type="text"  class="form-control o_required_modifier text-left"  t-attf-name="ref_name_#{id}"/>
+              </div>
+          </td>
+          <td colspan="1">
+              <div class="form-field ref_position">
+                  <input required="required" type="text"  class="form-control o_required_modifier text-left"  t-attf-name="ref_position_#{id}"/>
+              </div>
+          </td>
+          <td colspan="1">
+              <div class="form-field ref_phone">
+                  <input required="required" type="text"  class="form-control o_required_modifier text-left" pattern="[0-9]{10}"  t-attf-name="ref_phone_#{id}" oninvalid="this.setCustomValidity('Please Enter Correct Phone No')" onvalid="this.setCustomValidity('')"/>
+              </div>
+          </td>
+          <td class="line_record_delete" width="50px">
+              <span style="font-size:24px" class="fa fa-trash-o" name="delete"/>
+          </td>
+      </tr>
+  </t>
+
+  <t t-name="EducationRows">
+      <tr class="education_row" style="border-bottom: 0.5px solid #DEE2E6;">
+        <t t-set="rec_id" t-value="id"/>
+          <td colspan="1">
+            <select t-if="line_type_ids" class="form-control line_type_id" t-attf-name="line_type_id_#{rec_id}" id="line_type_id">
+                <option t-foreach="line_type_ids" t-as="type" t-att-value="type.id">
+                    <t t-esc="type.name"/>
+                </option>
+            </select>
+          </td>
+          <td t-if="line_type_ids" colspan="1">
+              <div class="form-field name">
+                  <input required="required" type="text"  class="form-control o_required_modifier text-left"  t-attf-name="name_#{rec_id}"/>
+              </div>
+          </td>
+          <td t-if="line_type_ids" colspan="1">
+              <div class="form-field description">
+                  <input required="required" type="text"  class="form-control o_required_modifier text-left"  t-attf-name="description_#{rec_id}"/>
+              </div>
+          </td>
+          <td t-if="line_type_ids" colspan="1">
+              <div class="form-field specialization">
+                  <input required="required" type="text"  class="form-control o_required_modifier text-left"  t-attf-name="specialization_#{rec_id}"/>
+              </div>
+          </td>
+          <td t-if="line_type_ids" colspan="1">
+              <div class="form-field date_start">
+                  <input required="required" type="date"  class="form-control o_required_modifier text-left"  t-attf-name="date_start_#{rec_id}"/>
+              </div>
+          </td>
+          <td t-if="line_type_ids" colspan="1">
+              <div class="form-field date_end">
+                  <input required="required" type="date"  class="form-control o_required_modifier text-left"  t-attf-name="date_end_#{rec_id}"/>
+              </div>
+          </td>
+          <td t-if="line_type_ids" class="education_delete" width="50px">
+              <span style="font-size:24px" class="fa fa-trash-o" name="delete"/>
+          </td>
+      </tr>
+  </t> -->
+</templates>

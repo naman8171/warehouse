@@ -1,0 +1,298 @@
+<?xml version="1.0"?>
+<odoo>
+    <!--  Inherit Approval Request form view  -->
+    <record id="approval_purchase_request_view_form_inherit_isn" model="ir.ui.view">
+        <field name="name">approval.purchase.request.view.form.inherit.isn</field>
+        <field name="model">approval.request</field>
+        <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+        <field name="priority">30</field>
+        <field name="arch" type="xml">
+            <button name="action_withdraw" position="replace">
+                <field name="reapprove_request" invisible="1"/>
+                <button name="%(isn_approval_custom.action_approval_request_reapproval)d" class="btn-primary" type="action" string="Reapproval Request" attrs="{'invisible':['|',('request_status','!=','refused'),('reapprove_request','=',True)]}"/>
+            </button>
+            <button name="action_cancel" position="replace"/>
+            <field name="name" position="attributes">
+                <attribute name="string">Request Title</attribute>
+            </field>
+            <field name="category_id" position="after">
+                <field name="approval_type" readonly="1" required="1"/>
+                <field name="branch_id" required="1"/>
+            </field>
+            <field name="date_confirmed" position="after">
+                <field name="department_id" invisible="0"/>
+                <field name="account_ids" invisible="1"/>
+                <field name="acc_dep_rep" invisible="1" widget="many2many_tags" readonly="1" force_save="1"/>
+                <field name="account_id" attrs="{'invisible': ['|', '|', ('approval_type', '!=', 'payment'),('has_amount', '=', 'no'),('has_amount_lines', '=', True)], 
+                                           'required': [('has_amount_lines', '=', False),('approval_type', '=', 'payment')],'readonly':[('request_status','!=','new')]}" options="{'no_open':True,'no_create':True}"/>
+            </field>
+            <field name="location" position="replace">
+                <field name="location" options="{'no_open': True, 'no_create': True}" domain="[('branch_id', '=', branch_id)]" required="1"/>
+            </field>
+            
+            <field name="amount" position="replace">
+                <field name="amount" attrs="{'invisible':['|', ('approval_type', '=', 'purchase'),('has_amount','==','no')], 'required': ['|', ('approval_type', '!=', 'purchase'),('has_amount','==','required')], 'readonly':[('request_status','!=','new')]}"/>
+                <field name="currency_id" options='{"no_open": True, "no_create": True}' attrs="{'readonly':[('request_status','!=','new')]}" required="1"/>
+                <field name="has_amount_lines" attrs="{'invisible': ['|', ('approval_type', '!=', 'payment'),('has_amount', '=', 'no')],'readonly':[('request_status','!=','new')]}" force_save="1"/>
+                <field name="payee_details" attrs="{'invisible': [('approval_type', '=', 'purchase')], 'required': [('approval_type', '!=', 'purchase')]}"/>
+            </field>        
+            <page name="products" position="attributes">
+                <attribute name="string">SKU Items</attribute>
+            </page>
+            <page name="products" position="after">
+                <page string="Non-SKU Items" name="non_sku_products" attrs="{'invisible': [('has_product', '=', 'no')]}">
+                    <field name="nonsku_product_line_ids" attrs="{'readonly':[('request_status','not in',('new', 'pending'))]}">
+                        <tree editable="bottom">
+                            <field name="product_id" required="1"/>
+                            <field name="description"/>
+                            <field name="quantity"/>
+                            <field name="product_uom"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="price_unit"/>
+                            <field name="amount"/>
+                            <field name="show_create_product" invisible="1"/>
+                            <field name="is_product_created" invisible="1"/>
+                            <button name="action_create_product" type="object" string="Create" class="oe_highlight" attrs="{'invisible': [('show_create_product', '=', False)]}"/>
+                        </tree>
+                    </field>
+                    <group name="group_total" col="6" class="mt-2 mt-md-0">
+                        <group class="oe_subtotal_footer oe_right" colspan="2" name="sku_product_total">
+                            <div class="d-flex">
+                                <label for="total_amount" string="SKU Items Total"/>
+                                <field name="total_amount" colspan="2"/>
+                            </div>
+                        </group>
+                        <div class="oe_clear"/>
+                    </group>
+                    <group name="group_total" col="6" class="mt-2 mt-md-0">
+                        <group class="oe_subtotal_footer oe_right" colspan="2" name="nonsku_product_total">
+                            <div class="d-flex">
+                                <label for="nonsku_total_amount" string="Non-SKU Items Total"/>
+                                <field name="nonsku_total_amount" colspan="2"/>
+                            </div>
+                        </group>
+                        <div class="oe_clear"/>
+                    </group>
+                    <group name="group_total" col="6" class="mt-2 mt-md-0">
+                        <group class="oe_subtotal_footer oe_right" colspan="2" name="product_total">
+                            <div class="d-flex">
+                                <label for="overall_total_amount" string="Total"/>
+                                <field name="overall_total_amount" colspan="2"/>
+                            </div>
+                        </group>
+                        <div class="oe_clear"/>
+                    </group>
+                </page>
+                <page string="Amounts" name="amounts"
+                    attrs="{'invisible': ['|', '|', ('approval_type', '!=', 'payment'),('has_amount', '=', 'no'),('has_amount_lines', '=', False)]}">
+                    <field name="amounts_ids" attrs="{'readonly':[('request_status','!=','new')]}" force_save="1">
+                        <tree editable="bottom">
+                            <field name="account_id" options="{'no_open':True,'no_create':True}" domain="[('id','in',parent.account_ids)]"/>
+                            <field name="name"/>
+                            <field name="amount" sum="Total"/>
+                        </tree>
+                        <form>
+                            <group>
+                                <field name="account_id"  options="{'no_open':True,'no_create':True}" domain="[('id','in',parent.account_ids)]"/>
+                                <field name="name"/>
+                                <field name="amount"/>
+                            </group>
+                        </form>
+                    </field>
+                </page>
+                <!-- <page string="Documents Upload">
+                    <field name="attachment_ids" widget="many2many_binary" required="1"/>
+                </page> -->
+            </page>
+            
+            <field name="product_line_ids" position="after">
+                <group name="group_total" col="6" class="mt-2 mt-md-0">
+                    <group class="oe_subtotal_footer oe_right" colspan="2" name="sku_product_total">
+                        <div class="d-flex">
+                            <label for="total_amount" string="SKU Items Total"/>
+                            <field name="total_amount" colspan="2"/>
+                        </div>
+                    </group>
+                    <div class="oe_clear"/>
+                </group>
+                <group name="group_total" col="6" class="mt-2 mt-md-0">
+                    <group class="oe_subtotal_footer oe_right" colspan="2" name="nonsku_product_total">
+                        <div class="d-flex">
+                            <label for="nonsku_total_amount" string="Non-SKU Items Total"/>
+                            <field name="nonsku_total_amount" colspan="2"/>
+                        </div>
+                    </group>
+                    <div class="oe_clear"/>
+                </group>
+                <group name="group_total" col="6" class="mt-2 mt-md-0">
+                    <group class="oe_subtotal_footer oe_right" colspan="2" name="product_total">
+                        <div class="d-flex">
+                            <label for="overall_total_amount" string="Total"/>
+                            <field name="overall_total_amount" colspan="2"/>
+                        </div>
+                    </group>
+                    <div class="oe_clear"/>
+                </group>
+            </field>
+            <field name="reason" position="replace">
+                <field name="reason" attrs="{'readonly':[('request_status','!=','new')]}"/>
+            </field>
+            
+            
+            
+            <xpath expr="//form/sheet/div[3]/h1/field[2]" position="replace">
+                            <field name="name" placeholder="E.g: Expenses Paris business trip"
+                                attrs="{'readonly':[('request_status','!=','new')]}"
+                                required="1"/>
+            </xpath>
+            
+            
+            
+            <field name="approver_ids" position="replace">
+                
+                
+                            <field name="approver_ids" mode="tree,kanban" style="pointer-events:none;"  force_save="1">
+                                <tree editable="bottom" create="false" decoration-success="status=='approved'" decoration-warning="status=='pending'" decoration-danger="status=='refused'">
+                                    <field name="existing_request_user_ids" invisible="1"/>
+                                    <field name="user_id" string="Approver" attrs="{'readonly':[('status','!=','new')]}"/>
+                                    <field name="status"/>
+                                    <field name="company_id" invisible="1"/>
+                                </tree>
+                                <kanban create="false" class="o_kanban_mobile">
+                                    <field name="company_id" invisible="1"/>
+                                    <field name="user_id"/>
+                                    <field name="status"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div class="oe_kanban_card oe_kanban_global_click">
+                                                <div class="o_kanban_content">
+                                                    <t t-esc="record.user_id.value"/>
+                                                    <t t-if="record.status.raw_value">
+                                                        <t t-set="classname" t-value="{'approved': 'badge-success', 'pending': 'badge-warning', 'refused': 'badge-danger'}[record.status.raw_value] || 'badge-light'"/>
+                                                        <span t-esc="record.status.raw_value" t-attf-class="float-right badge-pill {{ classname }}"/>
+                                                    </t>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                                <form create="false">
+                                    <group>
+                                        <field name="company_id" invisible="1"/>
+                                        <field name="existing_request_user_ids" invisible="1"/>
+                                        <field name="user_id" readonly="1"/>
+                                    </group>
+                                </form>
+                            </field>
+                
+                
+            </field>
+            
+            
+            <xpath expr="//form/sheet/group/group[1]/div[1]/div/field" position="replace">
+                <field name="date" class="oe_inline" attrs="{'required': [('has_date','==','required')]}"/>
+            </xpath>
+            
+            
+            <field name="request_owner_id" position="replace">
+                <!-- <field name="approval_subject"/> -->
+                <field name="request_owner_id" groups="approvals.group_approval_user" domain="[('share', '=', False)]" force_save="1"/>
+            </field>
+            
+            
+            <field name="category_id" position="replace">
+                <field name="category_id" groups="approvals.group_approval_user" force_save="1"/>
+            </field>
+            
+            
+            <xpath expr="//button[@name='action_get_attachment_view']" position="after">
+                <button name="action_view_move" type="object"
+                    class="oe_stat_button" icon="fa-pencil-square-o" string="Journal Entry"
+                    attrs="{'invisible': [('move_id_created', '=', False)]}">
+                </button>
+            </xpath>
+            <xpath expr="//button[@name='action_confirm']" position="after">
+                <field name="move_id_created" invisible="1"/>
+                <button name="%(isn_approval_custom.action_payment_approval_entry)d" type="action"
+                    string="Create Journal Entry" class="btn-primary"
+                    attrs="{'invisible': [
+                        '|', '|',
+                            ('approval_type', '!=', 'payment'),
+                            ('request_status', '!=', 'approved'),
+                            ('move_id_created', '=', True)
+                    ]}"/>
+                    <field name="picking_id_created" invisible="1"/>
+                    <button type="object" name="action_release_products" class="btn-primary" string="Release Products" attrs="{'invisible': [
+                        '|', '|','|',
+                            ('approval_type', '!=', 'direct_procurement'),
+                            ('request_status', '!=', 'approved'),
+                            ('move_id_created', '=', False),
+                            ('picking_id_created', '=', True),
+                    ]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="approval_purchase_request_view_tree_inherit" model="ir.ui.view">
+        <field name="name">approval.request.view.tree.inherit</field>
+        <field name="model">approval.request</field>
+        <field name="inherit_id" ref="approvals.approval_request_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="request_status" position="after">
+                <field name="account_id"/>
+                <field name="amount"/>
+                <field name="payee_details"/>
+            </field>
+        </field>
+    </record>
+
+
+
+    <record id="approval_purchase_request_view_kanban_inherit" model="ir.ui.view">
+        <field name="name">approval.request.view.kanban.inherit</field>
+        <field name="model">approval.request</field>
+        <field name="inherit_id" ref="approvals.approval_request_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban/templates/t/div/div[hasclass('oe_kanban_content')]/div[hasclass('o_kanban_record_subtitle')]" position="after">
+                <div t-if="record.account_id">
+                    <field name="account_id"/>
+                </div>
+                <div t-if="record.overall_total_amount">
+                    <field name="overall_total_amount" widget="monetary" options="{'currency_field': 'company_currency'}"/>
+                </div>
+                <div t-if="record.payee_details">
+                    <field name="payee_details"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="approval_product_line_view_tree_inherit" model="ir.ui.view">
+        <field name="name">approval.product.line.view.tree.inh</field>
+        <field name="model">approval.product.line</field>
+        <field name="inherit_id" ref="approvals.approval_product_line_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="product_id" position="attributes">
+                <attribute name="options">{"no_open": True, "no_create": True, "no_create_edit": True}</attribute>
+            </field>
+            <field name="product_uom_category_id" position="after">
+                <field name="currency_id" invisible="1"/>
+                <field name="price_unit"/>
+                <field name="amount"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="approval_purchase_request_view_form_inherit_create_rfq" model="ir.ui.view">
+        <field name="name">approval.purchase.request.view.form.inh</field>
+        <field name="model">approval.request</field>
+        <field name="inherit_id" ref="approvals_purchase.approval_purchase_request_view_form_inherit"/>
+        <field name="arch" type="xml">
+            <button name="action_create_purchase_orders" position="replace">
+                <field name="show_create_rfq" invisible="1"/>
+                <button name="action_create_purchase_orders" type="object" string="Create RFQ's" class="btn-primary" data-hotkey="g" attrs="{'invisible': [('show_create_rfq', '=', False)]}"/>
+            </button>
+        </field>
+    </record>
+    
+</odoo>

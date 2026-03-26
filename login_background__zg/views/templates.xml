@@ -1,0 +1,17 @@
+<odoo>
+    <data>
+    
+
+    <template id="login_layout" inherit_id="web.login_layout" name="Login Layout" priority="20">
+    <xpath expr="//t/div[hasclass('container')]" position="before">
+        <t t-set="bg_image" t-value="'data:image/*;base64,'+str(request.env['ir.config_parameter'].sudo().get_param('login_background__zg.login_background_image'))" />
+    </xpath>
+    <xpath expr="//t/div[hasclass('container')]" position="attributes">
+        <attribute name="class">container-fluid py-5</attribute>
+        <attribute name="t-attf-style">background-image: url('#{bg_image}');height:100%;</attribute>
+    </xpath>
+    
+</template>
+
+    </data>
+</odoo>

@@ -1,0 +1,78 @@
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">Debranding Configuration</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('settings')]" position="inside">
+                <div class="app_settings_block"
+                     data-string="Debrand"
+                     string="Debrand"
+                     data-key="odoo-debrand-11"
+                >
+                    <h2>Debranding Configurations</h2>
+                    <div class="row mt16 o_settings_container" id="debrand_settings">
+                        <div class="col-12 col-lg-6 o_setting_box" id="brand_logo">
+                            <div class="o_setting_right_pane">
+                                <label for="brand_logo" string="Brand Logo" />
+                                <div id="brand_logo" class="mt8">
+                                    <field name="brand_logo"
+                                           widget="image"
+                                           class="w-25 mt-2" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box" id="favicon">
+                            <div class="o_setting_right_pane">
+                                <label for="favicon" string="Brand Favicon" />
+                                <div id="favicon" class="oe_inline">
+                                    <field name="favicon"
+                                           widget="image"
+                                           class="float-left oe_avatar" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box" id="brand_name">
+                            <div class="o_setting_right_pane">
+                                <label for="brand_name" string="Brand Name" />
+                                <div id="brand_name" class="oe_inline">
+                                    <field name="brand_name" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-6 o_setting_box" id="brand_url">
+                            <div class="o_setting_right_pane">
+                                <label for="brand_url" string="Brand URL" />
+                                <div id="brand_url" class="mt8">
+                                    <field name="brand_url" />
+                                </div>
+                            </div>
+                        </div>
+<!--                        <div class="col-12 col-lg-6 o_setting_box" id="button_error">-->
+<!--                            <div class="o_setting_right_pane">-->
+<!--                                <div id="check_error" class="mt8">-->
+<!--                                    <button name="error"-->
+<!--                                            id="error"-->
+<!--                                            type="object"-->
+<!--                                            string="error"-->
+<!--                                            class="btn-danger" />-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="col-12 col-lg-6 o_setting_box" id="button_warning">-->
+<!--                            <div class="o_setting_right_pane">-->
+<!--                                <div id="check_warning" class="mt8">-->
+<!--                                    <button name="warning"-->
+<!--                                            id="warning"-->
+<!--                                            type="object"-->
+<!--                                            string="warning"-->
+<!--                                            class="btn-warning" />-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

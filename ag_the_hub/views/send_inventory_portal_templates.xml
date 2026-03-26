@@ -1,0 +1,604 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<template id="portal_send_inventory_form" name="Send Inventory">
+        <t t-call="portal.frontend_layout">
+        	<t t-set="is_portal" t-value="True"/>
+            <div id="wrap" class='o_portal_wrap'>
+                <div class="container-fluid mb64 o_products_search_index">
+	                <div class="oe_structure" id="oe_structure_portal_my_home_1"/>
+	                <h1>Welcome, <span t-field="user_id.partner_id"/></h1>
+	                <p>Complete the steps below to start shipping with The Hub.</p>
+	                <t t-if="user_id.partner_id and user_id.partner_id.thehub_account_activated">
+	                	<!-- <form class="w-75" id="send_inventory_form" action="/send/inventory" method="post" enctype="form-data"> -->
+	                		<input type="hidden" id="wroId" name="wro_id" t-att-value="wro_id.id if wro_id else ''"/>
+	                		<a t-att-href="'/send/inventory/portal/%s' %(wro_id.id)" t-if="wro_id">
+	                			<t t-esc="wro_name"/></a>
+		                	<div id="accordion">
+		                		<style>
+		                			a.btn-outline-info {
+									    color: #17a2b8 !important;
+									    border-color: #17a2b8;
+									}
+									a.btn-outline-info:hover {
+									    color: #fff !important;
+									}
+		                		</style>
+		  						<div class="card mb-5" style="box-shadow: 0 0 6px 0 #0003;">
+		    						<div class="p-4" id="headingOne">
+		    							<h4 class="mb-0 float-left">
+							    			Which The Hub warehouse are you shipping to?
+							    		</h4>
+		        						<a id="warehouse_edit_btn" type="button" t-att-class="'btn btn-outline-info float-right %s' % ('disabled' if not wh_id else '')" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+		          							Edit
+		        						</a>
+		    						</div>
+
+		    						<div id="collapseOne" t-att-class="'collapse %s'  % ('show' if not wh_id else '')" aria-labelledby="headingOne" data-parent="#accordion">
+		      							<div class="card-body">
+											<div class="form-group w-75 ml-4">
+												<label for="warehouse_id" style="font-size: 20px;">Sending to:</label>
+												<select id="warehouse" class="form-control" required="required" name="warehouse_id">
+	                                                <option value="" selected="selected" disabled="True">Please select an option...</option>
+	                                                <t t-foreach="warehouse_ids" t-as="warehouse_id">
+		                                                <option  t-att-value="warehouse_id.id" t-att-selected="'selected' if wh_id and warehouse_id.id == wh_id.id else None">
+		                                                    <t t-esc="warehouse_id.name"/>
+		                                                </option>
+		                                            </t>
+	                                            </select>
+	                                            <p class="mt-1" style="font-size:14px"><strong>Tip!</strong> Don’t know where to send your inventory? Choose the warehouse closest to you or your customers.</p>
+											</div>
+											<button type="button" t-att-class="'btn btn-primary float-left ml-4 mb-4 %s' % ('disabled' if not wh_id else '')" id="warehouse_submit">Save &amp; Continue</button>
+		      							</div>
+		    						</div>
+		  						</div>
+								<div class="card mb-5" style="box-shadow: 0 0 6px 0 #0003;">
+		    						<div class="p-4" id="headingTwo">
+		    							<h4 class="mb-0 float-left">
+							    			Search for item(s) you’re sending to The Hub
+							    		</h4>
+								        <a id="search_product_edit_btn" type="button" t-att-class="'btn btn-outline-info float-right %s' % ('disabled' if not wro_line_ids else '')" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+								          	Edit
+								        </a>
+									</div>
+		    						<div id="collapseTwo" t-att-class="'collapse %s'  % ('show' if wh_id and not wro_line_ids else '')" aria-labelledby="headingTwo" data-parent="#accordion">
+		      							<div class="card-body">
+		      								<div class="o_product_tags_form w-100">
+			      								<style>
+			      									.has-search .form-control {
+													    padding-left: 2.375rem;
+													}
+
+													.has-search .form-control-feedback {
+													    position: absolute;
+													    z-index: 2;
+													    display: block;
+													    width: 2.375rem;
+													    height: 2.375rem;
+													    line-height: 2.375rem;
+													    text-align: center;
+													    pointer-events: none;
+													    color: #aaa;
+													}
+			      								</style>
+			      								<div class="d-flex flex-column flex-sm-row justify-content-between w-75">
+								                    <select class="multi_select" id="select_multi_product" name="multi_products[]"  multiple="multiple" style="margin:8px auto;min-width: 176px;min-height: 40px;">
+														<t t-foreach="product_ids" t-as="product_id" t-key='product_id.id'>
+															<option t-att-value="product_id.id">
+																<t t-esc='product_id.display_name'/>
+															</option>
+														</t>
+													</select>
+								                    <!-- <ul class="o_product_filters o_product_index_topbar_filters nav w-100">
+								                    	<li class="nav-item dropdown mr-2 my-1 w-50 form-group has-search">
+															    <span class="fa fa-search form-control-feedback"></span>
+											    				<input id="o_product_search_box" type="text" class="form-control dropdown-toggle" data-toggle="dropdown" placeholder="Search by item name"/>
+
+												            <div class="dropdown-menu">
+												                <a class="dropdown-item o_dropdown_reset_tags"></a>
+												                <t t-foreach="product_ids" t-as="product_id">
+												                    <label t-attf-class="dropdown-item {{ 'active' if product_id.id in search_product_ids.ids else '' }}">
+												                        <input type="checkbox" name="product_id" multiple="multiple"
+												                            t-att-value="product_id.id"
+												                            t-att-checked="'checked' if product_id.id in search_product_ids.ids else None"/>
+												                        <t t-esc="product_id.name"/>
+												                    </label>
+												                </t>
+												            </div>
+												        </li>
+								                    </ul> -->
+									                <!-- <div class="ml-4 float-right">
+														<a style="color: #007bff; text-decoration: none;" class="ml-2" data-toggle="modal" data-target="#importProducts" href="#">Import</a>
+													</div> -->
+								            	</div>
+									            <div t-att-class="'%s' % ('d-none' if not wro_line_ids else '')" id="productTableDiv">
+										            <table class="table mt-5" id="productTable">
+													  	<thead>
+														    <tr>
+																<th scope="col">Item Name</th>
+																<th scope="col">SKU</th>
+																<th scope="col">Platform</th>
+																<th scope="col">Quantity to Send per package</th>
+																<th scope="col">Package value (₦)</th>
+																<th scope="col">Action</th>
+														    </tr>
+													  	</thead>
+													  	<tbody>
+													  		<t t-foreach="wro_line_ids" t-as="wro_line_id">
+													  			<tr t-att-id="'product_id_%s' % (wro_line_id.product_id.id)">
+									                                <td><t t-esc="wro_line_id.product_id.name"/></td>
+									                                <td><t t-esc="wro_line_id.product_sku"/></td>
+									                                <td><t t-esc="wro_line_id.product_id.platform"/></td>
+									                                <td><input type="number"  min="1" class="form-control" t-att-id="'product_qty_%s' % (wro_line_id.product_id.id)" t-att-name="'product_qty_%s' % (wro_line_id.product_id.id)" t-att-value="wro_line_id.product_qty" onchange="setTwoNumberDecimal(this)"/></td>
+									                                <td><input type="number" step="0.01" min="1" class="form-control" t-att-id="'package_value_%s' % (wro_line_id.product_id.id)" t-att-name="'package_value_%s' % (wro_line_id.product_id.id)" t-att-value="wro_line_id.package_value" onchange="setTwoNumberDecimal(this)"/></td>
+									                                <td width="50px">
+									                                    <button t-att-id="'delete_record_%s' % (wro_line_id.product_id.id)" type="button" class="btn btn-link line_record_delete" style="font-size:18px;color:black;" name="delete"><i class="fa fa-trash-o"/></button>
+									                                </td>
+									                        	</tr>
+															</t>
+													    </tbody>
+													</table>
+													<div class="form-check mt-3">
+		  												<input class="form-check-input" type="checkbox" value="" id="productFragileCheckbox" name="all_product_dangerous" required="true" t-att-checked="true if wro_line_ids else false" style="margin-top: 1%;"/>
+		  												<label class="form-check-label" for="all_product_dangerous">
+		    												I confirm that I have marked all applicable items as fragile. <a type="button" data-toggle="modal" data-target="#herewhyimportant" class="btn btn-link" style="font-size:20px;font-weight:bold;color: #35979c;">Here's why its important.</a>
+		  												</label>
+		  												 <div class="modal fade" id="herewhyimportant" tabindex="-1" role="dialog" aria-labelledby="herewhyimportant" aria-hidden="true">
+												            <div class="modal-dialog modal-dialog-centered" role="document" style="max-width:75% !important;">
+												                <div class="modal-content">
+												                    <div class="modal-body">
+
+
+												                    	<div class="text-center d-block mt-2">
+												                            <a class="font-size:14px" href="#" data-dismiss="modal" aria-label="Close">
+												                                Close
+												                            </a>
+												                        </div>
+												       				</div>
+												       			</div>
+												       		</div>
+												       	</div>
+													</div>
+													<button type="button" t-att-class="'btn btn-primary float-left mt-3 mb-4 %s' % ('disabled' if not wro_line_ids else '')" id="products_submit">Save &amp; Continue</button>
+												</div>
+											</div>											
+								      	</div>
+								    </div>
+								</div>
+							  	<div class="card mb-5" style="box-shadow: 0 0 6px 0 #0003;">
+							    	<div class="p-4" id="headingThree">
+							      		<h4 class="mb-0 float-left">
+							    			How will your inventory arrive to The Hub's fulfillment center?
+							    		</h4>
+						        		<a id="shipping_type_edit_btn" type="button" t-att-class="'btn btn-outline-info float-right %s' % ('disabled' if not shipping_type else '')" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+						          			Edit
+						        		</a>
+							    	</div>
+							    	<div id="collapseThree" t-att-class="'collapse %s'  % ('show' if wro_line_ids and not shipping_type else '')" aria-labelledby="headingThree" data-parent="#accordion">
+							      		<div class="card-body">
+							        		<div class="form-group w-50 ml-4" style="font-size:20px;">
+							        			<label for="shipping_type">Shipping Type:</label>
+												<div class="form-check">
+													<input class="form-check-input" type="radio" name="shipping_type" id="parcel" value="Parcel" onchange="onchange_shipping_type();" t-att-checked="true if shipping_type == 'parcel' else false"/>
+													<label class="form-check-label" for="parcel">
+														Parcel (standard shipping)
+													</label>
+												</div>
+												<div class="form-check">
+													<input class="form-check-input" type="radio" name="shipping_type" id="pallet" value="Palletized container" onchange="onchange_shipping_type();" t-att-checked="true if shipping_type == 'pallet' else false"/>
+													<label class="form-check-label" for="pallet">
+														Palletized container or LTL (less-than-truckload)
+													</label>
+												</div>
+												<div class="form-check">
+													<input class="form-check-input" type="radio" name="shipping_type" id="container" value="Floor loaded container" onchange="onchange_shipping_type();" t-att-checked="true if shipping_type == 'container' else false"/>
+													<label class="form-check-label" for="container">
+														Floor loaded container
+													</label>
+												</div>
+											</div>
+											<div t-att-class="'form-group w-50 ml-4 mt-2 %s' %('' if inventory_type_parcel else 'd-none')" style="font-size:20px;" id="inventory_type_parcel">
+							        			<label for="inventory_type_parcel">How is your inventory configured?</label>
+												<div class="form-check">
+													<input class="form-check-input" type="radio" name="inventory_type_parcel" id="inventory_type_parcel1" onchange="onchange_shipping_type();" t-att-checked="true if inventory_type_parcel == 'single' else false"/>
+													<label class="form-check-label" for="inventory_type_parcel1">
+														One SKU per box
+													</label>
+													<div class="text-muted">Each box contains a single SKU</div>
+												</div>
+												<div class="form-check d-none">
+													<input class="form-check-input" type="radio" name="inventory_type_parcel" id="inventory_type_parcel2" onchange="onchange_shipping_type();" t-att-checked="true if inventory_type_parcel == 'multiple' else false"/>
+													<label class="form-check-label" for="inventory_type_parcel2">
+														Multiple SKUs per box
+													</label>
+													<div class="text-muted">Each box has 2 or more SKUs</div>
+												</div>
+											</div>
+											<div class="form-group w-50 ml-4 mt-2 d-none" style="font-size:20px;" id="inventory_type_pallet">
+							        			<label for="inventory_type_pallet">How is your inventory configured?</label>
+												<div class="form-check">
+													<input class="form-check-input" type="radio" name="inventory_type_pallet" id="inventory_type_pallet1" onchange="onchange_shipping_type();" t-att-checked="true if inventory_type_pallet == 'single' else false"/>
+													<label class="form-check-label" for="inventory_type_pallet1">
+														One SKU per pallet
+													</label>
+													<div class="text-muted">Each pallet contains a single SKU</div>
+												</div>
+												<div class="form-check d-none">
+													<input class="form-check-input" type="radio" name="inventory_type_pallet" id="inventory_type_pallet2" onchange="onchange_shipping_type();"/>
+													<label class="form-check-label" for="inventory_type_pallet2">
+														Multiple SKUs per pallet
+													</label>
+													<div class="text-muted">Each pallet has 2 or more SKUs</div>
+												</div>
+											</div>
+											<button type="button" t-att-class="'btn btn-primary float-left ml-4 mb-4 %s' % ('disabled' if not shipping_type else '')" id="shipping_type_submit">Save &amp; Continue</button>
+							      		</div>
+							    	</div>
+							  	</div>
+							  	<div class="card mb-5" style="box-shadow: 0 0 6px 0 #0003;">
+							    	<div class="p-4" id="headingFour">
+							      		<h4 class="mb-0 float-left">
+							    			How is your shipment configured?
+							    		</h4>
+						        		<a id="shipment_edit_btn" type="button" t-att-class="'btn btn-outline-info float-right %s' % ('disabled' if not shipping_type else '')" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+						          			Edit
+						        		</a>
+							    	</div>
+							    	<div id="collapseFour" t-att-class="'collapse %s'  % ('show' if shipping_type and not quantity_update else '')" aria-labelledby="headingFour" data-parent="#accordion">
+							      		<div class="card-body">
+							      			<div class="o_shipment_form w-100">
+							      				<div t-att-class="'%s' % ('' if shipping_type == 'parcel' and inventory_type_parcel == 'single' else 'd-none')" id="shipmentTableDiv">
+							      					<input t-if="wro_single_sku_per_box_ids" type="hidden" id="single_sku_box_line_ids" name="single_sku_box_line_ids" t-att-value="wro_single_sku_per_box_ids.ids"/>
+										            <table class="table mt-5" id="shipmentSingleSkuBoxTable">
+										            	<h3>Single SKU Per Box</h3>
+													  	<thead>
+														    <tr>
+																<th scope="col">Item Information</th>
+																<th scope="col">Shipment Quantity</th>
+																<th scope="col">Quantity Per Box</th>
+																<th scope="col"># Of Boxes</th>
+																<th scope="col">Package value (₦)</th>
+																<th scope="col">Type of Boxes</th>
+																<th scope="col">Consolidation Type</th>
+																<!-- <th scope="col">Total Quantity</th> -->
+														    </tr>
+													  	</thead>
+													  	<tbody>
+													  		<t t-foreach="wro_single_sku_per_box_ids" t-as="line_id">
+													  			<tr t-att-id="'single_sku_%s' % (line_id.id)">
+									                                <td><t t-esc="line_id.product_id.name"/></td>
+									                                <td><t t-esc="line_id.product_qty" t-options='{"widget": "float", "precision": 2}'/></td>
+									                                <td>
+									                                	<input type="number"  min="1" t-att-max="line_id.product_qty" class="form-control" t-att-id="'single_sku_qty_per_box_%s' % (line_id.id)" t-att-name="'single_sku_qty_per_box_%s' % (line_id.id)" t-att-value="line_id.qty_per_box or line_id.product_qty" onchange="onchange_quantity_per_box(this)" t-att-data-custom_key="line_id.id"/>
+									                                </td>
+									                                <td>
+									                                	<input type="number" step="0.01" min="1" t-att-max="line_id.product_qty" class="form-control" t-att-id="'no_of_box_qty_%s' % (line_id.id)" t-att-name="'no_of_box_qty_%s' % (line_id.id)" t-att-value="line_id.no_of_boxes or 1" onchange="onchange_quantity_per_box(this)" t-att-data-custom_key="line_id.id"/>
+									                                </td>
+									                                <td><t t-esc="line_id.package_value" t-options='{"widget": "float", "precision": 2}'/></td>
+									                                <td>
+									                                	<select t-att-id="'box_size_%s' %(line_id.id)" class="form-control" required="required" nt-att-name="'box_size_%s' % (line_id.id)">
+							                                                <!-- <option value="" selected="selected" disabled="True">Please select an option...</option> -->
+							                                                <t t-foreach="box_size_ids" t-as="box_size_id">
+								                                                <option t-att-value="box_size_id.id" t-att-selected="'selected' if line_id and line_id.box_size.id == box_size_id.id else None"><span t-field='box_size_id.name'/></option>
+								                                            </t>
+							                                                
+							                                            </select>
+									                                </td>
+									                                 <td>
+									                                	<select t-att-id="'consolidated_type_%s' %(line_id.id)" class="form-control" required="required" nt-att-name="'consolidated_type_%s' % (line_id.id)">
+							                                                <!-- <option value="" selected="selected" disabled="True">Please select an option...</option> -->
+							                                               <option value="consolidated" t-att-selected="'selected' if line_id and line_id.consolidated_type == 'consolidated' else None">Consolidated</option>
+							                                                <option value="non_consolidated" t-att-selected="'selected' if line_id and line_id.consolidated_type == 'non_consolidated' else None">Non-Consolidated</option>
+							                                               
+							                                                
+							                                            </select>
+									                                </td>
+									                                <!-- <td t-att-id="'single_sku_box_tqty_%s' % (line_id.id)"></td> -->
+									                        	</tr>
+															</t>
+													    </tbody>
+													</table>
+												</div>
+												<div t-att-class="'%s' % ('' if shipping_type == 'pallet' and inventory_type_pallet == 'single' else 'd-none')" id="shipmentTableDiv">
+													<input t-if="wro_single_sku_per_pallet_ids" type="hidden" id="single_sku_pallet_line_ids" name="single_sku_pallet_line_ids" t-att-value="wro_single_sku_per_pallet_ids.ids"/>
+										            <table class="table mt-5" id="shipmentSingleSkuPalletTable">
+										            	<h3>Single SKU Per Pallet</h3>
+													  	<thead>
+														    <tr>
+																<th scope="col">Item Information</th>
+																<th scope="col">Shipment Ouantity</th>
+																<th scope="col">Quantity Per Pallet</th>
+																<th scope="col"># Of Pallets</th>
+																<th scope="col">Package value (₦)</th>
+																<th scope="col">Consolated Type</th>
+														    </tr>
+													  	</thead>
+													  	<tbody>
+													  		<t t-foreach="wro_single_sku_per_pallet_ids" t-as="line_id">
+													  			<tr t-att-id="'single_sku_%s' % (line_id.id)">
+									                                <td><t t-esc="line_id.product_id.name"/></td>
+									                                <td><t t-esc="line_id.product_qty" t-options='{"widget": "float", "precision": 2}'/></td>
+									                                <td>
+									                                	<input type="number"  min="1" t-att-max="line_id.product_qty" class="form-control" t-att-id="'single_sku_qty_per_pallet_%s' % (line_id.id)" t-att-name="'single_sku_qty_per_pallet_%s' % (line_id.id)" t-att-value="line_id.qty_per_pallet or 1" onchange="onchange_quantity_per_pallet(this)" t-att-data-custom_key="line_id.id"/>
+									                                </td>
+									                                <td>
+									                                	<input type="number" step="0.01" min="1" t-att-max="line_id.product_qty" class="form-control" t-att-id="'no_of_pallet_qty_%s' % (line_id.id)" t-att-name="'no_of_pallet_qty_%s' % (line_id.id)" t-att-value="line_id.no_of_pallets or 1" onchange="onchange_quantity_per_pallet(this)" t-att-data-custom_key="line_id.id"/>
+									                                </td>
+									                                <td><t t-esc="line_id.package_value" t-options='{"widget": "float", "precision": 2}'/></td>
+									                                 <td>
+									                                	<select t-att-id="'consolidated_type_%s' %(line_id.id)" class="form-control" required="required" nt-att-name="'consolidated_type_%s' % (line_id.id)">
+							                                                <!-- <option value="" selected="selected" disabled="True">Please select an option...</option> -->
+							                                               <option value="consolidated" t-att-selected="'selected' if line_id and line_id.consolidated_type == 'consolidated' else None">Consolidated</option>
+							                                                <option value="non_consolidated" t-att-selected="'selected' if line_id and line_id.consolidated_type == 'non_consolidated' else None">Non-Consolidated</option>
+							                                               
+							                                                
+							                                            </select>
+									                                </td>
+									                                <!-- <td t-att-id="'single_sku_pallet_tqty_%s' % (line_id.id)"></td> -->
+									                        	</tr>
+															</t>
+													    </tbody>
+													</table>
+												</div>
+												<div class="some-class d-none" t-if="(shipping_type == 'pallet' and inventory_type_pallet == 'single') or (shipping_type == 'parcel' and inventory_type_parcel == 'single')">
+												    <input type="radio" class="radio" name="consolited_type" value="consolidated" id="consolited" t-att-checked="True if wro_id and (wro_id.consolidated_type == 'consolidated' or wro_id.consolidated_type == False) else False"/>
+											        <label for="consolited">Send As Consolidated</label>
+											        <input type="radio" class="radio" name="consolited_type" value="non_consolidated" id="non_consolited" t-att-checked="True if wro_id and (wro_id.consolidated_type == 'non_consolidated') else False"/>
+											        <label for="non_consolited">Send As Non-Consolidated</label>
+											      </div>
+												<button type="button" t-att-class="'btn btn-primary float-left mt-3 mb-4 %s' % ('' if wro_single_sku_per_pallet_ids or wro_single_sku_per_box_ids else 'disabled')" id="shipment_qty_submit">Save &amp; Continue</button>
+							        		</div>
+							      		</div>
+							    	</div>
+							  	</div>
+							  	<div class="card mb-5" style="box-shadow: 0 0 6px 0 #0003;">
+							    	<div class="p-4" id="headingFive">
+							      		<h4 class="mb-0 float-left">
+							    			Confirm shipping
+							    		</h4>
+						        		<a id="confirm_shipping_edit_btn" type="button" t-att-class="'btn btn-outline-info collapsed float-right %s' %('disabled' if not arrival_date else '')" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+						          			Edit
+						        		</a>
+							    	</div>
+							    	<div id="collapseFive" t-att-class="'collapse %s'  % ('show' if quantity_update else '')" aria-labelledby="headingFive" data-parent="#accordion">
+							      		<div class="card-body">
+							      			<div class="form-group w-50 ml-4 mt-2" style="font-size:20px;">
+							        			<h3>Pick-up Method</h3>
+							        			<label class="radio-inline">
+											      	<input type="radio" class="pickup_method" name="pickup_method" value="the_hub" t-att-checked="true if pickup_method == 'the_hub' else false" required="true"/> The Hub
+											    </label>
+											    <label class="radio-inline">
+											      	<input type="radio" class="pickup_method" name="pickup_method" value="order_courier_company" t-att-checked="true if pickup_method == 'order_courier_company' else false"/> Other Courier Service
+											    </label>
+											</div>
+							      			<h5 class="ml-4 d-none" id="pickup_method_details" style="font-size:20px;">Please Enter the below Details:</h5>
+							        		<div t-att-class="'form-group w-50 ml-4 %s' % ('' if pickup_method == 'the_hub' else 'd-none')" style="font-size:20px;" id="pickup_method_the_hub">
+												Conatct Name: <input type="text" class="form-control" id="contact_name" name="contact_name" placeholder="Enter Conatct Person Name" t-att-value="wro_id and wro_id.contact_name or ''" required="1"/>
+												Conatct Address: <input type="text" class="form-control" id="contact_address" name="contact_address" placeholder="Enter Conatct Address" t-att-value="wro_id and wro_id.picking_address or ''" required="1"/>
+												Conatct Email: <input type="email" class="form-control" id="contact_email" name="contact_email" placeholder="Enter Conatct Email" t-att-value="wro_id and wro_id.email or ''" required="1"/>
+												Conatct Phone No.: <input type="tel" class="form-control" id="contact_phone" name="contact_phone" placeholder="Enter Conatct Phone No." t-att-value="wro_id and wro_id.phone or ''" required="1"/>
+												Expected Pickup Date: <input type="date" class="form-control" id="arrival_date_th" name="arrival_date" placeholder="MM/DD/YY" t-att-value="wro_id and wro_id.arrival_date" required="1"/>
+						                    </div>
+						                    <div t-att-class="'form-group w-50 ml-4 %s' % ('' if pickup_method == 'order_courier_company' else 'd-none')" style="font-size:20px;" id="pickup_method_other_courier_company">
+												Courier Company Name: <input type="text" class="form-control" id="courier_company_name" name="courier_company_name" placeholder="Enter Courier Company Name" t-att-value="wro_id and wro_id.courier_company_name or ''" required="1"/>
+												Tracking Number: <input type="text" class="form-control" id="tracking_number" name="tracking_number" placeholder="Enter Tracking Number" t-att-value="wro_id and wro_id.tracking_number or ''" required="1"/>
+												
+												Expected Arrival Date: <input type="date" class="form-control" id="arrival_date_occ" name="arrival_date" placeholder="MM/DD/YY" t-att-value="wro_id and wro_id.arrival_date" required="1"/>
+												<script type="text/javascript">
+													var dtToday = new Date();
+    
+    var month = dtToday.getMonth() + 1;
+    var day = dtToday.getDate();
+    var year = dtToday.getFullYear();
+    if(month &lt; 10)
+        month = '0' + month.toString();
+    if(day &gt; 10)
+        day = day.toString();
+    
+    var maxDate = year + '-' + month + '-' + day;
+
+    // or instead:
+    // var maxDate = dtToday.toISOString().substr(0, 10);
+
+    <!-- alert(maxDate); -->
+    console.log("bbbbbbbbbbbbbb",document.getElementById("arrival_date_th"))
+    document.getElementById("arrival_date_occ").setAttribute("min", maxDate);
+    document.getElementById("arrival_date_th").setAttribute("min", maxDate);
+    												</script>
+						                    </div>
+											<button type="button" t-att-class="'btn btn-primary float-left mt-3 mb-4 %s' % ('disabled' if not arrival_date else '')" id="arrival_date_submit">Save &amp; Continue</button>
+							      		</div>
+							    	</div>
+							  	</div>
+							  	<div class="card mb-5" style="box-shadow: 0 0 6px 0 #0003;">
+							    	<div class="p-4" id="headingSix">
+							      		<h4 class="mb-0 float-left">
+							    			Review &amp; submit order
+							    		</h4>
+						        		<a type="button" class="btn btn-outline-info collapsed float-right d-none" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+						          			Edit
+						        		</a>
+							    	</div>
+							    	<div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
+							      		<div class="card-body">
+							      			<h5 class="ml-4 mb-3">
+								      			WRO No. : <a t-att-href="'/send/inventory/portal/%s' %(wro_id.id)" t-if="wro_id">
+		                							<t t-esc="wro_name"/>
+		                						</a>
+		                					</h5>
+		                					<div class="col-6 float-left">
+								      			<h5 class="ml-4" style="font-size:20px;">Shipping Details:</h5>
+								        		<div class="form-group w-50 ml-4 text-muted" style="font-size:20px;">
+							                        <strong><span t-field="res_company.name"/></strong><br/>
+							                        <span t-field="res_company.street"/><br/>
+							                        <span t-field="res_company.zip"/> <span t-field="res_company.city"/><t t-if="res_company.state_id">, <span t-field="res_company.state_id.name"/></t><br/>
+							                        <span t-field="res_company.country_id"/><br/>
+							                        Phone: <span t-field="res_company.phone"/><br/>
+							                        Email: <span t-field="res_company.email"/><br/>
+							                    </div>
+							                </div>
+							                <div class="col-6 float-right">
+								      			<h5 style="font-size:20px;">Picking Method Details:</h5>
+								      			<div class="ml-2">
+									      			<strong>Shipping Type: </strong>
+									      			<t t-if="wro_id and wro_id.shipping_type == 'parcel'">
+									      				<span>Parcel (standard shipping)</span>
+									      			</t>
+									      			<t t-if="wro_id and wro_id.shipping_type == 'pallet'">
+									      				<span>Palletized container or LTL (less-than-truckload)</span>
+									      			</t>
+									      			<t t-if="wro_id and wro_id.shipping_type == 'container'">
+									      				<span>Floor loaded container</span>
+									      			</t>
+									      		</div>
+									      		<div class="ml-2">
+									      			<strong>Inventory Type: </strong>
+									      			<t t-if="wro_id and wro_id.shipping_type == 'parcel' and wro_id.inventory_type_parcel == 'single'">
+									      				<span>One SKU per box</span>
+									      			</t>
+									      			<t t-if="wro_id and wro_id.shipping_type == 'parcel' and wro_id.inventory_type_parcel == 'multiple'">
+									      				<span>Multiple SKUs per box</span>
+									      			</t>
+									      			<t t-if="wro_id and wro_id.shipping_type == 'pallet' and wro_id.inventory_type_pallet == 'single'">
+									      				<span>One SKU per pallet</span>
+									      			</t>
+									      			<t t-if="wro_id and wro_id.shipping_type == 'pallet' and wro_id.inventory_type_pallet == 'multiple'">
+									      				<span>Multiple SKUs per pallet</span>
+									      			</t>
+									      		</div>
+								        		<div class="form-group ml-2 text-muted" style="font-size:20px;">
+							                        <div t-if="pickup_method == 'the_hub'">
+														<strong>Conatct Name:</strong> <span t-esc="wro_id and wro_id.contact_name or ''"/><br/>
+														<strong>Conatct Address:</strong> <span t-esc="wro_id and wro_id.picking_address or ''"/><br/>
+														<strong>Conatct Email:</strong> <span t-esc="wro_id and wro_id.email or ''"/><br/>
+														<strong>Conatct Phone No.:</strong> <span t-esc="wro_id and wro_id.phone or ''"/><br/>
+														<strong>Expected Pickup Date:</strong> <span t-esc="wro_id and wro_id.arrival_date"/><br/>
+								                    </div>
+								                    <div t-if="pickup_method == 'order_courier_company'">
+														<strong>Courier Company Name:</strong> <span t-esc="wro_id and wro_id.courier_company_name or ''"/><br/>
+														<strong>Tracking Number:</strong> <span t-esc="wro_id and wro_id.tracking_number or ''"/><br/>
+														<strong>Expected Arrival Date:</strong> <span t-esc="wro_id and wro_id.arrival_date"/><br/>
+								                    </div>
+							                    </div>
+							                </div>
+
+						                    <div id="productTableDivSummary">
+									            <table class="table mt-5" id="productTableSummary">
+												  	<thead>
+													    <tr>
+															<th scope="col">Item Name</th>
+															<th scope="col">SKU</th>
+															<th scope="col">Platform</th>
+															<th scope="col">Consoladited Type</th>
+															<th scope="col">Quantity to Send</th>
+															<th scope="col">Package value (₦)</th>
+															<th scope="col">No of boxes</th>
+															
+															<th></th>
+													    </tr>
+												  	</thead>
+												  	<tbody>
+												  		<t t-if="wro_single_sku_per_pallet_ids" t-foreach="wro_single_sku_per_pallet_ids" t-as="wro_line_id">
+												  			<tr >
+								                                <td><t t-esc="wro_line_id.product_id.name"/></td>
+								                                <td><t t-esc="wro_line_id.product_id.default_code"/></td>
+								                                <td><t t-esc="wro_line_id.product_id.platform"/></td>
+								                                <td><span t-field="wro_line_id.consolidated_type"/></td>
+								                                <td><t t-esc="wro_line_id.product_qty" t-options='{"widget": "float", "precision": 2}'/></td>
+								                                <td><t t-esc="wro_line_id.package_value" t-options='{"widget": "float", "precision": 2}'/></td>
+								                                <td><t t-esc="wro_line_id.no_of_pallets" t-options='{"widget": "float", "precision": 2}'/></td>
+								                                <td width="50px">
+								                                    <a target="_blank" t-att-href="'/print/duplicate/pallet/label/%s' % (wro_line_id.id)" t-att-id="'print_lable_%s' % (wro_line_id.product_id.id)" type="button" class="btn btn-primary print_lable" style="font-size:18px;color:black;" name="Print Label">Print Label</a>
+								                                </td>
+								                        	</tr>
+														</t>
+														<t t-if="wro_single_sku_per_box_ids" t-foreach="wro_single_sku_per_box_ids" t-as="wro_line_id">
+												  			<tr >
+								                                <td><t t-esc="wro_line_id.product_id.name"/></td>
+								                                <td><t t-esc="wro_line_id.product_id.default_code"/></td>
+								                                <td><t t-esc="wro_line_id.product_id.platform"/></td>
+								                                <td><span t-field="wro_line_id.consolidated_type"/></td>
+								                                <td><t t-esc="wro_line_id.product_qty" t-options='{"widget": "float", "precision": 2}'/></td>
+								                                <td><t t-esc="wro_line_id.package_value" t-options='{"widget": "float", "precision": 2}'/></td>
+								                                <td><t t-esc="wro_line_id.no_of_boxes" t-options='{"widget": "float", "precision": 2}'/></td>
+								                                <td width="50px">
+								                                    <a target="_blank" t-att-href="'/print/duplicate/box/label/storage/%s' % (wro_line_id.id)" t-att-id="'print_lable_%s' % (wro_line_id.product_id.id)" type="button" class="btn btn-primary print_lable" style="font-size:18px;color:black;" name="Print Label">Print Label</a>
+								                                </td>
+								                        	</tr>
+														</t>
+												    </tbody>
+												</table>
+												<t t-if="not user_id.partner_id.restrict_user">
+												<a href="/my/wros" type="button" class="btn btn-success float-left mt-3 mb-4" id="wro_submit">Submit</a>
+											</t>
+											<t t-else="">
+												<div class="w3-panel w3-red" style="background: red;color: white;">
+												  <h3>Account Restricted!</h3>
+												  <p>Please connect with Support Teams.</p>
+												</div>
+
+											</t>
+											</div>
+
+							      		</div>
+							    	</div>
+							  	</div>
+							  	<script>
+							  		function setTwoNumberDecimal(event) {
+							  			console.log("ssssssssssssssssssssssss>>>",event)
+									    event.value = parseInt(event.value);
+									}
+				                	function onchange_shipping_type() {
+				                		var parcel_radio = document.getElementById('parcel');
+				                		var pallet_radio = document.getElementById('pallet');
+				                		var container_radio = document.getElementById('container');
+
+				                		var parcel = document.getElementById("inventory_type_parcel");
+				                		var pallet = document.getElementById("inventory_type_pallet");
+
+				                		var inventory_type_parcel1 = document.getElementById("inventory_type_parcel1");
+				                		var inventory_type_parcel2 = document.getElementById("inventory_type_parcel2");
+
+				                		var inventory_type_pallet1 = document.getElementById("inventory_type_pallet1");
+				                		var inventory_type_pallet2 = document.getElementById("inventory_type_pallet2");
+
+				                		var shipping_type_btn = document.getElementById("shipping_type_submit");
+
+									  	if(parcel_radio.checked){
+									  		parcel.classList.remove("d-none");
+									  		pallet.classList.add("d-none");
+									  	}else if(pallet_radio.checked){
+									  		pallet.classList.remove("d-none");
+									  		parcel.classList.add("d-none");
+									  	}else if(container_radio.checked){
+									  		parcel.classList.add("d-none");
+									  		pallet.classList.add("d-none");
+									  	}
+									  	if(parcel_radio.checked &amp;&amp; (inventory_type_parcel1.checked || inventory_type_parcel2.checked)){
+									  		shipping_type_btn.classList.remove("disabled");
+									  	}
+									  	else if(pallet_radio.checked &amp;&amp; (inventory_type_pallet1.checked || inventory_type_pallet2.checked)){
+									  		shipping_type_btn.classList.remove("disabled");
+									  	}
+									  	else if(container_radio.checked){
+									  		shipping_type_btn.classList.remove("disabled");
+									  	} 
+									  	else{
+									  		shipping_type_btn.classList.add("disabled");
+									  	}      
+									}
+								</script>
+							</div>
+						<!-- </form> -->
+	                </t>
+	                <t t-else="">
+	                	<div class="alert alert-danger" role="alert">
+						  	Your account is awaiting administrator’s activation !
+						</div>
+	                </t>
+	            </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

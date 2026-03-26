@@ -1,0 +1,1049 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <!-- Complete page of the sale_order -->
+    <template id="workorder_receive_order_form" name="Sales Order Portal Template"
+        inherit_id="portal.portal_sidebar" primary="True">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+
+            <div class="col-12 col-lg justify-content-end"
+                style="padding-left: 0px;padding-right: 0px;padding-top: 1%;">
+                <div>
+                    <div id="introduction" class="pb-2 pt-3 card-header bg-white">
+                        <div class="row">
+                            <div class="col-6">
+                                <h2 class="my-0"> Warehouse Receive Order <em>
+                                        <t t-esc="wor_id.name" />
+                                    </em>
+                                </h2>
+                            </div>
+                            <div class="col-6" style="text-align: right;">
+                                <span
+                                    class="small badge text-bg-info orders_label_text_align"
+                                    style="background: #43bf43;padding: 9px;color: white;">
+                                    <i class="fa fa-fw fa-clock-o" />
+                                    <b>
+                                        <span t-field="wor_id.status" />
+                                    </b>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row mt-1" style="font-size: 80%;padding-top: 3%;">
+                            <div class="col-6">
+                                <div> Merchant :- <span t-field="wor_id.merchand_id.name" />
+                                </div>
+                                <div> Warehouse :- <span t-field="wor_id.warehouse_id.name" />
+                                </div>
+                                <div style="padding-top: 4px;"> Shipping Type :- <span
+                                        t-field="wor_id.shipping_type" />
+                                </div>
+                                <div style="padding-top: 4px;"> Inventory Type :- <span
+                                        t-field="wor_id.inventory_type_parcel" />
+                                </div>
+                                <div style="padding-top: 4px;"> Picking Method :- <span
+                                        t-field="wor_id.pickup_method" />
+                                </div>
+                                <!-- <div style="padding-top: 4px;">
+                Consolidated Type :-    <span t-field="wor_id.consolidated_type" />
+            </div> -->
+                            </div>
+                            <div class="col-6">
+                                <div> Tracking Number :- <span t-field="wor_id.tracking_number" />
+                                </div>
+                                <div style="padding-top: 4px;"> Expected Arrival Date :- <span
+                                        t-field="wor_id.arrival_date" />
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="table-responsive" style="padding-top: 5%;">
+                            <table class="table table-sm" t-if="wor_id.shipping_type == 'parcel'">
+                                <thead class="bg-100">
+                                    <tr>
+                                        <th class="text-start" id="product_name_header">Products</th>
+                                        <th class="text-center">Shipment Qty</th>
+                                        <th class="text-center ">
+                                            Quantity/Box
+                                        </th>
+                                        <th class="text-center">
+                                            <span>No. of Box</span>
+                                        </th>
+                                        <th class="text-center">
+                                            <span>Package Value</span>
+                                        </th>
+                                        <th class="text-center">
+                                            <span>Type Of box</span>
+                                        </th>
+                                        <th class="text-center">
+                                            <span>Consoladited Type</span>
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody class="sale_tbody">
+
+
+                                    <t t-foreach="wor_id.wro_single_sku_per_box_ids" t-as="line">
+
+
+                                        <tr>
+                                            <td id="product_name">
+                                                <span t-field="line.product_id.name" />
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.product_qty" />
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.qty_per_box" />
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.no_of_boxes" />
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.package_value" />
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.box_size" />
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.consolidated_type" />
+                                            </td>
+                                            <td width="50px">
+                                                <a target="_blank"
+                                                    t-att-href="'/print/duplicate/box/label/%s' % (line.id)"
+                                                    t-att-id="'print_lable_%s' % (line.product_id.id)"
+                                                    type="button"
+                                                    class="btn btn-primary print_lable"
+                                                    style="font-size:18px;color:black;"
+                                                    name="Print Label">Print Label</a>
+                                            </td>
+
+                                        </tr>
+
+                                    </t>
+                                </tbody>
+                            </table>
+                            <table class="table table-sm" t-if="wor_id.shipping_type == 'pallet'">
+                                <thead class="bg-100">
+                                    <tr>
+                                        <th class="text-start" id="product_name_header">Products</th>
+                                        <th class="text-center">Shipment Qty</th>
+                                        <th class="text-center ">
+                                            Quantity/Box
+                                        </th>
+                                        <th class="text-center">
+                                            <span>No. of Box</span>
+                                        </th>
+                                        <th class="text-center">
+                                            <span>Package Value</span>
+                                        </th>
+                                        <th class="text-center">
+                                            <span>Consoladited Type</span>
+                                        </th>
+                                        <!-- <th class="text-center">
+                                    <span>Type Of box</span>
+                                </th> -->
+
+                                    </tr>
+                                </thead>
+                                <tbody class="sale_tbody">
+
+
+                                    <t t-foreach="wor_id.wro_single_sku_per_pallet_ids" t-as="line">
+
+
+                                        <tr>
+                                            <td id="product_name">
+                                                <span t-field="line.product_id.name" />
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.product_qty" />
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.qty_per_pallet" />
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.no_of_pallets" />
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.package_value" />
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.consolidated_type" />
+                                            </td>
+                                            <td width="50px">
+                                                <a target="_blank"
+                                                    t-att-href="'/print/duplicate/pallet/label/%s' % (line.id)"
+                                                    t-att-id="'print_lable_%s' % (line.product_id.id)"
+                                                    type="button"
+                                                    class="btn btn-primary print_lable"
+                                                    style="font-size:18px;color:black;"
+                                                    name="Print Label">Print Label</a>
+                                            </td>
+
+                                            <!--  <td class="text-center">
+                                            <span t-field="line.box_size"/>
+                                        </td>
+                                     -->
+                                        </tr>
+
+                                    </t>
+                                </tbody>
+                            </table>
+                            <table class="table table-sm" t-if="wor_id.shipping_type == 'container'">
+                                <thead class="bg-100">
+                                    <tr>
+                                        <th class="text-start" id="product_name_header">Products</th>
+                                        <th class="text-end">SKU</th>
+                                        <th class="text-end ">
+                                            Platform
+                                        </th>
+                                        <th class="text-end">
+                                            <span>Quantity</span>
+                                        </th>
+                                        <th class="text-end">
+                                            <span>Package Value</span>
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody class="sale_tbody">
+
+
+                                    <t t-foreach="wor_id.wro_line_ids" t-as="line">
+
+
+                                        <tr>
+                                            <td id="product_name">
+                                                <span t-field="line.product_id.name" />
+                                            </td>
+                                            <td id="text-end">
+                                                <span t-field="line.product_sku" />
+                                            </td>
+                                            <td id="text-end">
+                                                <span t-field="line.platform" />
+                                            </td>
+                                            <td id="text-end">
+                                                <span t-field="line.product_qty" />
+                                            </td>
+                                            <td id="text-end">
+                                                <span t-field="line.package_value" />
+                                            </td>
+
+                                        </tr>
+
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Sidebar -->
+
+            </div>
+        </xpath>
+    </template>
+
+
+    <!-- Complete page of the sale_order -->
+    <template id="workorder_form" name="WorkOrder FornView" inherit_id="portal.portal_sidebar"
+        primary="True">
+        <xpath expr="//div[hasclass('o_portal_sidebar')]" position="inside">
+
+            <div class="col-12 col-lg justify-content-end"
+                style="padding-left: 0px;padding-right: 0px;padding-top: 1%;">
+                <div>
+                    <div id="introduction" class="pb-2 pt-3 card-header bg-white">
+                        <div class="row">
+                            <div class="col-6">
+                                <h2 class="my-0"> Work Order <em>
+                                        <t t-esc="wo_id.name" />
+                                    </em>
+                                </h2>
+                            </div>
+                            <div class="col-6" style="text-align: right;">
+                                <span
+                                    class="small badge text-bg-info orders_label_text_align"
+                                    style="background: #43bf43;padding: 9px;color: white;">
+                                    <i class="fa fa-fw fa-clock-o" />
+                                    <b>
+                                        <span t-field="wo_id.status" />
+                                    </b>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row mt-1" style="font-size: 80%;padding-top: 3%;">
+                            <div class="col-6">
+                                <div> Merchant :- <span t-field="wo_id.merchand_id.name" />
+                                </div>
+                                <div> Whom to Ship? :- <span t-field="wo_id.whom_to_ship" />
+                                </div>
+                                <div style="padding-top: 4px;"> Recipient :- <span
+                                        t-field="wo_id.partner_id.name" />
+                                </div>
+                                <div style="padding-top: 4px;"> Shipping Type :- <span
+                                        t-field="wo_id.shipping_type" />
+                                </div>
+                                <div style="padding-top: 4px;"> Payment Type :- <span
+                                        t-field="wo_id.payment_type" />
+                                </div>
+                                <div style="padding-top: 4px;"
+                                    t-if="wo_id.payment_type == 'My own 3PL Arrangement'"> 3PL
+                                    Company :- <span t-field="wo_id.three_plcompany.name" />
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div> Scheduled Date :- <span t-field="wo_id.schedule_pickup" />
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="table-responsive" style="padding-top: 5%;">
+                            <table class="table table-sm">
+                                <thead class="bg-100">
+                                    <tr>
+                                        <th class="text-start" id="product_name_header">Products</th>
+                                        <th class="text-center">Package</th>
+                                        <th class="text-center ">
+                                            Consolidation Status
+                                        </th>
+                                        <th class="text-center">
+                                            <span>Quantity to be Shipped</span>
+                                        </th>
+                                        <th class="text-center">
+                                            <span>Delivery Address</span>
+                                        </th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody class="sale_tbody">
+
+
+                                    <t t-foreach="wo_id.wo_line_ids" t-as="line">
+
+
+                                        <tr>
+                                            <td id="product_name">
+                                                <span t-field="line.product_id.name" />
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.package_id.name" />
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.send_as" />
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.send_qty" />
+                                            </td>
+                                            <td class="text-center">
+                                                <span t-field="line.delivery_address" />
+                                            </td>
+
+
+                                        </tr>
+
+                                    </t>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- Sidebar -->
+
+            </div>
+        </xpath>
+    </template>
+    <template id="portal_import_lines" name="Import Lines">
+        <div class="modal fade" id="importbulkorder" tabindex="-1" role="dialog"
+            aria-labelledby="importbulkorder" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document"
+                style="max-width:75% !important;">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h1 class="text-center d-block mt-2">Create New Workorder</h1>
+                        <form id="import_new_workorder" action="/import/new/workorder" method="post"
+                            enctype="multipart/form-data" class="oe_import">
+                            <input type="hidden" name="csrf_token"
+                                t-att-value="request.csrf_token()" />
+                            <div class="form-group" style="font-size:20px;">
+                                <h3>Who are you shiping to?</h3>
+                                <label class="radio-inline">
+                                    <input type="radio" name="whom_to_ship" value="Business"
+                                        required="true" /> Business </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="whom_to_ship" value="Consumer" />
+                                    Consumer </label>
+                            </div>
+                            <div class="form-group">
+                                <h3>Where would you like to send this Order?</h3>
+                                <label for="partner_id">Search Recipient/Company Name </label>
+                                <select id="partner_id" class="form-control sender_partner"
+                                    required="required" name="partner_id">
+                                    <option value="" selected="selected" disabled="True">Search
+                                        Here...</option>
+                                    <t t-foreach="partner_ids" t-as="partner_id">
+                                        <option t-att-value="partner_id.id">
+                                            <t t-esc="partner_id.name" />
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <!-- <h3>Merchant</h3> -->
+                                <label for="merchand_id">Merchant </label>
+                                <select id="merchand_id" class="form-control merchand_id"
+                                    required="required" name="merchand_id">
+                                    <option value="" selected="selected" disabled="True">Search
+                                        Here...</option>
+                                    <t t-foreach="merchant_ids" t-as="merchant_id">
+                                        <option t-att-value="merchant_id.id">
+                                            <t t-esc="merchant_id.name" />
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="form-group" style="font-size:20px;">
+                                <h3>Third Party Ref #</h3>
+                                <label for="third_party_ref" />
+                                <input type="text" name="third_party_ref" required="true" />
+                            </div>
+                            <div class="form-group" style="font-size:20px;">
+                                <h3>How would you like to ship this B2B order?</h3>
+                                <label class="radio-inline">
+                                    <input type="radio" name="shipping_type" value="Parcel"
+                                        required="true" /> Parcel </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="shipping_type" value="Freight" />
+                                    Freight </label>
+                            </div>
+                            <div class="form-group" style="font-size:20px;">
+                                <h3>How you would you like to fulfill this work order?</h3>
+                                <label class="radio-inline">
+                                    <input type="radio" name="payment_type" value="The Hub Buys"
+                                        onchange="update_view_on_select(this);" /> THL Logistics </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="payment_type"
+                                        value="My own 3PL Arrangement"
+                                        onchange="update_view_on_select(this);" /> My own 3PL
+                                    Arrangement </label>
+                            </div>
+                            <div class="d-none">
+                                <div>
+                                    <label for="select_pl_company">Select 3PL Company </label>
+                                </div>
+                                <div>
+                                    <select id="multi_pl_company" class="form-control"
+                                        name="multi_pl_company" style="max-width: 32%;">
+                                        <option value="" selected="selected" disabled="True">Search
+                                            Here...</option>
+                                        <t t-foreach="pl_companies" t-as="pl_companie"
+                                            t-key='pl_companie.id'>
+                                            <option t-att-value="pl_companie.id">
+                                                <t t-esc='pl_companie.name' />
+                                            </option>
+                                        </t>
+                                    </select>
+
+                                </div>
+                                <div> Scheduled Pickup Date :- <input type="date"
+                                        id="scheduled_date" name="scheduled_date" />
+ 
+<script
+                                        type="text/javascript">
+                                        var dtToday = new Date();
+
+                                        var month = dtToday.getMonth() + 1;
+                                        var day = dtToday.getDate();
+                                        var year = dtToday.getFullYear();
+                                        if(month &lt; 10)
+                                        month = '0' + month.toString();
+                                        if(day &gt; 10)
+                                        day = day.toString();
+
+                                        var maxDate = year + '-' + month + '-' + day;
+
+                                        // or instead:
+                                        // var maxDate = dtToday.toISOString().substr(0, 10);
+                                    console.log("333333333333333333",document.getElementsByName("scheduled_date"))
+                                    document.getElementById("scheduled_date").setAttribute("min",
+                                    maxDate);
+
+                                    </script>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <h3>Packaging Instructions</h3>
+                                <label for="packaging_instructions">Special Instruction for
+                                    packaging &amp; assembly:</label>
+                                <br />
+                                <textarea id="packaging_instructions" name="packaging_instructions"
+                                    rows="5" cols="50" />
+                            </div>
+
+
+                            <div class="form-group">
+                                <h3>Upload Bulk Lines</h3>
+
+                                <input type="file" name="att" multiple="true"
+                                    accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                            </div>
+
+
+                            <a class="btn btn-primary" target="_blank"
+                                href="/wo/download/sample/template" role="button">Sample File
+                                Download</a>
+                            <button type="submit" class="btn btn-success float-right"
+                                style="font-size:20px;font-weight:bold;">Add Workorder</button>
+                        </form>
+
+                        <!-- Close Button -->
+                        <div class="text-center d-block mt-2">
+                            <a class="font-size:14px" href="#" data-dismiss="modal"
+                                aria-label="Close">
+                                Close
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template id="portal_add_workorder" name="Add Workorder">
+        <!-- Add Product Manually Modal -->
+        <div class="modal fade" id="addWorkorder" tabindex="-1" role="dialog"
+            aria-labelledby="addWorkorder" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document"
+                style="max-width:75% !important;">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h1 class="text-center d-block mt-2">Create New Workorder</h1>
+                        <form id="add_new_workorder" action="/add/new/workorder" method="post"
+                            enctype="form-data">
+                            <input type="hidden" name="csrf_token"
+                                t-att-value="request.csrf_token()" />
+                            <div class="form-group" style="font-size:20px;">
+                                <h3>Who are you shiping to?</h3>
+                                <label class="radio-inline">
+                                    <input type="radio" name="whom_to_ship" value="Business"
+                                        required="true" /> Business </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="whom_to_ship" value="Consumer" />
+                                    Consumer </label>
+                            </div>
+                            <div class="form-group">
+                                <h3>Where would you like to send this Order?</h3>
+                                <label for="partner_id">Search Recipient/Company Name </label>
+                                <select id="partner_id" class="form-control sender_partner"
+                                    required="required" name="partner_id">
+                                    <option value="" selected="selected" disabled="True">Search
+                                        Here...</option>
+                                    <t t-foreach="partner_ids" t-as="partner_id">
+                                        <option t-att-value="partner_id.id">
+                                            <t t-esc="partner_id.name" />
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <!-- <h3>Merchant</h3> -->
+                                <label for="merchand_id">Merchant </label>
+                                <select id="merchand_id" class="form-control merchand_id"
+                                    required="required" name="merchand_id">
+                                    <option value="" selected="selected" disabled="True">Search
+                                        Here...</option>
+                                    <t t-foreach="merchant_ids" t-as="merchant_id">
+                                        <option t-att-value="merchant_id.id">
+                                            <t t-esc="merchant_id.name" />
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="form-group" style="font-size:20px;">
+                                <h3>Third Party Ref #</h3>
+                                <label for="third_party_ref" />
+                                <input type="text" name="third_party_ref" required="true" />
+                            </div>
+                            <div class="form-group" style="font-size:20px;">
+                                <h3>How would you like to ship this B2B order?</h3>
+                                <label class="radio-inline">
+                                    <input type="radio" name="shipping_type" value="Parcel"
+                                        required="true" /> Parcel </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="shipping_type" value="Freight" />
+                                    Freight </label>
+                            </div>
+                            <div class="form-group" style="font-size:20px;">
+                                <h3>How you would you like to fulfill this work order?</h3>
+                                <label class="radio-inline">
+                                    <input type="radio" name="payment_type" value="The Hub Buys"
+                                        onchange="update_view_on_select(this);" /> THL Logistics </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="payment_type"
+                                        value="My own 3PL Arrangement"
+                                        onchange="update_view_on_select(this);" /> My own 3PL
+                                    Arrangement </label>
+                            </div>
+                            <div class="d-none">
+                                <div>
+                                    <label for="select_pl_company">Select 3PL Company </label>
+                                </div>
+                                <div>
+                                    <select id="multi_pl_company" class="form-control"
+                                        name="multi_pl_company" style="max-width: 32%;">
+                                        <option value="" selected="selected" disabled="True">Search
+                                            Here...</option>
+                                        <t t-foreach="pl_companies" t-as="pl_companie"
+                                            t-key='pl_companie.id'>
+                                            <option t-att-value="pl_companie.id"
+                                                t-esc="pl_companie.name" />
+                                        </t>
+                                    </select>
+                                </div>
+                                <div> Scheduled Pickup Date :- <input type="date"
+                                        id="scheduled_date" name="scheduled_date" />
+     
+                                    <script
+                                        type="text/javascript"> var dtToday = new Date(); var month
+                                    = dtToday.getMonth() + 1; var day = dtToday.getDate(); var year
+                                    = dtToday.getFullYear(); if(month &lt; 10) month = '0' +
+                                    month.toString(); if(day &gt; 10) day = day.toString(); var
+                                    maxDate = year + '-' + month + '-' + day; // or instead: // var
+                                    maxDate = dtToday.toISOString().substr(0, 10); <!--
+                                        console.log("333333333333333333",document.getElementsByName("scheduled_date")) -->
+                                    document.getElementById("scheduled_date").setAttribute("min",
+                                    maxDate); </script>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <h3>Packaging Instructions</h3>
+                                <label for="packaging_instructions">Special Instruction for
+                                    packaging &amp; assembly:</label>
+                                <br />
+                                <textarea id="packaging_instructions" name="packaging_instructions"
+                                    rows="5" cols="50" />
+                            </div>
+                            <div class="form-group o_product_stock_selection">
+                                <label for="select_multi_product">Special Stock:</label>
+                                <br />
+                                <!-- <select class="multi_select" id="select_multi_product"
+                                name="multi_product"  multiple="single" style="margin:8px
+                                auto;min-width: 176px;min-height: 40px;">
+                                                        <t t-foreach="stock_products" t-as="stock_product" t-key='stock_product.id'>
+                                                            <option t-att-value="stock_product.id">
+                                                                <span t-if="stock_product.product_id.barcode">
+                                                                    <t t-esc='stock_product.product_id.barcode'/>
+                                                                </span>
+                                                                <span t-if="stock_product.product_id.size">
+                                                                    -<t t-esc='stock_product.product_id.size'/>
+                                                                </span>
+                                                                <span t-if="stock_product.product_id.color">
+                                                                    -<t t-esc='stock_product.product_id.color'/>
+                                                                </span>
+                                                                <span t-if="stock_product.product_id.name">
+                                                                    -<t t-esc='stock_product.product_id.name'/>
+                                                                </span>
+                                                                <span t-if="stock_product.product_id.gender">
+                                                                    -<t t-esc='stock_product.product_id.gender'/>
+                                                                </span>
+                                                                
+                                                            </option>
+                                                        </t>
+                                                    </select> -->
+                                <select class="multi_select" id="select_multi_product"
+                                    name="multi_product"
+                                    multiple="single"
+                                    style="margin:8px auto;min-width: 176px;min-height: 40px;">
+                                    <option value="" disabled="True" selected="True">Loading
+                                        Products...</option>
+                                </select>
+
+                                <!-- <input type="text" id="search_stock_product"
+                                placeholder="Search Product..." class="form-control mt-2"/> -->
+
+
+                                <script> // Function to fetch products function fetchProducts(query)
+                                    { let selectBox =
+                                    document.getElementById("select_multi_product");
+                                    selectBox.innerHTML = '<option>Loading...</option>'; // Show
+                                    loading //console.log("Sending query:", query); // Debug the
+                                    search query fetch('/my/wo/search/stock_product', { method:
+                                    "POST", headers: { "Content-Type": "application/json",
+                                    "X-Requested-With": "XMLHttpRequest" }, body: JSON.stringify({
+                                    query: query }) }) .then(response => response.json()) .then(data
+                                    => { //console.log("Server response:", data); // Debug the
+                                    server response if (!data.result || !Array.isArray(data.result))
+                                    { console.error("Invalid response format:", data); return; } let
+                                    stockProducts = data.result; // Clear existing select options
+                                    selectBox.innerHTML = ''; // Find the ul element inside
+                                    .ms-options let ulElement = document.querySelector('.ms-options
+                                    ul'); if (!ulElement) { console.error("The ul element inside
+                                    .ms-options was not found."); //return; } if (ulElement){
+                                    ulElement.innerHTML = ''; } stockProducts.forEach(product => {
+                                    let option = document.createElement("option"); option.value =
+                                    product.id; option.textContent = product.name;
+                                    selectBox.appendChild(option); if (ulElement){ let liElement =
+                                    document.createElement("li");
+                                    liElement.setAttribute('data-search-term',
+                                    product.name.toLowerCase()); let labelElement =
+                                    document.createElement("label");
+                                    labelElement.setAttribute('for', `ms-opt-${product.id}`); let
+                                    inputElement = document.createElement("input");
+                                    inputElement.type = "checkbox"; inputElement.id =
+                                    `ms-opt-${product.id}`; inputElement.value = product.id;
+                                    inputElement.title = product.name; let textNode =
+                                    document.createTextNode(product.name);
+                                    labelElement.appendChild(inputElement);
+                                    labelElement.appendChild(textNode);
+                                    liElement.appendChild(labelElement);
+                                    ulElement.appendChild(liElement); } }); // Refresh the
+                                    multi-select library (if applicable)
+                                    //$('#select_multi_product').multiSelect('refresh'); // Example
+                                    for ms-options }) .catch(error => console.error("Error fetching
+                                    products:", error)); } // Load initial products fetchProducts();
+                                    // Use MutationObserver to detect when the search input is added
+                                    to the DOM const observer = new MutationObserver((mutationsList,
+                                    observer) => { const searchInput =
+                                    document.querySelector('.ms-search input[type="text"]'); if
+                                    (searchInput) { // Add the ID to the search input searchInput.id
+                                    = "search_stock_product"; // Attach the keyup event listener for
+                                    live search searchInput.addEventListener("keyup", function () {
+                                    let query = this.value; //console.log("Search query:", query);
+                                    // Debug the search query if (query.length &lt; 2) return; //
+                                    Prevent searching for short queries fetchProducts(query); }); //
+                                    Stop observing once the search input is found
+                                    observer.disconnect(); } }); // Start observing the document for
+                                    changes observer.observe(document.body, { childList: true,
+                                    subtree: true }); </script>
+
+                            </div>
+                            <div id="productTableDivWo" class="mt-3">
+                                <input type="hidden" id="workorder_line_rec"
+                                    name="workorder_line_rec" class="hidden" value="0" />
+                                <input type="hidden" id="workorder_line_address"
+                                    name="workorder_line_address" class="hidden" value="0" />
+
+                                <table class="table mt-5" id="productTableWo">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" style="width: 23%;">Item Name</th>
+                                            <th scope="col">Pakcage ID</th>
+                                            <th scope="col">Consolidation Status</th>
+                                            <th scope="col">Qty in Inventory</th>
+                                            <th scope="col">Quantity to be Shipped</th>
+                                            <th scope="col">Delivery Address</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="oe_button o_add_an_item_tr">
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <button type="submit" class="btn btn-success float-right"
+                                style="font-size:20px;font-weight:bold;">Add Workorder</button>
+                        </form>
+
+                        <!-- Close Button -->
+                        <div class="text-center d-block mt-2">
+                            <a class="font-size:14px" href="#" data-dismiss="modal"
+                                aria-label="Close">
+                                Close
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="portal_layout" name="Portal layout: workorder menu entry"
+        inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'workorder' or workorder" class="col-lg-2"
+                t-attf-class="breadcrumb-item">
+                <a t-if="workorder" t-attf-href="/my/workorder?{{ keep_query() }}">Workorders</a>
+                <t t-else="">Workorders</t>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_workorders" name="My Workorders">
+        <t t-call="portal.frontend_layout">
+            <nav aria-label="breadcrumb flex justify-between"
+                style="background-color:#e9ecef;margin-left: 0%;">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item ">
+                        <a class="bold text-danger" href="/my">THL</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page"
+                        style="background: transparent;"> Work Order</li>
+                </ol>
+            </nav>
+            <section class="wo_status">
+                <div class="container-fuild p-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="flex justify-between items-center">
+                                        <h4 class="card-title">Work Order (<t
+                                                t-esc="workorders_count" />)</h4>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    <div class="card-header pl-1 pr-1 bg-light">
+                                        <div class="flex justify-between items-center">
+                                            <div class="d-flex justify-content-end mr-3">
+                                                <div style="margin-right: 1%;padding-top: 2px;">
+                                                    <button class="btn bg-white border file_export"
+                                                        type="button">
+                                                        <i class="fas fa-file-export mr-2"></i>
+                                                        Export
+                                                    </button>
+                                                </div>
+                                                <form action="" method="get"
+                                                    class="navbar-search ml-auto pagination form-inline">
+                                                    <div t-attf-class="input-group #{_classes}"
+                                                        role="search">
+                                                        <t t-set="search_placeholder">Search...</t>
+                                                        <input type="search" name="search"
+                                                            t-att-class="'search-query form-control oe_search_box %s' % _input_classes"
+                                                            t-att-placeholder="placeholder if placeholder else search_placeholder"
+                                                            t-att-value="search" />
+                                                        <div class="input-group-append">
+                                                            <button type="submit"
+                                                                t-att-class="'btn oe_search_button %s' % (_submit_classes or 'btn-primary')"
+                                                                aria-label="Search" title="Search">
+                                                                <i class="fa fa-search" />
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+
+
+                                                <!-- <div class="d-flex align-items-center pr-2"  >
+                                                        <button class="btn bg-white border delete_wo" type="button">
+                                                            <i class="fas fa-trash mr-2"></i>Delete
+                                                        </button>
+                                                    </div> -->
+                                                <!-- <div class="dropdown mr-2 border">
+                                                        <button class="btn bg-white dropdown-toggle" type="button" id="filterDropdown"
+                                                data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                                            <i class="fa fa-sort-amount-down mr-2"></i> Filter 
+                                                        </button>
+                                                        <div class="dropdown-menu" aria-labelledby="filterDropdown">
+                                                            <a class="dropdown-item" href="#">Link 1</a>
+                                                            <a class="dropdown-item" href="#">Link 2</a>
+                                                        <a class="dropdown-item" href="#">Link 3</a>
+                                                        </div>
+                                                    </div> -->
+
+
+                                                <!-- <t t-set="list_price_desc_label">Filter by
+                                                None</t>
+                                                    <t t-set="website_sale_sortable" t-value="[
+                                                        ('None', 'None'),
+                                                        ('Customer', 'partner_id asc'),
+                                                        ('Shipping Type', 'shipping_type asc'),
+                                                        ('Status', 'status asc'),
+                                                        
+                                                    ]"/>
+                                                    <t t-set="website_sale_sortable_current" t-value="[sort for sort in website_sale_sortable if
+                                                sort[1]==request.params.get('order', '')]"/>
+                                                    <div class="o_sortby_dropdown dropdown dropdown_sorty_by ml-3 " style="margin-right: 2%;">
+                                                        <span class="d-none d-lg-inline font-weight-bold text-muted">Filter By:</span>
+                                                        <a role="button" href="#" class="dropdown-toggle btn btn-light border-0 px-0 text-muted
+                                                align-baseline" data-toggle="dropdown">
+                                                            <span class="d-none d-lg-inline">
+                                                                <t t-if='website_sale_sortable_current'>
+                                                                    <t t-esc="website_sale_sortable_current[0][0]"/>
+                                                                </t>
+                                                                <t t-else='1'>
+                                                                    Featured
+                                                                </t>
+                                                            </span>
+                                                            <i class="fa fa-sort-amount-asc d-lg-none"/>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                                            <t t-foreach="website_sale_sortable" t-as="sortby">
+                                                                <a role="menuitem" rel="noindex,nofollow" t-att-href="keep(default_url, order=sortby[1])"
+                                                class="dropdown-item">
+                                                                    <span t-out="sortby[0]"/>
+                                                                </a>
+                                                            </t>
+                                                        </div>
+                                                    </div> -->
+                                                <div t-if="searchbar_groupby"
+                                                    class="form-inline ml-lg-2">
+                                                    <span class="small mr-1 navbar-text">Group By:</span>
+                                                    <div class="btn-group">
+                                                        <button id="portal_searchbar_groupby"
+                                                            data-toggle="dropdown"
+                                                            class="btn btn-secondary btn-sm dropdown-toggle">
+                                                            <t
+                                                                t-esc="searchbar_groupby[groupby].get('label', 'None')" />
+                                                        </button>
+                                                        <div class="dropdown-menu"
+                                                            aria-labelledby="portal_searchbar_groupby">
+                                                            <t t-foreach="searchbar_groupby"
+                                                                t-as="option">
+                                                                <a
+                                                                    t-att-href="default_url + '?' + keep_query('*', groupby=option)"
+                                                                    t-attf-class="dropdown-item#{groupby == option and ' active' or ''}">
+                                                                    <span
+                                                                        t-esc="searchbar_groupby[option].get('label')" />
+                                                                </a>
+                                                            </t>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <t t-call="ag_the_hub.portal_add_workorder" />
+                                                <t t-call="ag_the_hub.portal_import_lines" />
+                                                <button type="button" class="btn btn-primary"
+                                                    data-toggle="modal"
+                                                    data-target="#importbulkorder">
+                                                    <i class="fa fa-plus"></i> Import Bulk WO With
+                                                    Lines</button>
+                                                <button type="button" class="btn btn-primary"
+                                                    data-toggle="modal" data-target="#addWorkorder">
+                                                    <i class="fa fa-plus"></i> Add New Work Order</button>
+                                                <!-- The Modal -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="">
+                                        <table class="table table-hover wo_report">
+                                            <t t-foreach="grouped_wo" t-as="wo_ids">
+                                                <thead class="bg-light">
+                                                    <tr>
+                                                        <th colspan="6">
+                                                            <em t-if="groupby=='Customer'"
+                                                                class="font-weight-normal text-muted">WO
+                                                                in Customer:</em>
+                                                            <em t-if="groupby=='Merchant'"
+                                                                class="font-weight-normal text-muted">WO
+                                                                in Merchant:</em>
+                                                            <em t-if="groupby=='Ship Date'"
+                                                                class="font-weight-normal text-muted">WO
+                                                                in Ship Date:</em>
+                                                            <em t-if="groupby=='Shipping Type'"
+                                                                class="font-weight-normal text-muted">WO
+                                                                in Shipping Type:</em>
+                                                            <em t-if="groupby=='Status'"
+                                                                class="font-weight-normal text-muted">WO
+                                                                in Status:</em>
+                                                            <span t-if="groupby=='Customer'"
+                                                                t-field="wo_ids[0].partner_id" />
+                                                            <span t-if="groupby=='Merchant'"
+                                                                t-field="wo_ids[0].merchand_id" />
+                                                            <span t-if="groupby=='Ship Date'"
+                                                                t-esc="wo_ids[0].date_create" />
+                                                            <span t-if="groupby=='Shipping Type'"
+                                                                t-field="wo_ids[0].shipping_type" />
+
+                                                            <span t-if="groupby=='Status'"
+                                                                t-field="wo_ids[0].status" />
+
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>
+                                                            <input type="checkbox" id="select_all"
+                                                                name="select_all" value="1" />
+                                                        </th>
+                                                        <th
+                                                            class="px-6 py-3 text-left text-uppercase"
+                                                            style="font-size: 12px; color:#666d7d">Shipping
+                                                            ID</th>
+                                                        <th
+                                                            class="px-6 py-3 text-left text-uppercase"
+                                                            style="font-size: 12px; color:#666d7d">
+                                                            Merchant</th>
+                                                        <th
+                                                            class="px-6 py-3 text-left text-uppercase"
+                                                            style="font-size: 12px; color:#666d7d">Third
+                                                            Party Ref #</th>
+                                                        <th
+                                                            class="px-6 py-3 text-left text-uppercase"
+                                                            style="font-size: 12px; color:#666d7d">Ship
+                                                            Date</th>
+                                                        <th
+                                                            class="px-6 py-3 text-left text-uppercase"
+                                                            style="font-size: 12px; color:#666d7d">Shipping
+                                                            Type</th>
+                                                        <th
+                                                            class="px-6 py-3 text-left text-uppercase"
+                                                            style="font-size: 12px; color:#666d7d">
+                                                            Customer</th>
+                                                        <th
+                                                            class="px-6 py-3 text-left text-uppercase"
+                                                            style="font-size: 12px; color:#666d7d">
+                                                            Status </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr t-foreach="wo_ids" t-as="workorder">
+                                                        <td class="px-6 py-4 ">
+                                                            <input type="checkbox"
+                                                                id="wo_status_line"
+                                                                name="wo_status_line"
+                                                                t-att-value="workorder.id" />
+                                                        </td>
+                                                        <td class="px-6 py-4 ">
+                                                            <a
+                                                                t-att-href="'/my/wo/%s' %(workorder.id)">
+                                                                <t t-esc="workorder.name" />
+                                                            </a>
+                                                        </td>
+                                                        <td class="px-6 py-4 ">
+                                                            <span t-field="workorder.merchand_id" />
+                                                        </td>
+                                                        <td class="px-6 py-4 ">
+                                                            <span
+                                                                t-field="workorder.third_party_ref" />
+                                                        </td>
+                                                        <td class="px-6 py-4 ">
+                                                            <t t-esc="workorder.create_date.date()"
+                                                                t-options='{"widget": "date","format": "dd-MM-yyyy"}' />
+                                                        </td>
+                                                        <td class="px-6 py-4 ">
+                                                            <span t-field="workorder.shipping_type" />
+                                                        </td>
+                                                        <td class="px-6 py-4">
+                                                            <span t-field="workorder.partner_id" />
+                                                        </td>
+                                                        <td>
+                                                            <button type="submit"
+                                                                class="btn btn-success">
+                                                                <span t-field="workorder.status" />
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </t>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                        </div>
+                    </div>
+                    <br />
+                    <t t-call="portal.pager" />
+                </div>
+            </section>
+
+
+        </t>
+    </template>
+
+</odoo>

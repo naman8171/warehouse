@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_bulk_import_lines_form" model="ir.ui.view">
+            <field name="name">bulk.import.lines.form</field>
+            <field name="model">bulk.import.lines</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+	                    <group >
+                            <field name="file" filename="filename"/>
+                            <field name="filename" readonly="1" invisible="1" nolabel="1" />
+                            <field name="wro_id" invisible="1"/>
+                            <field name="wo_id" invisible="1"/>
+                            <!-- <field name="product_qty"/> -->
+                        </group>
+                        
+                    </group>
+                    <footer>
+                        <button name="bulk_import" string="Import" type="object" class="btn-primary" attrs="{'invisible': [('wro_id', '=', False)]}"/>
+
+
+                        <button name="bulk_import_wo" string="Import" type="object" class="btn-primary" attrs="{'invisible': [('wo_id', '=', False)]}"/>
+
+                         <button name="file_format_download" string="Sample File Download" type="object" class="btn-primary"  attrs="{'invisible': [('wro_id', '=', False)]}"/>
+
+                         <button name="file_format_download_wo" string="Sample File Download" type="object" class="btn-primary"  attrs="{'invisible': [('wo_id', '=', False)]}" />
+                       
+                        
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_bulk_import_lines" model="ir.actions.act_window">
+            <field name="name">Bulk Import Lines</field>
+            <field name="res_model">bulk.import.lines</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_bulk_import_lines_form"/>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_partner_form_inherit_ag_the" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.the.hub</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="before">
+                <header>
+                    <button name="action_activate_thehub_account" type="object" string="Activate The HUB Account" class="oe_highlight" attrs="{'invisible': [('show_account_activation_btn', '=', False)]}"/>
+                    <button name="action_reassign_sequence" type="object" string="Reassign Sequence Number" class="oe_highlight" attrs="{'invisible': [('show_account_activation_btn', '=', True)]}"/>
+                    
+                    <button name="action_remove_restriction_thehub_account" type="object" string="Remove Restriction The HUB Account" class="oe_highlight" attrs="{'invisible': [('show_account_reactivate_btn', '=', False)]}"/>
+                    <field name="show_account_activation_btn" invisible="1"/>
+                    <field name="show_account_reactivate_btn" invisible="1"/>
+                </header>
+            </xpath>
+            <field name="vat" position="after">
+                <field name="update_dedicated_location_ids" invisible="1"/>
+                <field name="contact_type" required="1"/>
+                <field name="merchant_sequence" string="Merchant ID" attrs="{'invisible': [('contact_type', '!=', 'Merchant')]}"/>
+                <field name="business_name"/>
+                <field name="merchant_billing_method" attrs="{'invisible': [('contact_type', '!=', 'Merchant')]}"/>
+                <field name="credit_limit" attrs="{'invisible': ['|',('merchant_billing_method', '!=', 'credit'),('contact_type', '!=', 'Merchant')]}"/>
+                <field name="over_credit" attrs="{'invisible': ['|',('merchant_billing_method', '!=', 'credit'),('contact_type', '!=', 'Merchant')]}"/>
+            </field>
+            <field name="function" position="before">
+            	<!-- <field name="business_name"/> -->
+                <field name="billing_type" widget='selection' string="Billing Cycle" attrs="{'invisible': [('contact_type', '!=', 'Merchant')]}"/>
+                <field name="last_billing_date" readonly="1" attrs="{'invisible': [('contact_type', '!=', 'Merchant')]}"/>
+                <field name="storage_type" attrs="{'invisible': [('contact_type', '!=', 'Merchant')]}"/>
+                <field name="dedicated_location_ids" widget="many2many_tags" attrs="{'invisible': ['|',('storage_type', '!=', 'Dedicated'),('contact_type', '!=', 'Merchant')]}"/>
+            	<field name="order_count" attrs="{'invisible': [('contact_type', '!=', 'Merchant')]}"/>
+                <field name="terms_and_condition" readonly="1" attrs="{'invisible': [('contact_type', '!=', 'Merchant')]}"/>
+                <field name="thehub_account_activated" groups="base.group_system" attrs="{'invisible': [('contact_type', '!=', 'Merchant')]}"/>
+                <field name="restrict_user" groups="base.group_system" attrs="{'invisible': [('contact_type', '!=', 'Merchant')]}"/>
+                <field name="is_sub_account" invisible="1"/>
+            </field>
+            <xpath expr="//field[@name='function']" position="attributes">
+                <attribute name="invisible">1</attribute>
+             </xpath>
+            <xpath expr="//field[@name='title']" position="attributes">
+                <attribute name="invisible">1</attribute>
+             </xpath>
+            <xpath expr="//field[@name='category_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+             </xpath>
+             <page name="contact_addresses" position="attributes">
+                <attribute name="attrs">{'invisible': [('is_sub_account', '=', True)]}</attribute>
+             </page>
+            <xpath expr="//field[@name='child_ids']/form/sheet/group/group[2]/field[@name='email']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/form/sheet/group/group[2]/field[@name='phone']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="view_quotation_tree_custom" model="ir.ui.view">
+        <field name="name">sale.order.tree.inherit.website.sale</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount_total']" position="attributes">
+                <attribute name="string">Due Amount</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

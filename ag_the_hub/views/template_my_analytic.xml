@@ -1,0 +1,1206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="my_analytics" name="My Analytics">
+        <t t-call="portal.frontend_layout">
+        	<!-- <nav aria-label="breadcrumb flex justify-between" style="background-color:#e9ecef;margin-left: 0%;">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item bold text-danger "><a class="bold text-danger" href="/my">THL</a></li>
+                      <li class="breadcrumb-item active" aria-current="page" style="background: transparent;">Analytics</li>
+                    </ol>
+                  </nav> -->
+            <section>
+                <div class="container-fuild">
+                    <div t-if="request.env.user.welcome_done == False" id="welcome-user" class="modal fade" role="dialog" >
+  <div class="modal-dialog">
+    <div class="modal-content welcome-box">
+      <div class="modal-header bb-0">
+        
+      </div>
+      <div class="modal-body welcome-box-body">
+        <h4 class="modal-title text-center">
+            Welcome
+        </h4>
+        <div class="text-center">
+            Welcome to the hub
+        </div>
+        <div class="text-center">
+            <button href="#" type="submit"  class="btn bg-primary text-white submit_form" data-dismiss="modal"   style="background: red;">
+                <input type="text" class="user_env d-none" t-att-value="request.env.user.id"/>
+                    
+                
+                 Let's Go</button>
+
+                                                                        
+           
+        </div>
+    </div>
+    </div>
+  </div>
+</div>
+                    <div class="tab" style="text-align: center;">
+                        <style>
+                            .active{
+                            color: white !important;
+                            background: #FFB802 !important;
+                            }
+                            .wro .active {
+                            color: white !important;
+                            background: black !important;
+                            }
+
+                            .inventory .active {
+                            color: white !important;
+                            background: #12BF24 !important;
+                            }
+
+                            .wo .active {
+                            color: white !important;
+                            background: #EE3137 !important;
+                            }
+
+                            .sc .active {
+                            color: white !important;
+                            background: #0070FF !important;
+                            }
+                        </style>
+                        <span class="wro">
+                      <button class="tablinks  active" onclick="openCity(event, 'wro')" style="border: none;padding: 9px;border-radius: 8px;background-color: #f7f8f9; color:#000;border: 1px solid;">Warehouse Receiving Order </button></span>
+                      <span class="inventory">
+                      <button class="tablinks" onclick="openCity(event, 'inventory')" style="border: none;background-color: #f7f8f9; color:#12BF24;padding: 9px;border-radius: 8px;margin-left: -4px;border: 1px solid;">Inventory At A Glance</button>
+                  </span>
+                  <span class="wo">
+                      <button class="tablinks" onclick="openCity(event, 'workorder')" style="border: none;background-color: #f7f8f9; color:#EE3137;padding: 9px;border-radius: 8px;margin-left: -4px;border: 1px solid;">Work Order</button>
+                  </span>
+                  <span class="sc">
+                      <button class="tablinks" onclick="openCity(event, 'supportcasses')" style="border: none;background-color: #f7f8f9; color:#0070FF;padding: 9px;border-radius: 8px;margin-left: -4px;border: 1px solid;">Support Cases</button>
+                  </span>
+
+                      
+                    </div>
+
+                <!-- WRO -->
+
+
+
+                <div id="wro" class="tabcontent" >
+                    <div class="flex flex-col gap-6 mb-3" style="padding: 17px;background: #b0d3b0;margin-top: 1%;">
+                        <!-- Basic -->
+                        <div >
+                            <div>
+                                <div >
+                                    <h5 class="h6" style="color:#155724;margin-bottom: 0px;">WRO Tracking: <t t-esc="month"/>, <t t-esc="year"/></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <!-- first analytics -->
+                    
+                    <!-- second analytics -->
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <a href="/my/wallet/transaction">
+                            <div class="card shadow" style="background-color: #0177FB !important">
+                            
+                                <div  style="background-color: #0177FB !important;">
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="header-title text-2xl text-white" style="margin-bottom: 59%;">Wallet Balance</h5>
+                                            <div class="flex-grow" style="margin-bottom: 20%;">
+                                                <h5 class="bold mb-1 text-3xl text-white" style="margin-bottom: 59%;"><span class="text-right" t-esc="wallet_balance" t-options="{'widget': 'monetary', 'display_currency': user_id.currency_id}"/></h5>
+                                            </div>
+                                        </div>
+                                        <div class="w-12 h-6 flex justify-center items-center rounded text-white ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye text-white">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                </path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                                </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col" >
+                            <a href="/my/wro/filter/current_month/submitted">
+                            <div class="card rounded shadow " style="margin-bottom: 20px;border: black 1px solid;color: black;">
+                            
+                                <div >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-lg mb-1 text-gray-600 " >WRO Request Submitted</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate" style="margin-top: 20%;"><span class="text-right" t-esc="cm_wro_submitted_count"/></p>
+                                        </div>
+                                        <div class="w-12 h-6 flex justify-center items-center rounded text-white ">
+                                            <!-- <i class="mgc_document_2_line text-xl"></i> -->
+                                            <img src="/ag_the_hub/static/images/icons/submitted.png" style="width: 30px; height: 30px; filter: hue-rotate(120deg);"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                            <a href="/my/wro/filter/current_month/received">
+                            <div class="card rounded shadow " style="margin-bottom: 20px;border: black 1px solid;color: black;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 ">WRO Received</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 32%;"><span class="text-right" t-esc="cm_wro_received_count"/></p>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <div class="w-12 h-12 flex justify-center items-center rounded text-white bg-primary/25">
+                                                    <!-- <i class="mgc_document_2_line text-xl"></i> -->
+                                                    <img src="/ag_the_hub/static/images/icons/receivedd.png" style="width: 30px; height: 30px; filter: hue-rotate(120deg);"/>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                            <a href="/my/wro/filter/current_month/stored">
+                            <div class="card rounded shadow " style="margin-bottom: 20px;border: black 1px solid;color: black;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 "> WRO Stored</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 32%;"><span class="text-right" t-esc="cm_wro_stored_count"/></p>
+                                        </div>
+                                        <div class="w-12 h-12 flex justify-center items-center rounded text-white bg-primary/25">
+                                            <img src="/ag_the_hub/static/images/icons/stored.png" style="width: 30px; height: 30px; filter: hue-rotate(120deg);"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        
+                    </div>
+                    <!--  -->
+
+
+                    <div style="padding: 17px;background: #b0d3b0;margin-top: 1%;margin-bottom: 1%;">
+                        <!-- Basic -->
+                        <div >
+                            <div >
+                                <div >
+                                    <h5 class="h6" style="color:#155724;margin-bottom: 0px;">Transaction Count from Inception</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row ">
+                        <div class="col-md-3">
+                            <a href="/my/wallet/transaction">
+
+                            <div class="card shadow" >
+                            
+                                <div  style="background-color: #0177FB !important;">
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="header-title text-2xl text-white" style="margin-bottom: 59%;">Wallet Balance</h5>
+                                            <div class="flex-grow" style="margin-bottom: 20%;">
+                                                <h5 class="bold mb-1 text-3xl text-white" ><span class="text-right" t-esc="wallet_balance" t-options="{'widget': 'monetary', 'display_currency': user_id.currency_id}"/></h5>
+                                            </div>
+                                        </div>
+                                        <div class="w-12 h-6 flex justify-center items-center rounded text-white ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye text-white">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                </path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                                </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        
+                        <div class="col" >
+                            <a href="/my/wro/filter/submitted">
+                            <div class="card rounded shadow " style="margin-bottom: 20px;border: black 1px solid;color: black;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-lg mb-1 text-gray-600 ">WRO Request Submitted</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 20%;"><span class="text-right" t-esc="wro_submitted_count"/></p>
+                                        </div>
+                                        <div class="w-12 h-6 flex justify-center items-center rounded  ">
+                                            <!-- <i class="mgc_document_2_line text-xl"></i> -->
+                                            <img src="/ag_the_hub/static/images/icons/submitted.png" style="width: 30px; height: 30px; filter: hue-rotate(120deg);"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                            <a href="/my/wro/filter/received">
+                            <div class="card rounded shadow " style="margin-bottom: 20px;border: black 1px solid;color: black;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 ">WRO Received</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 32%;"><span class="text-right" t-esc="wro_received_count"/></p>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <div class="w-12 h-12 flex justify-center items-center rounded  bg-primary/25">
+                                                    <!-- <i class="mgc_document_2_line text-xl"></i> -->
+                                                    <img src="/ag_the_hub/static/images/icons/receivedd.png" style="width: 30px; height: 30px; filter: hue-rotate(120deg);"/>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                            <a href="/my/wro/filter/stored">
+                            <div class="card rounded shadow " style="margin-bottom: 20px;border: black 1px solid;color: black;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 "> WRO Stored</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 32%;"><span class="text-right" t-esc="wro_stored_count"/></p>
+                                        </div>
+                                        <div class="w-12 h-12 flex justify-center items-center rounded  bg-primary/25">
+                                            <img src="/ag_the_hub/static/images/icons/stored.png" style="width: 30px; height: 30px; filter: hue-rotate(120deg);"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                    </div>
+                <div class="2xl:col-span-2 md:col-span-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Warehouse Receiving Order</h4>
+                            </div>
+                            <div class="p-6">
+    
+                                <div id="chart-apex"></div>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                        <div id='myDiv_wro_graph' style="height: inherit"><!-- Plotly chart will be drawn inside this DIV --></div>
+                        
+                                        <table class="table table-hove">
+                                            <thead class="bg-light">
+                                              <tr>
+                                                 
+                                                <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Name</th>
+                                                <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Warehouse</th>
+                                                <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Shipping Type</th>
+                                                <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Picking Method</th>
+                                                <!-- <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Custom Packaging</th> -->
+                                                <!-- <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Size</th> -->
+                                                <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Arrival Date</th>
+                                                <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Status </th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr t-foreach="cm_wro_ids" t-as="wro_id">
+                                                
+                                                <td class="px-6 py-4 ">  <a t-att-href="'/my/wros/%s' %(wro_id.id)">
+                                <t t-esc="wro_id.name"/></a> </td>
+                                                <td class="px-6 py-4 "><t t-esc="wro_id.warehouse_id.name"/></td>
+                                                <td class="px-6 py-4 "><span t-field="wro_id.shipping_type"/></td>
+                                                <td class="px-6 py-4"><span t-field="wro_id.pickup_method"/></td>
+                                                <!-- <td class="px-6 py-4 "> <t t-esc="wro_id.arrival_date"/> </td> -->
+                                                <!-- <td class="px-6 py-4 ">22.2 </td> -->
+                                                <td class="px-6 py-4 "><t t-esc="wro_id.arrival_date"/></td>
+                                                <td t-if="wro_id.status">
+                                                    <button t-if="wro_id.status=='request_submitted'" type="submit" class="btn btn-primary"><span t-field="wro_id.status"/> </button>
+                                                    <button t-elif="wro_id.status=='stored'" type="submit" class="btn btn-success"><span t-field="wro_id.status"/> </button>
+                                                    <button t-else="" type="submit" class="btn btn-primary" style="background:grey;"><span t-field="wro_id.status"/> </button>
+                                                    
+                                                </td>       
+                                              </tr>
+                                              
+                                            </tbody>
+                                          </table>
+                </div>
+
+
+                <div id="inventory" class="tabcontent" style="display: none;">
+                    <div class="flex flex-col gap-6 mb-3" style="margin-top: 1%;">
+                        <div >
+                            <a href="/update/dashboard">Refresh Inventory Dashboard</a>
+                        </div>
+                    </div>
+                     <!-- first analytics -->
+                    
+                    <!-- second analytics -->
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <a href="/my/wallet/transaction">
+                            <div class="card shadow" style="background-color: #0177FB !important">
+                            
+                                <div  style="background-color: #0177FB !important;">
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="header-title text-2xl text-white" style="margin-bottom: 59%;">Wallet Balance</h5>
+                                            <div class="flex-grow" style="margin-bottom: 20%;">
+                                                <h5 class="bold mb-1 text-3xl text-white" style="margin-bottom: 59%;"><span class="text-right" t-esc="wallet_balance" t-options="{'widget': 'monetary', 'display_currency': user_id.currency_id}"/></h5>
+                                            </div>
+                                        </div>
+                                        <div class="w-12 h-6 flex justify-center items-center rounded text-white ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye text-white">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                </path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                                </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col" >
+                            <a href="/my/products">
+                            <div class="card rounded shadow " style="margin-bottom: 20px;border: #12BF24 1px solid;color: #12BF24;">
+                            
+                                <div >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-lg mb-1 text-gray-600 " >Total Products</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate" style="margin-top: 32%;"><span class="text-right" t-esc="cm_products_count" t-options='{"widget": "float", "precision": 0}'/></p>
+                                        </div>
+                                        <div class="w-12 h-6 flex justify-center items-center rounded text-white ">
+                                            <!-- <i class="mgc_document_2_line text-xl"></i> -->
+                                            <img src="/ag_the_hub/static/images/icons/products.png" style="width: 30px; height: 30px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                            <a href="/my/inventory">
+                            <div class="card rounded shadow " style="margin-bottom: 20px;border: #12BF24 1px solid;color: #12BF24;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 ">Stock on Hand</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 32%;"><span class="text-right" t-esc="current_overall_stock" t-options='{"widget": "float", "precision": 0}'/></p>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <div class="w-12 h-12 flex justify-center items-center rounded text-white bg-primary/25">
+                                                    <!-- <i class="mgc_document_2_line text-xl"></i> -->
+                                                    <img src="/ag_the_hub/static/images/icons/stockonhand.png" style="width: 30px; height: 30px;"/>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                            <a href="/low/stock/products">
+                            <div class="card rounded shadow " style="margin-bottom: 20px;border: #12BF24 1px solid;color: #12BF24;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 "> Low Stock Products</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 20%;"><span class="text-right" t-esc="low_stock_product" t-options='{"widget": "float", "precision": 0}'/></p>
+                                        </div>
+                                        <div class="w-12 h-12 flex justify-center items-center rounded text-white bg-primary/25">
+                                            <img src="/ag_the_hub/static/images/icons/lowstockproduct.png" style="width: 30px; height: 30px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                            <a href="/out/stock/products">
+                            <div class="card rounded shadow " style="margin-bottom: 20px;border: #12BF24 1px solid;color: #12BF24;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 ">Out of Stock</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 32%;"><span class="text-right" t-esc="zero_stock_product" t-options='{"widget": "float", "precision": 0}'/></p>
+                                        </div>
+                                        <div class="w-12 h-12 flex justify-center items-center rounded text-white bg-primary/25">
+                                            <img src="/ag_the_hub/static/images/icons/outofstock.png" style="width: 30px; height: 30px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                            <a href="/top/selling/products">
+                            <div class="card rounded shadow " style="margin-bottom: 20px;border: #12BF24 1px solid;color: #12BF24;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 ">Top Selling Products</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 20%;"><span class="text-right" t-esc="top_selling_product" t-options='{"widget": "float", "precision": 0}'/></p>
+                                        </div>
+                                        <div class="w-12 h-12 flex justify-center items-center rounded text-white bg-primary/25">
+                                            <img src="/ag_the_hub/static/images/icons/sellingproducts.png" style="width: 30px; height: 30px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        
+                    </div>
+                    <!--  -->
+
+
+                    <div style="margin-bottom: 1%;">
+                        <!-- Basic -->
+                        <!-- <div >
+                            <div >
+                                <div >
+                                    <h5 class="h6" style="color:#155724;margin-bottom: 0px;">Transaction Count from Inception</h5>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="row ">
+                        <!-- <div class="col-md-3">
+                            <a href="/my/wallet/transaction">
+
+                            <div class="card shadow" >
+                            
+                                <div  style="background-color: #0177FB !important;">
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="header-title text-2xl text-white" style="margin-bottom: 59%;">Wallet Balance</h5>
+                                            <div class="flex-grow" style="margin-bottom: 20%;">
+                                                <h5 class="bold mb-1 text-3xl text-white" ><span class="text-right" t-esc="wallet_balance" t-options="{'widget': 'monetary', 'display_currency': user_id.currency_id}"/></h5>
+                                            </div>
+                                        </div>
+                                        <div class="w-12 h-6 flex justify-center items-center rounded text-white ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye text-white">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                </path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                                </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div> -->
+                        
+                        <div class="col" >
+                            <a >
+                            <div class="card rounded shadow " style="margin-bottom: 20px;border: #12BF24 1px solid;color: #12BF24;">
+                            
+                                <div >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-lg mb-1 text-gray-600 " >Inventory Value</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate" style="margin-top: 32%;">0</p>
+                                        </div>
+                                        <div class="w-12 h-6 flex justify-center items-center rounded text-white ">
+                                            <!-- <i class="mgc_document_2_line text-xl"></i> -->
+                                            <img src="/ag_the_hub/static/images/icons/inventoryvalue.png" style="width: 30px; height: 30px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                            <a href="/my/workorders/filter/current_month/all">
+                            <div class="card rounded shadow " style="margin-bottom: 20px;border: #12BF24 1px solid;color: #12BF24;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 ">Most Recent WO</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 32%;"><span class="text-right" t-esc="ten_wo_ids" t-options='{"widget": "float", "precision": 0}'/></p>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <div class="w-12 h-12 flex justify-center items-center rounded text-white bg-primary/25">
+                                                    <!-- <i class="mgc_document_2_line text-xl"></i> -->
+                                                    <img src="/ag_the_hub/static/images/icons/mostrecentwo.png" style="width: 30px; height: 30px; "/>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                            <a href="/my/wro/filter/current_month/all">
+                            <div class="card rounded shadow " style="margin-bottom: 20px;border: #12BF24 1px solid;color: #12BF24;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 ">Most Recent WRO</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 20%;"><span class="text-right" t-esc="ten_wro_ids"/></p>
+                                        </div>
+                                        <div class="w-12 h-12 flex justify-center items-center rounded text-white bg-primary/25">
+                                            <img src="/ag_the_hub/static/images/icons/mostrecentwro.png" style="width: 30px; height: 30px; "/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                            <a href="/my/wro/filter/current_month/stored">
+                            <div class="card rounded shadow " style="margin-bottom: 20px;border: #12BF24 1px solid;color: #12BF24;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 ">Return WO Status</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 32%;"><span class="text-right" t-esc="wo_returned_count"/></p>
+                                        </div>
+                                        <div class="w-12 h-12 flex justify-center items-center rounded text-white bg-primary/25">
+                                            <img src="/ag_the_hub/static/images/icons/returnwostatus.png" style="width: 30px; height: 30px; "/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                            <a href="/my/reorder/level/notifications">
+                            <div class="card rounded shadow " style="margin-bottom: 20px;border: #12BF24 1px solid;color: #12BF24;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 ">Reorder Alerts</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 20%;"><span class="text-right" t-esc="reorder_notifications"/></p>
+                                        </div>
+                                        <div class="w-12 h-12 flex justify-center items-center rounded text-white bg-primary/25">
+                                            <img src="/ag_the_hub/static/images/icons/reorderalerts.png" style="width: 30px; height: 30px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                    </div>
+                <!-- <div class="2xl:col-span-2 md:col-span-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Revenue updates</h4>
+                            </div>
+                            <div class="p-6">
+    
+                                <div id="chart-apex"></div>
+                                
+                            </div>
+                        </div>
+                    </div> -->
+
+                        <!-- <div id='myDiv_wro_graph' style="height: inherit"></div> -->
+                        
+                                        
+                </div>
+                    <div id="workorder" class="tabcontent" style="display: none;">
+                    <div class="flex flex-col gap-6 mb-3" style="padding: 17px;background: #b0d3b0;margin-top: 1%;">
+                        <!-- Basic -->
+                        <div >
+                            <div >
+                                <div >
+                                    <h5 class="h6" style=" color:#155724">Work Order Tracking: <t t-esc="month"/>, <t t-esc="year"/></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     <!-- first analytics -->
+                    
+                    <!-- second analytics -->
+                    <div class="row">
+                        <div class="col-md-3">
+                            <a href="/my/wallet/transaction">
+                            <div class="card shadow" style="background-color: #0177FB !important">
+                            
+                                <div  style="background-color: #0177FB !important;">
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="header-title text-2xl text-white" style="margin-bottom: 40px;">Wallet Balance</h5>
+                                            <div class="flex-grow" style="margin-bottom: 25%;margin-top: 52%;">
+                                                <h5 class="bold mb-1 text-3xl text-white"><span class="text-right" t-esc="wallet_balance" t-options="{'widget': 'monetary', 'display_currency': user_id.currency_id}"/></h5>
+                                            </div>
+                                        </div>
+                                        <div class="w-12 h-6 flex justify-center items-center rounded text-white ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye text-white">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                </path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                                </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col" >
+                            <a href="/my/workorders/filter/current_month/pending">
+                            <div class="card rounded shadow " style="margin-bottom: 20px; border-color: #EE3137; border-width: 2px;color: red;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-lg mb-1 text-gray-600">Pending</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 40%;"><span class="text-right" t-esc="cm_wo_pending_count"/></p>
+                                        </div>
+                                        <div class="w-12 h-6 flex justify-center items-center rounded ">
+                                            <!-- <i class="mgc_document_2_line text-xl"></i> -->
+                                            <img src="/ag_the_hub/static/images/icons/pendings.png" style="width: 30px; height: 30px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                            <a href="/my/workorders/filter/current_month/awaiting">
+                            <div class="card rounded shadow " style="margin-bottom: 20px; border-color: #EE3137; border-width: 2px;color: red;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600">Awaiting</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 40%;"><span class="text-right" t-esc="cm_wo_awaiting_count"/></p>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <div class="w-12 h-12 flex justify-center items-center rounded text-white bg-primary/25">
+                                                    <!-- <i class="mgc_document_2_line text-xl"></i> -->
+                                                    <img src="/ag_the_hub/static/images/icons/awaitings.png" style="width: 30px; height: 30px;"/>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                            <a href="/my/workorders/filter/current_month/returned">
+                            <div class="card rounded shadow " style="margin-bottom: 20px; border-color: #EE3137; border-width: 2px;color: red;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600"> Returned</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 40%;"><span class="text-right" t-esc="cm_wo_returned_count"/></p>
+                                        </div>
+                                        <div class="w-12 h-12 flex justify-center items-center rounded text-white bg-primary/25">
+                                            <img src="/ag_the_hub/static/images/icons/returneds.png" style="width: 30px; height: 30px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+
+                        <div class="col">
+                            <a href="/my/workorders/filter/current_month/dispatched">
+                            <div class="card rounded shadow " style="margin-bottom: 20px; border-color: #EE3137; border-width: 2px;color: red;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 "> Dispatched</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 40%;"><span class="text-right" t-esc="cm_wo_dispatched_count"/></p>
+                                        </div>
+                                        <div class="w-12 h-12 flex justify-center items-center rounded text-white bg-primary/25">
+                                            <img src="/ag_the_hub/static/images/icons/dispatcheds.png" style="width: 30px; height: 30px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                            <a href="/my/workorders/filter/current_month/delivered">
+                            <div class="card rounded shadow " style="margin-bottom: 20px; border-color: #EE3137; border-width: 2px;color: red;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 "> Delivered</h5>
+                                            <p class="font-normal text-sm text-gray-400 truncate " style="margin-top: 40%;"><span class="text-right" t-esc="cm_wo_delivered_count"/></p>
+                                        </div>
+                                        <div class="w-12 h-12 flex justify-center items-center rounded text-white bg-primary/25">
+                                            <img src="/ag_the_hub/static/images/icons/delivereds.png" style="width: 30px; height: 30px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                    </div>
+                    <!-- <div class="2xl:col-span-2 md:col-span-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Revenue updates</h4>
+                            </div>
+                           
+                        </div>
+                    </div> -->
+
+
+                    <div class="flex flex-col gap-6 mb-3" style="padding: 17px;background: #b0d3b0;margin-top: 1%;margin-bottom: 1%;">
+                        <!-- Basic -->
+                        <div >
+                            <div >
+                                <div class="flex justify-between items-center">
+                                    <h5 class="h6" style=" color:#155724 !important;">Transaction Count from Inception</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <a href="/my/wallet/transaction">
+
+                            <div class="card shadow" style="background-color: #0177FB !important;">
+                            
+                                <div  style="background-color: #0177FB !important;">
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="header-title text-2xl text-white" style="margin-bottom: 40px;">Wallet Balance</h5>
+                                            <div class="flex-grow" style="margin-bottom: 25%;margin-top: 52%;">
+                                                <h5 class="bold mb-1 text-3xl text-white"><span class="text-right" t-esc="wallet_balance" t-options="{'widget': 'monetary', 'display_currency': user_id.currency_id}"/></h5>
+                                            </div>
+                                        </div>
+                                        <div class="w-12 h-6 flex justify-center items-center rounded text-white ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye text-white">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                </path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                                </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col" >
+                            <a href="/my/workorders/filter/pending">
+                            <div class="card rounded shadow " style="margin-bottom: 20px; border-color: #EE3137; border-width: 2px;color: red;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-lg mb-1 text-gray-600 ">Pending</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate" style="margin-top: 40%;"><span t-esc="wo_pending_count"/></p>
+                                        </div>
+                                        <div class="w-12 h-6 flex justify-center items-center rounded text-white ">
+                                            <!-- <i class="mgc_document_2_line text-xl"></i> -->
+                                            <img src="/ag_the_hub/static/images/icons/pendings.png" style="width: 30px; height: 30px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                             <a href="/my/workorders/filter/awaiting">
+                            <div class="card rounded shadow " style="margin-bottom: 20px; border-color: #EE3137; border-width: 2px;color: red;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 ">Awaiting</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 40%;"><span t-esc="wo_awaiting_count"/></p>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <div class="w-12 h-12 flex justify-center items-center rounded text-white bg-primary/25">
+                                                    <!-- <i class="mgc_document_2_line text-xl"></i> -->
+                                                    <img src="/ag_the_hub/static/images/icons/awaitings.png" style="width: 30px; height: 30px;"/>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                            <a href="/my/workorders/filter/returned">
+                            
+                            <div class="card rounded shadow " style="margin-bottom: 20px; border-color: #EE3137; border-width: 2px;color: red;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 "> Returned</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 40%;"><span t-esc="wo_returned_count"/></p>
+                                        </div>
+                                        <div class="w-12 h-12 flex justify-center items-center rounded text-white bg-primary/25">
+                                            <img src="/ag_the_hub/static/images/icons/returneds.png" style="width: 30px; height: 30px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                            <a href="/my/workorders/filter/dispatched">
+                            <div class="card rounded shadow " style="margin-bottom: 20px; border-color: #EE3137; border-width: 2px;color: red;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 "> Dispatched</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 40%;"><span class="text-right" t-esc="wo_dispatched_count"/></p>
+                                        </div>
+                                        <div class="w-12 h-12 flex justify-center items-center rounded  bg-primary/25">
+                                            <img src="/ag_the_hub/static/images/icons/dispatcheds.png" style="width: 30px; height: 30px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                             <a href="/my/workorders/filter/delivered">
+                            <div class="card rounded shadow " style="margin-bottom: 20px; border-color: #EE3137; border-width: 2px;color: red;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 "> Delivered</h5>
+                                            <p class="font-normal text-sm text-gray-400 truncate " style="margin-top: 40%;"><span t-esc="wo_delivered_count"/></p>
+                                        </div>
+                                        <div class="w-12 h-12 flex justify-center items-center rounded  bg-primary/25">
+                                            <img src="/ag_the_hub/static/images/icons/delivereds.png" style="width: 30px; height: 30px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                    </div>
+                    <div class="2xl:col-span-2 md:col-span-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Work Order</h4>
+                            </div>
+                           
+                        </div>
+                    </div> 
+                    <!-- <script src='https://cdn.plot.ly/plotly-2.26.0.min.js'></script> -->
+                    <div id='myDiv_wo' style="height: inherit"><!-- Plotly chart will be drawn inside this DIV --></div>
+                        <script>
+                            
+
+                        </script>
+
+                    <table class="table table-hover">
+                                            <thead class="bg-light">
+                                              <tr>
+                                                
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Shipping ID</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Ship Date</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Shipping Type</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Customer</th>
+                                                <!-- <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Custom Packaging</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Size</th> -->
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Status </th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr t-foreach="cm_wo_ids" t-as="workorder">
+                                                
+                                                <td class="px-6 py-4 ">  <a t-att-href="'/my/wo/%s' %(workorder.id)">
+                                                    <t t-esc="workorder.name"/></a> </td>
+                                                <td class="px-6 py-4 "><t t-esc="workorder.create_date.date()" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/></td>
+                                                <td class="px-6 py-4 "><span t-field="workorder.shipping_type"/></td>
+                                                <td class="px-6 py-4"><span t-field="workorder.partner_id"/></td>
+                                                <td>
+                                                    <button type="submit" class="btn btn-success"><span t-field="workorder.status"/> </button>
+                                                </td>       
+                                              </tr>
+                                             
+                                              
+                                            </tbody>
+                                        </table>
+                                          
+                                    <!-- </div> -->
+                </div>
+
+
+
+
+                <div id="supportcasses" class="tabcontent" style="display: none;">
+                    <div class="flex flex-col gap-6 mb-3" style="margin-top: 1%;">
+                        <!-- Basic -->
+                       <!--  <div >
+                            <div >
+                                <div >
+                                    <h5 class="h6" style=" color:#155724">Transaction Count for Current Month:  <t t-esc="month"/>, <t t-esc="year"/></h5>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                     <!-- first analytics -->
+                    
+                    <!-- second analytics -->
+                    <div class="row">
+                        <div class="col-md-3">
+                            <a href="/my/wallet/transaction">
+                            <div class="card shadow" style="background-color: #0177FB !important">
+                            
+                                <div  style="background-color: #0177FB !important;">
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="header-title text-2xl text-white" style="margin-bottom: 40px;">Wallet Balance</h5>
+                                            <div class="flex-grow" style="margin-bottom: 25%;margin-top: 52%;">
+                                                <h5 class="bold mb-1 text-3xl text-white"><span class="text-right" t-esc="wallet_balance" t-options="{'widget': 'monetary', 'display_currency': user_id.currency_id}"/></h5>
+                                            </div>
+                                        </div>
+                                        <div class="w-12 h-6 flex justify-center items-center rounded text-white ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye text-white">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                </path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                                </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col" >
+                            <a href="/my/tickets/filter/open_cases">
+                            <div class="card rounded shadow " style="margin-bottom: 20px; border-color: #0070FF; border-width: 2px;color: #0070FF;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-lg mb-1 text-gray-600">Open Cases</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 40%;"><span class="text-right" t-esc="current_ticket_count_open"/></p>
+                                        </div>
+                                        <div class="w-12 h-6 flex justify-center items-center rounded ">
+                                            <!-- <i class="mgc_document_2_line text-xl"></i> -->
+                                            <img src="/ag_the_hub/static/images/icons/opencases.png" style="width: 50px; height: 50px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                            <a href="/my/tickets/filter/closed_cases">
+                            <div class="card rounded shadow " style="margin-bottom: 20px; border-color: #0070FF; border-width: 2px;color: #0070FF;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600">Closed Cases</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 40%;"><span class="text-right" t-esc="current_ticket_count_closed"/></p>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <div class="w-12 h-12 flex justify-center items-center rounded text-white bg-primary/25">
+                                                    <!-- <i class="mgc_document_2_line text-xl"></i> -->
+                                                    <img src="/ag_the_hub/static/images/icons/closedcases.png" style="width: 50px; height: 50px;"/>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        
+
+                        
+                       
+                    </div>
+                    <!-- <div class="2xl:col-span-2 md:col-span-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Revenue updates</h4>
+                            </div>
+                           
+                        </div>
+                    </div> -->
+
+
+                    <div class="flex flex-col gap-6 mb-3" style="margin-top: 1%;margin-bottom: 1%;">
+                        <!-- Basic -->
+                        <!-- <div >
+                            <div >
+                                <div class="flex justify-between items-center">
+                                    <h5 class="h6" style=" color:#155724 !important;">Transaction Count from Inception</h5>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                           <!--  <a href="/my/wallet/transaction">
+
+                            <div class="card shadow" style="background-color: #0177FB !important;">
+                            
+                                <div  style="background-color: #0177FB !important;">
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="header-title text-2xl text-white" style="margin-bottom: 40px;">Wallet Balance</h5>
+                                            <div class="flex-grow" style="margin-bottom: 25%;margin-top: 52%;">
+                                                <h5 class="bold mb-1 text-3xl text-white"><span class="text-right" t-esc="wallet_balance" t-options="{'widget': 'monetary', 'display_currency': user_id.currency_id}"/></h5>
+                                            </div>
+                                        </div>
+                                        <div class="w-12 h-6 flex justify-center items-center rounded text-white ">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye text-white">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                </path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                                </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a> -->
+                        </div>
+                        <div class="col" >
+                            <a href="/my/tickets/filter/pending_cases">
+                            <div class="card rounded shadow " style="margin-bottom: 20px; border-color: #0070FF; border-width: 2px;color: #0070FF;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-lg mb-1 text-gray-600 ">Pending Cases</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate" style="margin-top: 40%;"><span t-esc="overall_ticket_count_open"/></p>
+                                        </div>
+                                        <div class="w-12 h-6 flex justify-center items-center rounded text-white ">
+                                            <!-- <i class="mgc_document_2_line text-xl"></i> -->
+                                            <img src="/ag_the_hub/static/images/icons/pendingcases.png" style="width: 50px; height: 50px;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                        <div class="col">
+                             <a href="/my/tickets/filter/total_cases">
+                            <div class="card rounded shadow " style="margin-bottom: 20px; border-color: #0070FF; border-width: 2px;color: #0070FF;">
+                            
+                                <div  >
+                                    <div class="p-1 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 ">Total Cases</h5>
+                                            <p class="font-normal text-base text-gray-400 truncate " style="margin-top: 40%;"><span t-esc="overall_ticket_count_closed"/></p>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <div class="w-12 h-12 flex justify-center items-center rounded text-white bg-primary/25">
+                                                    <!-- <i class="mgc_document_2_line text-xl"></i> -->
+                                                    <img src="/ag_the_hub/static/images/icons/totalcases.png" style="width: 50px; height: 50px;"/>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        </div>
+                       
+                       
+                        
+                    </div>
+                    <div class="2xl:col-span-2 md:col-span-2">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Support Cases</h4>
+                            </div>
+                           
+                        </div>
+                    </div> 
+                    <div id='myDiv_cases' style="height: inherit"></div>
+                    <!-- <script src='https://cdn.plot.ly/plotly-2.26.0.min.js'></script> -->
+                    <!-- <div id='myDiv_wo' style="height: inherit"></div>
+                        <script>
+                            
+
+                        </script>
+
+                    <table class="table table-hover">
+                                            <thead class="bg-light">
+                                              <tr>
+                                                
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Shipping ID</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Ship Date</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Shipping Type</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Customer</th>
+                                                
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Status </th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr t-foreach="cm_wo_ids" t-as="workorder">
+                                                
+                                                <td class="px-6 py-4 ">  <a t-att-href="'/my/wo/%s' %(workorder.id)">
+                                                    <t t-esc="workorder.name"/></a> </td>
+                                                <td class="px-6 py-4 "><t t-esc="workorder.create_date.date()" t-options='{"widget": "date","format": "dd-MM-yyyy"}'/></td>
+                                                <td class="px-6 py-4 "><span t-field="workorder.shipping_type"/></td>
+                                                <td class="px-6 py-4"><span t-field="workorder.partner_id"/></td>
+                                                <td>
+                                                    <button type="submit" class="btn btn-success"><span t-field="workorder.status"/> </button>
+                                                </td>       
+                                              </tr>
+                                             
+                                              
+                                            </tbody>
+                                        </table> -->
+                                          
+                                    
+                </div>
+
+
+
+
+
+
+
+
+
+                    
+                </div>
+            </section>
+
+        </t>
+    </template>
+</odoo>

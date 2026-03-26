@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="payment_acquirer_paystack" model="payment.acquirer">
+        <field name="name">Paystack Business</field>
+        <field name="provider">paystack</field>
+       <!--  <field name="company_id" ref="base.main_company"/> -->
+       <!--  <field name="redirect_form_view_id" ref="paystack_form"/> -->
+        <!-- <field name="environment">test</field> -->
+        <field name="support_authorization">False</field>
+        <field name="support_refund"></field>
+        <field name="support_tokenization"></field>
+     <!--    <field name="allow_tokenization">True</field> -->
+ <!--     <field name="description" type="html">
+                    <p>
+                        A payment gateway to accept online payments via Paystack.
+                    </p>
+                    <p>
+                         <i class="fa fa-check"/>Online Payment
+                        <i class="fa fa-check"/>eCommerce
+                        <i class="fa fa-check"/>Invoicing
+                      
+                    </p>
+                </field> -->
+    </record>
+
+  <record id="payment_method_paystack" model="account.payment.method">
+            <field name="name">Paystack</field>
+            <field name="code">paystack</field>
+            <field name="payment_type">inbound</field>
+  </record>
+</odoo>

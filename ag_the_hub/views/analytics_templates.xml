@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="portal_my_analytics" name="My Workorders">
+        <t t-call="portal.frontend_layout">
+            <t t-set="is_portal" t-value="True"/>
+            <div id="wrap" class='o_portal_wrap'>
+                <div class="container-fluid mb64 o_products_search_index">
+                    <h3><strong><u>TRANSACTION COUNT FOR CURRENT MONTH: <span style="text-transform: uppercase;" t-esc="month"/></u></strong></h3>
+                    <div class="row d-flex justify-content-around mt-4">
+                        <div class="col text-white text-center bg-success mr-3" style="max-width: 18rem;">
+                            <div class="p-4">
+                                <h4 class="card-title">PENDING</h4>
+                                <h3 class="card-text"><strong><span t-esc="cm_wo_pending_count"/></strong></h3>
+                            </div>
+                        </div>
+                        <div class="col text-white text-center bg-info mr-3" style="max-width: 18rem;">
+                            <div class="p-4">
+                                <h4 class="card-title">AWAITING</h4>
+                                <h3 class="card-text"><strong><span t-esc="cm_wo_awaiting_count"/></strong></h3>
+                            </div>
+                        </div>
+                        <div class="col text-white text-center bg-warning mr-3" style="max-width: 18rem;">
+                            <div class="p-4">
+                                <h4 class="card-title">DELIVERED</h4>
+                                <h3 class="card-text"><strong><span t-esc="cm_wo_delivered_count"/></strong></h3>
+                            </div>
+                        </div>
+                        <div class="col text-white text-center bg-danger mr-3" style="max-width: 18rem;">
+                            <div class="p-4">
+                                <h4 class="card-title">RETURNED</h4>
+                                <h3 class="card-text"><strong><span t-esc="cm_wo_returned_count"/></strong></h3>
+                            </div>
+                        </div>
+                        <div class="col text-white text-center bg-primary mr-3" style="max-width: 18rem;">
+                            <div class="p-4">
+                                <h4 class="card-title">WALLET USAGE</h4>
+                                <h3 class="card-text"><strong>N 11,351,021.06</strong></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <h3><strong><u>TRANSACTION COUNT FROM INCEPTION</u></strong></h3>
+                    <div class="row d-flex justify-content-around mt-4">
+                        <div class="col text-white text-center bg-success mr-3" style="max-width: 18rem;">
+                            <div class="p-4">
+                                <h4 class="card-title">PENDING</h4>
+                                <h3 class="card-text"><strong><span t-esc="wo_pending_count"/></strong></h3>
+                            </div>
+                        </div>
+                        <div class="col text-white text-center bg-info mr-3" style="max-width: 18rem;">
+                            <div class="p-4">
+                                <h4 class="card-title">AWAITING</h4>
+                                <h3 class="card-text"><strong><span t-esc="wo_awaiting_count"/></strong></h3>
+                            </div>
+                        </div>
+                        <div class="col text-white text-center bg-warning mr-3" style="max-width: 18rem;">
+                            <div class="p-4">
+                                <h4 class="card-title">DELIVERED</h4>
+                                <h3 class="card-text"><strong><span t-esc="wo_delivered_count"/></strong></h3>
+                            </div>
+                        </div>
+                        <div class="col text-white text-center bg-danger mr-3" style="max-width: 18rem;">
+                            <div class="p-4">
+                                <h4 class="card-title">RETURNED</h4>
+                                <h3 class="card-text"><strong><span t-esc="wo_returned_count"/></strong></h3>
+                            </div>
+                        </div>
+                        <div class="col text-white text-center bg-primary mr-3" style="max-width: 18rem;">
+                            <div class="p-4">
+                                <h4 class="card-title">WALLET BALANCE</h4>
+                                <h3 class="card-text"><strong>N 8,235,998.96</strong></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

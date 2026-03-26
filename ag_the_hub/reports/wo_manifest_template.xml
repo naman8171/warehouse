@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_print_wo_manifest_document">
+        <t t-call="web.basic_layout">
+            <div class="page">
+                <!-- <t t-set="wro_id" t-value="doc.wro_id"/> -->
+                <div class="row w-100 d-flex">
+                    <div class="w-25 ml-5 d-flex justify-content-end">
+                        <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style="max-height: 150px;" alt="Logo"/>
+                    </div>
+                    <div class="w-75 text-center align-self-end">
+                        <h2>
+                            <strong><span>WORK ORDER MANIFEST</span></strong>
+                        </h2>
+                    </div>
+                </div>
+                <style>
+                    table:nth-of-type(1),
+                    table:nth-of-type(2) {
+                        border: 1px solid black;
+                        margin-bottom: 10px;
+                        border-collapse: collapse;
+                    }
+
+                    table:nth-of-type(1) td,
+                    table:nth-of-type(2) td {
+                        border: 1px solid black;
+                        padding: 5px;
+                    }
+                    table:nth-of-type(2) {
+                        margin-left: auto;
+                        margin-right: auto;
+                    }
+                </style>
+                <table class="w-100 mb-5 mt-5">
+                    <tr>
+                        <td>
+                            <strong><t t-esc="doc.get_pickup_location()"/></strong><br/>
+                            WO No: <strong><t t-esc="doc.name"/></strong><br/>
+                            Date: <strong><span t-field="doc.schedule_pickup"/></strong>
+                        </td>
+                        <td>
+                            Total No. of CTN: <strong><t t-esc="len(doc.package_lines)"/></strong><br/>
+                            Total Units: <strong><t t-esc="sum(doc.wo_line_ids.mapped('product_qty'))"/></strong><br/>
+                            Seal Number: <strong><t t-esc="doc.seal_number"/></strong><br/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Merchant Name: <strong><span t-field="doc.merchand_id"/></strong></td>
+                        <td>Customer Name: <strong><span t-field="doc.partner_id"/></strong></td>
+                    </tr>
+                    <tr>
+                        <td>Pick up Address: <strong><t t-esc="doc.get_pickup_location()"/></strong></td>
+                        <td>Delivery Address: <strong></strong></td>
+                    </tr>
+                    <tr>
+                        <td>Contact Number THL : <strong><t t-esc="doc.get_conatct_number_thl()"/></strong></td>
+                        <td>Contact Number : <strong></strong></td>
+                    </tr>
+                </table>
+                <table class="w-75 text-center" id="product_details">
+                    
+                    <thead style="background: black;color: white;">
+                        <tr>
+                            <th class="text-center">S/N</th>
+                            <th class="text-center">Product Name</th>
+                            <th class="text-center">Internal Reference</th>
+                            <th class="text-center">Package Category</th>
+                            <th class="text-center">QTY</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-set="count" t-value="1"/>
+                        <t t-foreach="doc.get_lines_data()" t-as="line">
+
+                            <tr>
+                                <td><span t-esc="count"/></td>
+                                <td><span t-esc="line['product_name']"/></td>
+                                <td><span t-esc="line['internal_reference']"/></td>
+                                <td><span t-esc="line['packing_categ']"/></td>
+                                <td><span t-esc="line['product_qty']"/></td>
+                            </tr>
+                            <t t-set="count" t-value="count+1"/>
+                        </t>
+                        <tr>
+                            <td class="p-3">  </td>
+                            <td class="p-3">  </td>
+                            <td class="p-3">  </td>
+                            <td class="p-3">  </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="table table-borderless" style="font-weight: bold;">
+                    <thead>
+                        <tr>
+                            <th>THL</th>
+                            <th>RECEIVER</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>THL Representative:</td>
+                            <td>Name:</td>
+                        </tr>
+                        <tr>
+                            <td>Date:</td>
+                            <td>Date:</td>
+                        </tr>
+                        <tr>
+                            <td>Signature:</td>
+                            <td>Signature:</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Vehicle No:</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_print_wo_manifest">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="ag_the_hub.report_print_wo_manifest_document"/>
+            </t>
+        </t>
+    </template>
+
+</odoo>

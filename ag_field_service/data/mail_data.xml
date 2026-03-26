@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="mail_activity_assign_technician" model="mail.activity.type">
+            <field name="name">Assign technician</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">project.task</field>
+        </record>
+
+        <record id="mail_activity_field_service_assign" model="mail.activity.type">
+            <field name="name">Field Service Assign</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">project.task</field>
+        </record>
+
+        <record id="mail_activity_fm_approve_jo" model="mail.activity.type">
+            <field name="name">Technician Submitted JO for Approval</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">project.task</field>
+        </record>
+
+        <record id="mail_activity_procurement_officer_action" model="mail.activity.type">
+            <field name="name">Procurement Officer for Action</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">project.task</field>
+        </record>
+
+        <record id="mail_activity_gm_approve_jo" model="mail.activity.type">
+            <field name="name">Approve Job Order</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">project.task</field>
+        </record>
+
+        <record id="mail_activity_release_products" model="mail.activity.type">
+            <field name="name">Release Products</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">project.task</field>
+        </record>
+
+        <record id="mail_activity_complete_jo" model="mail.activity.type">
+            <field name="name">Complete JO</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">project.task</field>
+        </record>
+
+        <record id="mail_activity_close_jo" model="mail.activity.type">
+            <field name="name">Close Job Order</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">project.task</field>
+        </record>
+
+        <record id="mail_activity_close_equipment_jo" model="mail.activity.type">
+            <field name="name">Ensures Job is done correctly &amp; communicates same to the Engineering Services Manager</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">project.task</field>
+        </record>
+
+
+        <record id="mail_activity_close_ticket" model="mail.activity.type">
+            <field name="name">Close Ticket</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">helpdesk.ticket</field>
+        </record>
+
+        <record id="mail_activity_submit_offer" model="mail.activity.type">
+            <field name="name">Submit Offer</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">purchase.order</field>
+        </record>
+
+        <record id="mail_activity_confirm_po" model="mail.activity.type">
+            <field name="name">PO Confirm</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">purchase.order</field>
+        </record>
+
+        <record id="mail_activity_send_po_to_vendor" model="mail.activity.type">
+            <field name="name">Send PO to Vendor</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">purchase.order</field>
+        </record>
+
+        <record id="mail_activity_approve_po" model="mail.activity.type">
+            <field name="name">Approve PO</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">purchase.order</field>
+        </record>
+
+        <record id="mail_activity_po_supply" model="mail.activity.type">
+            <field name="name">Supply PO</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">stock.picking</field>
+        </record>
+
+        <record id="mail_activity_create_vendor_bill" model="mail.activity.type">
+            <field name="name">Create Vendor BILL</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">purchase.order</field>
+        </record>
+
+        <record id="mail_activity_validate_vendor_bill" model="mail.activity.type">
+            <field name="name">Validate Vendor BILL</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">account.move</field>
+        </record>
+
+        <record id="mail_activity_bill_approval" model="mail.activity.type">
+            <field name="name">Approval</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">4</field>
+            <field name="res_model">account.move</field>
+        </record>
+
+        <record id="mail_activity_coordinate_with_vendor" model="mail.activity.type">
+            <field name="name">Work with Vendor</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">project.task</field>
+        </record>
+
+        <record id="mail_activity_bill_reg_payment" model="mail.activity.type">
+            <field name="name">Process the Payment</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">8</field>
+            <field name="res_model">account.move</field>
+        </record>
+
+        <record id="mail_activity_authorize_payment" model="mail.activity.type">
+            <field name="name">Authorize the Entry</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">8</field>
+            <field name="res_model">account.payment</field>
+        </record>
+
+
+        <!-- Mail Template -->
+        <record id="ag_assign_technician_email_template" model="mail.template">
+            <field name="name">Notification: Assign Technician</field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="subject">Assign Technician to Task</field>
+            <field name="email_to">{{ ctx['email_to'] }}</field>
+            <field name="body_html" type="html">
+                <div>
+                    Dear <t t-out="ctx['name'] or 'Madam/Sir'">Madam/Sir</t>,<br /><br />
+                    
+                    New Task had been Created. Please assign a technician for it.<br /><br />
+
+                    <div style="text-align: center; padding: 16px 0px 16px 0px;">
+                        <a style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" t-attf-href="{{ ctx['url'] }}">View Task</a><br/>
+                    </div>
+
+                    Thank you,<br/><br/>
+                    Team.
+                </div>
+            </field>
+            <field name="lang">{{ object.partner_id.lang or object.user_id.lang or user.lang }}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <record id="ag_field_service_assign_email_template" model="mail.template">
+            <field name="name">Notification: New Field Service Assign </field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="subject">New Field Service Assign</field>
+            <field name="email_to">{{ object.technician_engineer.email }}</field>
+            <field name="body_html" type="html">
+                <div>
+                    Dear <t t-out="ctx['name'] or 'Madam/Sir'">Madam/Sir</t>,<br /><br />
+                    
+                    New Field Service had been Assigned to you.<br /><br />
+
+                    <div style="text-align: center; padding: 16px 0px 16px 0px;">
+                        <a style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" t-attf-href="{{ ctx['url'] }}">View Field Service</a><br/>
+                    </div>
+
+                    Thank you,<br/><br/>
+                    Team.
+                </div>
+            </field>
+            <field name="lang">{{ object.partner_id.lang or object.user_id.lang or user.lang }}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <record id="ag_jo_approval_email_template" model="mail.template">
+            <field name="name">Notification: New JO Approval Assign</field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="subject">New JO Submitted for Approval</field>
+            <field name="email_to">{{ ctx['email_to'] }}</field>
+            <field name="body_html" type="html">
+                <div>
+                    Dear <t t-out="ctx['name'] or 'Madam/Sir'">Madam/Sir</t>,<br /><br />
+                    
+                    New JO had been Submitted <t t-if="ctx['submit_by']">by </t><t t-out="ctx['submit_by'] or ''"></t> to you for Approval.<br /><br />
+
+                    <div style="text-align: center; padding: 16px 0px 16px 0px;">
+                        <a style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" t-attf-href="{{ ctx['url'] }}">View JO</a><br/>
+                    </div>
+
+                    Thank you,<br/><br/>
+                    Team.
+                </div>
+            </field>
+            <field name="lang">{{ object.partner_id.lang or user.lang }}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <record id="ag_procurement_officer_action_email_template" model="mail.template">
+            <field name="name">Notification: New JO Assign for Action</field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="subject">New JO Submitted for Action</field>
+            <field name="email_to">{{ ctx['email_to'] }}</field>
+            <field name="body_html" type="html">
+                <div>
+                    Dear <t t-out="ctx['name'] or 'Madam/Sir'">Madam/Sir</t>,<br /><br />
+                    
+                    New JO had been Submitted <t t-if="ctx['submit_by']">by </t><t t-out="ctx['submit_by'] or ''"></t> to you for Action.<br /><br />
+
+                    <div style="text-align: center; padding: 16px 0px 16px 0px;">
+                        <a style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" t-attf-href="{{ ctx['url'] }}">View JO</a><br/>
+                    </div>
+
+                    Thank you,<br/><br/>
+                    Team.
+                </div>
+            </field>
+            <field name="lang">{{ object.partner_id.lang or user.lang }}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <record id="ag_release_products_email_template" model="mail.template">
+            <field name="name">Notification: Release Product for JO</field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="subject">Release Product for JO</field>
+            <field name="email_to">{{ ctx['email_to'] }}</field>
+            <field name="body_html" type="html">
+                <div>
+                    Dear <t t-out="ctx['name'] or 'Madam/Sir'">Madam/Sir</t>,<br /><br />
+                    
+                    Release Products for JO <t t-out="ctx['jo_number'] or ''"></t>.<br /><br />
+
+                    <div style="text-align: center; padding: 16px 0px 16px 0px;">
+                        <a style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" t-attf-href="{{ ctx['url'] }}">View JO</a><br/>
+                    </div>
+
+                    Thank you,<br/><br/>
+                    Team.
+                </div>
+            </field>
+            <field name="lang">{{ object.partner_id.lang or user.lang }}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <record id="ag_products_released_email_template" model="mail.template">
+            <field name="name">Notification: Product released for JO</field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="subject">Product Released for JO</field>
+            <field name="email_to">{{ ctx['email_to'] }}</field>
+            <field name="body_html" type="html">
+                <div>
+                    Dear <t t-out="ctx['name'] or 'Madam/Sir'">Madam/Sir</t>,<br /><br />
+                    
+                    Products Release for JO <t t-out="ctx['jo_number'] or ''"></t>. Please check and complete the JO.<br /><br />
+
+                    <div style="text-align: center; padding: 16px 0px 16px 0px;">
+                        <a style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" t-attf-href="{{ ctx['url'] }}">View JO</a><br/>
+                    </div>
+
+                    Thank you,<br/><br/>
+                    Team.
+                </div>
+            </field>
+            <field name="lang">{{ object.partner_id.lang or user.lang }}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <record id="ag_jo_close_email_template" model="mail.template">
+            <field name="name">Notification: JO Close</field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="subject">Close JO</field>
+            <field name="email_to">{{ ctx['email_to'] }}</field>
+            <field name="body_html" type="html">
+                <div>
+                    Dear <t t-out="ctx['name'] or 'Madam/Sir'">Madam/Sir</t>,<br /><br />
+                    
+                    JO is Completed <t t-if="ctx['submit_by']">by </t><t t-out="ctx['submit_by'] or ''"></t>. Please review and close it.<br /><br />
+
+                    <div style="text-align: center; padding: 16px 0px 16px 0px;">
+                        <a style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" t-attf-href="{{ ctx['url'] }}">View JO</a><br/>
+                    </div>
+
+                    Thank you,<br/><br/>
+                    Team.
+                </div>
+            </field>
+            <field name="lang">{{ object.partner_id.lang or user.lang }}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <record id="ag_close_ticket_email_template" model="mail.template">
+            <field name="name">Notification: Close Ticket</field>
+            <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/>
+            <field name="subject">Close Ticket</field>
+            <field name="email_to">{{ ctx['email_to'] }}</field>
+            <field name="body_html" type="html">
+                <div>
+                    Dear <t t-out="ctx['name'] or 'Madam/Sir'">Madam/Sir</t>,<br /><br />
+                    
+                    The Ticket had been resolved. Please close it.<br /><br />
+
+                    <div style="text-align: center; padding: 16px 0px 16px 0px;">
+                        <a style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" t-attf-href="{{ ctx['url'] }}">View the Ticket</a><br/>
+                    </div>
+
+                    Thank you,<br/><br/>
+                    Team.
+                </div>
+            </field>
+            <field name="lang">{{ object.partner_id.lang or user.lang }}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <record id="ag_ticket_closure_email_template" model="mail.template">
+            <field name="name">Notification: Ticket Closure</field>
+            <field name="model_id" ref="helpdesk.model_helpdesk_ticket"/>
+            <field name="subject">Ticket Closure</field>
+            <field name="email_to">{{ ctx['email_to'] }}</field>
+            <field name="body_html" type="html">
+                <div>
+                    Dear <t t-out="ctx['name'] or 'Madam/Sir'">Madam/Sir</t>,<br /><br />
+                    
+                    Your Ticket had been resolved and closed by Helpdesk officer.<br /><br />
+
+                    <div style="text-align: center; padding: 16px 0px 16px 0px;">
+                        <a style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" t-attf-href="{{ ctx['url'] }}">View the Ticket</a><br/>
+                    </div>
+
+                    Thank you,<br/><br/>
+                    Team.
+                </div>
+            </field>
+            <field name="lang">{{ object.partner_id.lang or user.lang }}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <record id="ag_po_confirm_email_template" model="mail.template">
+            <field name="name">Notification: PO Confirm</field>
+            <field name="model_id" ref="purchase.model_purchase_order"/>
+            <field name="subject">PO Confirm</field>
+            <field name="email_to">{{ ctx['email_to'] }}</field>
+            <field name="body_html" type="html">
+                <div>
+                    Dear <t t-out="ctx['name'] or 'Madam/Sir'">Madam/Sir</t>,<br /><br />
+                    
+                    New PO had been Submitted <t t-if="ctx['submit_by']">by </t><t t-out="ctx['submit_by'] or ''"></t> to you for Confirmation.<br /><br />
+
+                    <div style="text-align: center; padding: 16px 0px 16px 0px;">
+                        <a style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" t-attf-href="{{ ctx['url'] }}">View PO</a><br/>
+                    </div>
+
+                    Thank you,<br/><br/>
+                    Team.
+                </div>
+            </field>
+            <field name="lang">{{ object.partner_id.lang or user.lang }}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <record id="ag_po_approve_email_template" model="mail.template">
+            <field name="name">Notification: Approve PO</field>
+            <field name="model_id" ref="purchase.model_purchase_order"/>
+            <field name="subject">Approve PO</field>
+            <field name="email_to">{{ ctx['email_to'] }}</field>
+            <field name="body_html" type="html">
+                <div>
+                    Dear <t t-out="ctx['name'] or 'Madam/Sir'">Madam/Sir</t>,<br /><br />
+                    
+                    New PO had been Submitted <t t-if="ctx['submit_by']">by </t><t t-out="ctx['submit_by'] or ''"></t> to you for Approval.<br /><br />
+
+                    <div style="text-align: center; padding: 16px 0px 16px 0px;">
+                        <a style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" t-attf-href="{{ ctx['url'] }}">View PO</a><br/>
+                    </div>
+
+                    Thank you,<br/><br/>
+                    Team.
+                </div>
+            </field>
+            <field name="lang">{{ object.partner_id.lang or user.lang }}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+        <record id="ag_po_completed_email_template" model="mail.template">
+            <field name="name">Notification: PO Completed</field>
+            <field name="model_id" ref="project.model_project_task"/>
+            <field name="subject">Work with Vendor</field>
+            <field name="email_to">{{ ctx['email_to'] }}</field>
+            <field name="body_html" type="html">
+                <div>
+                    Dear <t t-out="ctx['name'] or 'Madam/Sir'">Madam/Sir</t>,<br /><br />
+                    
+                    PO is Completed and approved<t t-if="ctx['submit_by']">by </t><t t-out="ctx['submit_by'] or ''"></t>. Please Coordinate with vendor to close the JO.<br /><br />
+
+                    <div style="text-align: center; padding: 16px 0px 16px 0px;">
+                        <a style="background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;" t-attf-href="{{ ctx['url'] }}">View JO</a><br/>
+                    </div>
+
+                    Thank you,<br/><br/>
+                    Team.
+                </div>
+            </field>
+            <field name="lang">{{ object.partner_id.lang or user.lang }}</field>
+            <field name="auto_delete" eval="False"/>
+        </record>
+
+    </data>
+</odoo>

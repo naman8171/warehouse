@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="my_wallet_transaction" name="My Analytics">
+        <t t-call="portal.frontend_layout">
+        	    <nav aria-label="breadcrumb flex justify-between" style="background-color:#e9ecef;margin-left: 0%;">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item "><a class="bold text-danger" href="/my">THL</a></li>
+                      <li class="breadcrumb-item active" aria-current="page" style="background: transparent;">Statements</li>
+                    </ol>
+                  </nav>
+            <section>
+                <div class="container-fuild p-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="flex justify-between items-center">
+                                        <h4 class="card-title"> Statements</h4>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    
+                                    <div class="card-header pl-1 pr-1 bg-light">
+                                        <div class="flex justify-between items-center">
+                                            <div class="d-flex justify-content-end mr-3">
+                                                
+                                               
+                                                <div class="d-flex align-items-center pr-2"  >
+                                                    <a class="d-flex align-items-center pr-2" href="#" id="sweetalert-params" style="color: #666d7d;">
+                                                        <!-- Delete Icon -->
+                                                        <i class="fas fa-trash-alt mr-2"></i>
+                                                        <!-- Delete Text -->
+                                                        <span>Delete</span>
+                                                    </a>
+                                                </div>
+                                                <button class="btn bg-white border" type="button">
+                                                    <i class="fas fa-file-export mr-2"></i>Export
+                                                 </button>
+                                                
+                                              </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="">
+                                       <table class="table table-hover">
+                                           <thead class="bg-light">
+                                              <tr>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Transaction</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Customer </th>
+                                                
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Sale Order </th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" > Amount</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" > Currency</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <t t-foreach="wallets" t-as="wallet">
+                                                <t t-if='wallet.wallet_type == "credit"'>
+                                        <tr style='background-color:rgba(255, 0, 24, 0.37);'>
+                                            <td class="px-6 py-4 "> <span t-field="wallet.wallet_type"/>
+                                            </td>
+                                            <td class="px-6 py-4 "><span t-field="wallet.partner_id.name"/></td>
+                                            <td class="px-6 py-4 "><span t-field="wallet.sale_order_id.name"/></td>
+                                            <td class="px-6 py-4 ">
+                                                <span t-field="wallet.amount"/>
+                                            </td>
+                                            <td class="px-6 py-4 "><span t-field="wallet.currency_id.name"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <t t-if='wallet.wallet_type == "debit"'>
+                                        <tr style='background-color:rgba(255, 0, 24, 0.37);'>
+                                            <td class="px-6 py-4 "> <span t-field="wallet.wallet_type"/>
+                                            </td>
+                                            <td class="px-6 py-4 "><span t-field="wallet.partner_id.name"/></td>
+                                            <td class="px-6 py-4 "><span t-field="wallet.sale_order_id.name"/></td>
+                                            <td class="px-6 py-4 ">
+                                                <span t-field="wallet.amount"/>
+                                            </td>
+                                            <td class="px-6 py-4 "><span t-field="wallet.currency_id.name"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    </t>
+                                              
+                                            </tbody>
+                                          </table>
+                                          
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            
+                        </div>
+                    </div>
+                    <br/>
+                    <t t-call="portal.pager"/>
+                    
+                </div>
+            </section>
+
+        </t>
+    </template>
+</odoo>

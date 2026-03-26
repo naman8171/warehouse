@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="my_receiving_hold" name="My invoices">
+            <t t-call="portal.frontend_layout">
+
+                
+                <nav aria-label="breadcrumb flex justify-between" style="background-color:#e9ecef;margin-left: 0%;">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item "><a class="bold text-danger" href="/my">THL</a></li>
+                      <li class="breadcrumb-item active" aria-current="page" style="background: transparent;">On Hold Receiving </li>
+                    </ol>
+                  </nav>
+            
+            <section>
+                <div class="container-fuild p-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="flex justify-between items-center">
+                                        <h4 class="card-title"> On Hold Receiving </h4>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    
+
+                                    <div class="card-header pl-1 pr-1 bg-light">
+                                        <div class="flex justify-between items-center">
+                                            <div class="d-flex justify-content-end mr-3">
+                                                <form class="form-inline pr-2">
+                                                    <!-- Search Icon -->
+                                                    <div class="input-group">
+                                                      <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                          <i class="fa fa-search"></i>
+                                                        </span>
+                                                      </div>
+                                                      <!-- Search Text Field -->
+                                                      <input type="text" class="form-control" placeholder="Search"/>
+                                                    </div>
+                                                </form>
+
+                                               
+                                                
+                                                <div class="dropdown mr-2 border">
+                                                    <button class="btn bg-white dropdown-toggle" type="button" id="filterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fa fa-sort-amount-down mr-2"></i> Filter 
+                                                      </button>
+                                                    <div class="dropdown-menu" aria-labelledby="filterDropdown">
+                                                      <a class="dropdown-item" href="#">Link 1</a>
+                                                      <a class="dropdown-item" href="#">Link 2</a>
+                                                      <a class="dropdown-item" href="#">Link 3</a>
+                                                    </div>
+                                                </div>
+                                                
+                                              </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="">
+                                        <table class="table table-hover">
+                                            <thead class="bg-light">
+                                              <tr>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Merchant Name</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Inventory ID</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Status </th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" > Date</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="ticket_ids" t-as="ticket">
+                                                    <t t-if="ticket.wro_id or ticket.wo_id">
+                                              <tr >
+                                                <td class="px-6 py-4 " >  <a t-att-href="'/helpdesk/ticket/%s' %(ticket.id)"  t-field="ticket.partner_id.name"/> </td>
+                                                <td class="px-6 py-4 "><span t-if="ticket.wro_id" t-field="ticket.wro_id.name"/><span t-if="ticket.wo_id" t-field="ticket.wo_id.name"/></td>
+                                                <td class="px-6 py-4 ">
+                                                    <span t-if="ticket.stage_id.is_close" class="badge badge-success">Resolved</span>
+                                                     <span t-if="not ticket.stage_id.is_close" class="badge badge-danger">Unresolved</span>
+                                                </td>
+                                                <td class="px-6 py-4 "><span t-field="ticket.create_date"/></td>
+                                              </tr>
+                                          </t>
+                                      </t>
+                                             
+                                              
+                                            </tbody>
+                                          </table>
+                                          
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <div class="py-1 px-4">
+                                <nav class="flex items-center space-x-2">
+                                    
+                                    <a class="text-gray-400  rounded-circle p-4 items-center " style="width: 200px; height: 200px;" href="#"> 
+                                        <span aria-hidden="true">«</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="w-10 h-10 bg-primary text-white p-4 inline-flex items-center text-sm font-medium rounded-full" href="#" aria-current="page">1</a>
+                                    <a class="w-10 h-10 text-gray-400 hover:text-primary p-4 inline-flex items-center text-sm font-medium rounded-full" href="#">2</a>
+                                    <a class="w-10 h-10 text-gray-400 hover:text-primary p-4 inline-flex items-center text-sm font-medium rounded-full" href="#">3</a>
+                                    <a class="text-gray-400 hover:text-primary p-4 inline-flex items-center gap-2 font-medium rounded-md" href="#">
+                                        <span class="sr-only">Next</span>
+                                        <span aria-hidden="true">»</span>
+                                    </a>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    
+                </div>
+            </section>
+            </t>
+        </template>
+
+</data>
+</odoo>

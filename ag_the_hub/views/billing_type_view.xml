@@ -1,0 +1,130 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+
+        <record model="ir.ui.view" id="billing_type_list_view">
+            <field name="name">billing.type.list.view</field>
+            <field name="model">billing.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="days"/>
+                    
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="billing_type_form_view">
+            <field name="name">billing.type.form.view</field>
+            <field name="model">billing.type</field>
+            <field name="arch" type="xml">
+            <form>
+                
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" class="oe_inline" />
+                            </h1>
+                        </div>
+                    <group>
+                        <group>
+                            <field name="days" required="1"/>
+                            <field name="storage_type" required="1"/>
+                            <!-- <field name="sequence"/> -->
+                            
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Packing Type Template">
+                            <field name="packing_template_ids">
+                                <tree editable="bottom">
+                                    <field name="packing_type_id" required="1"/>
+                                    <field name="packing_type"/>
+                                    <field name="product_id" required="1"/>
+                                    <field name="price" readonly="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Storage Type Template">
+                            <field name="storage_template_ids">
+                                <tree editable="bottom">
+                                    <field name="storage_type" required="1"/>
+                                    <field name="storage_sel_type" invisible="1"/>
+                                    <field name="type"/>
+                                    <field name="product_id" required="1"/>
+                                    <field name="price" readonly="1"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Handling Fee">
+                            <group>
+                                <group>
+                                    <field name="special_price_enable"/>
+                                </group>
+                            </group>
+                            <group attrs="{'invisible': [('special_price_enable', '=', False)]}">
+                                <group string="Pallet">
+                                        <field name="incoming_pallet_cost_cons"/>
+                                        <field name="incoming_pallet_cost_cons_product" attrs="{'required': [('special_price_enable', '=', True)]}"/>
+
+
+                                    <field name="incoming_pallet_cost_noncons"/>
+                                    <field name="incoming_pallet_cost_noncons_product" attrs="{'required': [('special_price_enable', '=', True)]}"/>
+
+                                    <field name="outgoing_pallet_cost_cons"/>
+                                    <field name="outgoing_pallet_cost_cons_product" attrs="{'required': [('special_price_enable', '=', True)]}"/>
+
+
+                                    <field name="outgoing_pallet_cost_noncons"/>
+                                    <field name="outgoing_pallet_cost_noncons_product" attrs="{'required': [('special_price_enable', '=', True)]}"/>
+
+                                </group>
+                                <group string="Box">
+                                    <field name="incoming_box_cost_cons"/>
+                                    <field name="incoming_box_cost_cons_product" attrs="{'required': [('special_price_enable', '=', True)]}"/>
+
+
+                                    <field name="incoming_box_cost_noncons"/>
+                                    <field name="incoming_box_cost_noncons_product" attrs="{'required': [('special_price_enable', '=', True)]}"/>
+
+
+                                    <field name="outgoing_box_cost_cons"/>
+                                    <field name="outgoing_box_cost_cons_product" attrs="{'required': [('special_price_enable', '=', True)]}"/>
+
+
+                                    <field name="outgoing_box_cost_noncons"/>
+                                    <field name="outgoing_box_cost_noncons_product" attrs="{'required': [('special_price_enable', '=', True)]}"/>
+
+                                </group>
+                            </group>
+                        </page>
+                        
+                    </notebook>
+                        
+                </sheet>
+                
+            </form>
+        </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="billing_type_action_window">
+        <field name="name">Billing Type</field>
+        <field name="res_model">billing.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Billig Type
+            </p>
+        </field>
+    </record>
+    
+    <!-- Top menu item -->
+    <menuitem id="menu_billing_type" name="Billing Type" action="billing_type_action_window"
+    parent="ag_the_hub.menu_thehub_config" sequence="4"/>
+
+
+
+  </data>
+</odoo>

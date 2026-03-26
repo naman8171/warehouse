@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <template id="my_reorder_level_notifications" name="My Reorder Level Notifications">
+            <t t-call="portal.frontend_layout">
+
+                
+                <nav aria-label="breadcrumb flex justify-between" style="background-color:#e9ecef;margin-left: 0%;">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item "><a class="bold text-danger" href="/my">THL</a></li>
+                      <li class="breadcrumb-item active" aria-current="page" style="background: transparent;">Reorder Level Notifications </li>
+                    </ol>
+                  </nav>
+            
+            <section>
+                <div class="container-fuild p-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="flex justify-between items-center">
+                                        <h4 class="card-title"> Reorder Level Notifications </h4>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    
+
+                                   
+                                    
+                                    <div class="">
+                                        <table class="table table-hover">
+                                            <thead class="bg-light">
+                                              <tr>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Product</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Old Reorder Level</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Updated Reorder Level </th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" > Updated On</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="reorder_level_notifications_ids" t-as="reorder_level_notifications_id">
+                                                    
+                                              <tr >
+                                                <td class="px-6 py-4 " >  <span t-field="reorder_level_notifications_id.product_id"/> </td>
+                                                <td class="px-6 py-4 "><span  t-field="reorder_level_notifications_id.old_reorder_level"/></td>
+                                                <td class="px-6 py-4 ">
+                                                    <span t-field="reorder_level_notifications_id.new_reorder_level" ></span>
+                                                    
+                                                </td>
+                                                <td class="px-6 py-4 ">
+                                                    <span t-field="reorder_level_notifications_id.create_date" ></span>
+                                                    
+                                                </td>
+                                                
+                                              </tr>
+                                          </t>
+                                     
+                                             
+                                              
+                                            </tbody>
+                                          </table>
+                                          
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <t t-call="portal.pager"/>
+                        </div>
+                    </div>
+                    <br/>
+                    
+                </div>
+            </section>
+            </t>
+        </template>
+
+</data>
+</odoo>

@@ -1,0 +1,29 @@
+<odoo>
+    <record id="view_zeroization_wizard_form" model="ir.ui.view">
+        <field name="name">inventory.zeroization.wizard.form</field>
+        <field name="model">inventory.zeroization.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Zeroize Stock Quantities">
+                <group>
+                    <field name="owner_id" domain="[('id', 'in', allowed_owner_ids)]" options="{'no_create': True, 'no_create_edit': True}"/>
+                    <field name="effective_date"/>
+                </group>
+                <group>
+                    <field name="allowed_owner_ids" widget="many2many_tags" invisible="1"/>
+                    <!-- <field name="affected_product_ids" widget="many2many_tags" invisible="1"/> -->
+                </group>
+                <footer>
+                    <button name="action_zeroize_stock" type="object" string="Confirm Zeroization" class="btn-danger"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_zeroization_wizard" model="ir.actions.act_window">
+        <field name="name">Zeroize Inventory</field>
+        <field name="res_model">inventory.zeroization.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

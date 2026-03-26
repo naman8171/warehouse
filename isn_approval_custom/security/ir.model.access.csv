@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_payment_approval_entry,access.payment.approval.entry,model_payment_approval_entry,account.group_account_user,1,1,1,0
+access_approval_amount_line,access_approval_amount_line,model_approval_amount_line,,1,1,1,1
+access_payment_amount_line_approval,access.payment.amount.line.approval,model_payment_amount_line_approval,account.group_account_user,1,1,1,1
+access_approval_request_reapproval_user,access_approval_request_reapproval,model_approval_request_reapproval,approvals.group_approval_user,1,1,1,1
+access_region_location,region.location,model_region_location,,1,1,1,1
+access_approval_nonsku_product_line,approval.nonsku.product.line,model_approval_nonsku_product_line,,1,1,1,1

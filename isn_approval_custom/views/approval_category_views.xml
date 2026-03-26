@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="approval_purchase_category_view_form_inherit_isn" model="ir.ui.view">
+        <field name="name">approval.purchase.category.view.form.inherit.isn</field>
+        <field name="model">approval.category</field>
+        <field name="inherit_id" ref="approvals.approval_category_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='approval_type']" position="attributes">
+                <attribute name="invisible">0</attribute>
+            </xpath>
+            <xpath expr="//field[@name='has_date']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('approval_type', '=', 'payment')]}
+                </attribute>
+                <attribute name="force_save">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='has_amount']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('approval_type', '=', 'payment')]}
+                </attribute>
+                <attribute name="force_save">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='has_payment_method']" position="attributes">
+                <attribute name="attrs">
+                    {'readonly': [('approval_type', '=', 'payment')]}
+                </attribute>
+                <attribute name="force_save">1</attribute>
+            </xpath>
+            <group name="approvers" position="inside">
+            		<field name="to_process_payment_user_id" widget="many2many_tags" options="{'no_open':True, 'no_create':True}" attrs="{'invisible':[('approval_type','!=', 'payment')]}"/>
+            </group>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="group_multi_branch" model="res.groups">
+            <field name="category_id" ref="base.module_category_usability"/>
+        </record>
+
+    </data>
+</odoo>

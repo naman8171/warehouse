@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="vendor_bill_reapproval_view" model="ir.ui.view">
+        <field name="name">Vendor Bill Reapproval Request</field>
+        <field name="model">vendor.bill.reapproval</field>
+        <field name="arch" type="xml">
+	        <form string="Create Journal Entry for Payment">
+	            <p class="oe_grey">
+	                Please enter the Reason
+	            </p>
+	            <group>
+	            	<field name="reason" required="1"/>
+	            </group>
+	            <footer>
+	                <button name="approval_confirm" string="Confirm"  class="btn-primary" type="object"/>
+	                <button string="Cancel" class="btn-secondary" special="cancel"/>
+	            </footer>
+	        </form>
+        </field>
+    </record>
+    
+    <record id="action_vendor_bill_reapproval" model="ir.actions.act_window">
+        <field name="name">Vendor Bill Reapproval Request</field>
+        <field name="res_model">vendor.bill.reapproval</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="vendor_bill_reapproval_view"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

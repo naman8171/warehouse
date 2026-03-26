@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_print_label_single_sku_per_box_document">
+        <t t-call="web.basic_layout">
+            <div class="page">
+                <t t-foreach="doc.wro_single_sku_per_box_line_ids" t-as="line">
+                    <t t-set="wro_id" t-value="doc.wro_id"/>
+                    <div class="row w-100 d-flex">
+                        <div class="w-75 text-center">
+                            <h2 style="color:red;">
+                                <span>WRO # <t t-esc="wro_id.name"/></span>
+                            </h2>
+                        </div>
+                        <div class="w-25 d-flex justify-content-end">
+                            <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style="max-height: 45px;" alt="Logo"/>
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % ('Code128', line.package_number, 800, 170)" style="border-top:1px solid #ccc;"/>
+                    </div>
+                    <p style="page-break-after:always;"/>
+                   
+                    <t t-if="line.send_as == 'non_consolidated'" t-foreach="int(doc.qty_per_box)" t-as="qty">
+
+                        
+                    <div class="row text-center">
+                        <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style="max-height: 45px;" alt="Logo"/>
+                        <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % ('Code128', line.package_number+'/'+str(qty+1), 800, 170)" style="border-top:1px solid #ccc;"/>
+                        
+                    </div>
+                        <p style="page-break-after:always;"/>
+                    </t>
+                </t>
+            </div>
+        </t>
+    </template>
+
+
+
+    <template id="report_print_label_single_sku_per_pallet_document">
+        <t t-call="web.basic_layout">
+            <div class="page">
+                <t t-foreach="doc.wro_single_sku_per_pallet_line_ids" t-as="line">
+                    <t t-set="wro_id" t-value="doc.wro_id"/>
+                    <div class="row w-100 d-flex">
+                        <div class="w-75 text-center">
+                            <h2 style="color:red;">
+                                <span>WRO # <t t-esc="wro_id.name"/></span>
+                            </h2>
+                        </div>
+                        <div class="w-25 d-flex justify-content-end">
+                            <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style="max-height: 45px;" alt="Logo"/>
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % ('Code128', line.package_number, 800, 170)" style="border-top:1px solid #ccc;"/>
+                    </div>
+                    <p style="page-break-after:always;"/>
+
+                     <t t-if="line.send_as == 'non_consolidated'" t-foreach="int(doc.qty_per_pallet)" t-as="qty">
+
+                        
+                    <div class="row text-center">
+                        <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % ('Code128', line.package_number+'/'+str(qty+1), 800, 170)" style="border-top:1px solid #ccc;"/>
+                        <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style="max-height: 45px;" alt="Logo"/>
+                    </div>
+                        <p style="page-break-after:always;"/>
+                    </t>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_print_label_single_sku_per_box">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="ag_the_hub.report_print_label_single_sku_per_box_document"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_print_label_single_sku_per_pallet">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="ag_the_hub.report_print_label_single_sku_per_pallet_document"/>
+            </t>
+        </t>
+    </template>
+
+
+    <template id="report_print_label_single_sku_per_pallet_with_storage_location">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="ag_the_hub.report_print_label_single_sku_per_pallet_document_storage_location"/>
+            </t>
+        </t>
+    </template>
+
+
+    <template id="report_print_label_single_sku_per_pallet_document_storage_location">
+        <t t-call="web.basic_layout">
+            <div class="page">
+                <t t-foreach="doc.wro_single_sku_per_pallet_line_ids" t-as="line">
+                    <t t-set="wro_id" t-value="doc.wro_id"/>
+                    <div class="row w-100 d-flex">
+                        <div class="w-25 d-flex justify-content-start">
+                            <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style="max-height: 40px;" alt="Logo"/>
+                        </div>
+                        <div class="w-75 text-center">
+                            <h2 style="color:red;">
+                                <span>WRO # <t t-esc="wro_id.name"/></span>
+                            </h2>
+                        </div>
+                        
+                    </div>
+                    <div class="row text-center">
+                        <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % ('Code128', line.package_number, 800, 170)" style="border-top:1px solid #ccc;"/>
+                    </div>
+                        <div class="text-center" style="font-size:150%;width:100%;margin-left: 0%;">
+
+                        <t t-if="line.location_id">
+                            Storage Location : <span t-field="line.location_id.display_name"/>
+                        </t>
+                    </div>
+                    <p style="page-break-after:always;"/>
+
+                     <t t-if="line.send_as == 'non_consolidated'" t-foreach="line.wro_single_sku_per_pallet_product_line_ids" t-as="product_line">
+
+                        
+                    <div class="row text-center">
+                        <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % ('Code128', product_line.package_number, 800, 170)" style="border-top:1px solid #ccc;"/>
+                        
+
+                    </div>
+                    <div class="row">
+                        <div class="col-4 text-left">
+                            <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style="max-height: 45px;" alt="Logo"/>
+                        </div>
+                        
+                        <div class="col-8" style="font-size:150%;width:100%;">
+                            <!-- <t t-esc="product_line"/> -->
+                        <t t-if="product_line.location_id">
+                            Storage Location : <span t-field="product_line.location_id.display_name"/>
+                        </t>
+                    </div>
+                </div>
+                        <p style="page-break-after:always;"/>
+                    </t>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_print_label_single_sku_per_box_per_storage_location">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="ag_the_hub.report_print_label_single_sku_per_box_document_with_storage_location"/>
+            </t>
+        </t>
+    </template>
+
+
+    <template id="report_print_label_single_sku_per_box_document_with_storage_location">
+        <t t-call="web.basic_layout">
+            <div class="page">
+                <t t-foreach="doc.wro_single_sku_per_box_line_ids" t-as="line">
+                    <t t-set="wro_id" t-value="doc.wro_id"/>
+                    <div class="row w-100 d-flex">
+                        <div class="w-25 text-left">
+                            <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style="max-height: 40px;" alt="Logo"/>
+                        </div>
+                        <div class="w-75 text-center">
+                            <h2 style="color:red;">
+                                <span>WRO # <t t-esc="wro_id.name"/></span>
+                            </h2>
+                        </div>
+                        <!-- <div class="w-25 d-flex justify-content-end">
+                            <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style="max-height: 45px;" alt="Logo"/>
+                        </div> -->
+                    </div>
+                    <div class="row text-center" style="border-bottom:0px;">
+                        <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % ('Code128', line.package_number, 800, 170)" style="border-top:1px solid #ccc;"/>
+                    </div>
+                    <div class="row">
+                        
+                    <div class="col-12" style="font-size:150%;width:100%;margin-left: 25%;">
+
+                        <t t-if="line.location_id">
+                            Storage Location : <span t-field="line.location_id.display_name"/>
+                        </t>
+                    </div>
+                </div>
+                    <p style="page-break-after:always;"/>
+                   
+                    <t t-if="line.send_as == 'non_consolidated'" t-foreach="line.wro_single_sku_per_box_product_line_ids" t-as="product_line">
+
+                        
+                    <div class="row text-center">
+                        <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % ('Code128', product_line.package_number, 800, 170)" style="border-top:1px solid #ccc;"/>
+                        <!-- <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style="max-height: 45px;" alt="Logo"/> -->
+                    </div>
+                    <!-- <div class="text-center" style="font-size:150%;width:100%;margin-left: -15%;">
+
+                        <t t-if="product_line.location_id">
+                            Storage Location : <span t-field="product_line.location_id.display_name"/>
+                        </t>
+                    </div>\ -->
+                    <div class="row ">
+                        <div class="col-4 text-left">
+                        <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style="max-height: 45px;" alt="Logo"/>
+                    </div>
+                    <div class="col-8" style="font-size:150%;width:100%;">
+
+                        <t t-if="product_line.location_id">
+                            Storage Location : <span t-field="product_line.location_id.display_name"/>
+                        </t>
+                    </div>
+                </div>
+                        <p style="page-break-after:always;"/>
+                    </t>
+                </t>
+            </div>
+        </t>
+    </template>
+
+
+
+
+
+
+
+
+
+</odoo>

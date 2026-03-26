@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_scanned_package_number_form" model="ir.ui.view">
+            <field name="name">scanned.package.number.form</field>
+            <field name="model">scanned.package.number</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+	                    <group >
+                            <field name="wo_id" invisible="1"/>
+                            <field name="scan_location"/>
+                           
+                        </group>
+                        
+                    </group>
+                    <footer>
+                        <button name="update_package_name" string="Update Scan package" type="object" class="btn-primary" />
+                        <button name="update_package_again_name" string="Update and Scan Again" type="object" class="btn-primary" />
+                       
+                        
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        
+
+    </data>
+</odoo>

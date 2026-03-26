@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<template id="my_account" name="Account Setting">
+		<t t-call="portal.frontend_layout">
+			    <nav aria-label="breadcrumb flex justify-between" style="background-color:#e9ecef;margin-left: 0%;">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item "><a class="bold text-danger" href="/my">THL</a></li>
+                      <li class="breadcrumb-item active" aria-current="page" style="background: transparent;">Wallet Top-Up</li>
+                    </ol>
+                  </nav>
+            <section>
+                <div class="container-fuild p-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            
+                            <div class="card" style=" margin-bottom: 20px;border-color: #EE3137; ">
+                                <div class="card-header">
+                                    <div class="flex justify-between items-center">
+                                        <h6> My Profile</h6>
+                                    </div>
+                                </div>
+                                <div class="card rounded shadow " >
+                            
+                                    <div class="p-4 md:p-7 d-flex justify-content items-center">
+                                        <div>
+                                            <div class="mr-3">
+                                                 <t t-if="user_id.image_1920">
+                                <t t-set="avatar_source" t-value="image_data_uri(user_id.image_1920)"/>
+                            </t>
+                            <t t-else="">
+                                <t t-set="avatar_source" t-value="image_data_uri(user_id.avatar_256)"/>
+                            </t>
+                        
+                                <img t-att-src="avatar_source" alt="Your Image" width="60" height="60" class="img-fluid rounded-circle" loading="eager"/>
+                                               
+                                            </div>
+                                        </div>
+                                       
+                                        <div>
+                                            <h5 class="text-base mb-1 " style="font-weight: 600;"><span t-field="user_id.partner_id"/></h5>
+                                            <p class="font-normal text-sm text-gray-400 truncate "><span t-field="user_id.partner_id.email"/></p>
+                                        </div>
+                                            
+                                    </div>
+                                    <hr/>
+                                     <div class="ml-3 mr-3 md:p-7 d-flex justify-content-between items-center">
+                                        <p  class="text-gray-800" style="font-weight: 500; font-size: .875rem; line-height: 1.25rem;" > Merchant Unique ID</p>
+                                       
+                                        <label  class="text-gray-800" style="font-weight: 500; font-size: .875rem; line-height: 1.25rem;"> <span t-field="user_id.partner_id.merchant_sequence"/></label>  
+                                    </div>
+                                    <div class="ml-3 mr-3 md:p-7 d-flex justify-content-between items-center">
+                                        <p  class="text-gray-800" style="font-weight: 500; font-size: .875rem; line-height: 1.25rem;" > Fullname</p>
+                                       
+                                        <label  class="text-gray-800" style="font-weight: 500; font-size: .875rem; line-height: 1.25rem;"> <span t-field="user_id.partner_id"/></label>  
+                                    </div>
+                                    <div class="ml-3 mr-3 md:p-7 d-flex justify-content-between items-center">
+                                        <p  class="text-gray-800" style="font-weight: 500; font-size: .875rem; line-height: 1.25rem;" > Phone Number</p>
+                                       
+                                        <label  class="text-gray-800" style="font-weight: 500; font-size: .875rem; line-height: 1.25rem;"> <span t-field="user_id.partner_id.phone"/></label>  
+                                    </div>
+                                    <div class="ml-3 mr-3 md:p-7 d-flex justify-content-between items-center">
+                                        <p  class="text-gray-800" style="font-weight: 500; font-size: .875rem; line-height: 1.25rem;" > Email</p>
+                                       
+                                        <label  class="text-gray-800" style="font-weight: 500; font-size: .875rem; line-height: 1.25rem;"> <span t-field="user_id.partner_id.email"/></label>  
+                                    </div>
+                                    <div class="ml-3 mr-3 md:p-7 d-flex justify-content-between items-center">
+                                        <p  class="text-gray-800" style="font-weight: 500; font-size: .875rem; line-height: 1.25rem;" > Location</p>
+                                       
+                                        <label  class="text-gray-800" style="font-weight: 500; font-size: .875rem; line-height: 1.25rem;"> <span t-field="user_id.partner_id.state_id"/>, <span t-field="user_id.partner_id.country_id"/></label>  
+                                    </div>
+                                </div>
+                            </div> 
+
+                            <div class="card" style=" margin-bottom: 20px;border-color: #EE3137; ">
+                                <div class="card-header">
+                                    <div class="flex justify-between items-center">
+                                        <h6> Setting</h6>
+                                    </div>
+                                </div>
+                                <div class="card rounded shadow " >
+                            
+                                    <div class="p-4 row items-center">
+                                        <div>
+                                            <div class="col ml-3">
+                                                <input type="checkbox" class="form-check-input" value=""/>
+                                            </div>
+                                        </div>
+                                       
+                                        <div class="col">
+                                            <div class="mb-5">
+                                                <h6 class="text-base mb-1 " style="font-weight: 400;">Allow users to opt for receiving Weekly / Monthly Summary email</h6>
+                                            </div>
+                                            <div class="d-flex justify-content-center">
+                                                <button style="background-color: #F24E1E;" class="btn  text-white">
+                                                    Enable Two-factor Authentication
+                                                </button>
+                                            </div>
+                                        </div>
+                                            
+                                    </div>
+                                    <hr/>
+                                    
+                                </div>
+                            </div> 
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="card rounded shadow mb-3" style=" margin-bottom: 20px; ">
+                            
+                                <div class="card-body rounded" style="background-color: #EE3137 !important;">
+                                    <div class="p-2 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 text-white"> Edit Profile</h5>
+                                        </div>
+                                    </div>
+                                    <form action="/my/account/update" class="card p-4">
+                                        <div class="form-row mb-2">
+                                            <div class="col">
+                                                <label for="name" style="font-weight: 500; " > Full Name</label>
+                                                <input type="text" class="form-control" id="name" placeholder="Ameh" t-att-value="user_id.partner_id.name" name="name"/>
+                                            </div>
+                                           
+                                        </div>
+                                        <div class="form-group mb-2">
+                                            <label for="name" style="font-weight: 500;" > Email</label>
+                                            <input type="text" class="form-control" id="email" placeholder="Enter Email" t-att-value="user_id.partner_id.email" name="email" required="required"/>
+                                        </div>
+                                        <div class="form-group mb-2">
+                                            <label for="name" style="font-weight: 500;" > Address</label>
+                                            <input type="text" class="form-control" id="street" placeholder="Enter Address" t-att-value="user_id.partner_id.street" name="street" required="required"/>
+                                        </div>
+                                        <div class="form-group mb-2">
+                                            <label for="name" style="font-weight: 500;" > Contact Number</label>
+                                            <input type="text" class="form-control" id="phone" placeholder="Enter Phone" t-att-value="user_id.partner_id.phone" name="phone" required="required"/>
+                                        </div>
+                                        <div class="form-row mb-4">
+                                            <div class="col">
+                                                <label for="name" style="font-weight: 500;" > City</label>
+                                                <input type="text" class="form-control" id="city" placeholder="Ameh" t-att-value="user_id.partner_id.city" name="city"/>
+                                            </div>
+                                            <div class="col">
+                                                <label for="name" style="font-weight: 500;" > State</label>
+                                                <select name="state_id" t-attf-class="form-control" data-init="1">
+                                                <option value="">State / Province...</option>
+                                                <t t-foreach="country_states" t-as="s">
+                                                    <option t-att-value="s.id" t-att-selected="s.id == user_id.partner_id.state_id.id">
+                                                        <t t-esc="s.name" />
+                                                    </option>
+                                                </t>
+                                            </select>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-center">
+                                            <button style="background-color: #F24E1E;" type="submit" class="btn  text-white">Update Profile</button>
+                                        </div>
+                                    </form> 
+                                    
+                                </div>
+                                <br/>
+                                <div class="card-body rounded" style="background-color: #EE3137;">
+                                    <div class="p-2 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h5 class="text-base mb-1 text-gray-600 text-white"> Change Password</h5>
+                                        </div>
+                                    </div>
+                                    <form action="/my/security" method="post" class="oe_reset_password_form">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <input type="hidden" name="op" value="password"/>
+                    <div class="form-group">
+                        <label for="current">Password:</label>
+                        <input type="password" t-attf-class="form-control form-control-sm "
+                               id="current" name="old"
+                               autocomplete="current-password" required="required"/>
+                       <!--  <div class="invalid-feedback">
+                            <t t-esc="get_error(errors, 'password.old')"/>
+                        </div> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="new">New Password:</label>
+                        <input type="password" t-attf-class="form-control form-control-sm "
+                               id="new" name="new1"
+                               autocomplete="new-password" required="required"/>
+                        <!-- <div class="invalid-feedback">
+                            <t t-esc="get_error(errors, 'password.new1')"/>
+                        </div> -->
+                    </div>
+                    <div class="form-group">
+                        <label for="new2">Verify New Password:</label>
+                        <input type="password" t-attf-class="form-control form-control-sm "
+                               id="new2" name="new2"
+                               autocomplete="new-password" required="required"/>
+                       <!--  <div class="invalid-feedback">
+                            <t t-esc="get_error(errors, 'password.new2')"/>
+                        </div> -->
+                    </div>
+                    <button type="submit" class="btn btn-danger">Change Password</button>
+                </form>
+                                    
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <br/>
+                    
+                </div>
+            </section>
+		</t>
+	</template>
+</odoo>

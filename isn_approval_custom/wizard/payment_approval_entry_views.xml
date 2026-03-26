@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="payment_approval_entry_view" model="ir.ui.view">
+        <field name="name">Create Journal Entry for Payment</field>
+        <field name="model">payment.approval.entry</field>
+        <field name="arch" type="xml">
+	        <form string="Create Journal Entry for Payment">
+	            <p class="oe_grey">
+	                Please enter the Details
+	            </p>
+	            <group>
+	            	<group>
+	            		<field name="company_id" invisible="1"/>
+		                <field name="journal_id" options='{"no_open": True, "no_create": True}'
+		                  required="1"/>
+	            	</group>
+	            </group>
+	            
+	            
+                <field name="payment_line">
+                	<tree editable="bottom">
+                		<field name="account_id" options="{'no_open':True,'no_create':True}"/>
+                		<field name="name"/>
+                		<field name="amount"/>
+                	</tree>
+                </field>
+	            
+	            
+	            
+	            <footer>
+	                <button name="action_create_account_move" string="Create Entry"  class="btn-primary" type="object"/>
+	                <button string="Cancel" class="btn-secondary" special="cancel"/>
+	            </footer>
+	        </form>
+        </field>
+    </record>
+    
+    <record id="action_payment_approval_entry" model="ir.actions.act_window">
+        <field name="name">Create Journal Entry for Payment</field>
+        <field name="res_model">payment.approval.entry</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="payment_approval_entry_view"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

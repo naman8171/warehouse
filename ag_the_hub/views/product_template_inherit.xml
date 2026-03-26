@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+
+
+
+	<record id="view_product_template_custom_field" model="ir.ui.view">
+            <field name="name">product.template.custom</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <field name="barcode" position="after">
+                	<field name="color"/>
+                	<field name="size"/>
+                	<field name="gender"/>
+                    <field name="reorder_level"/>
+                </field>
+            </field>
+        </record>
+</odoo>

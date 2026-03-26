@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+   <!--  <template id="portal_layout" name="Portal layout: 3PL Company menu entry" inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'product' or product" class="col-lg-2" t-attf-class="breadcrumb-item">
+                <a t-if="product" t-attf-href="/my/3plcompanies?{{ keep_query() }}">3PL Companies</a>
+                <t t-else="">3PL Companies</t>
+            </li>
+        </xpath>
+    </template> -->
+
+    <template id="portal_top_selling_products" name="My 3PL Companies">
+        <t t-call="portal.frontend_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+                <nav aria-label="breadcrumb flex justify-between" style="background-color:#e9ecef;margin-left: 0%;">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item "><a class="bold text-danger" href="/my">THL</a></li>
+                      <li class="breadcrumb-item active" aria-current="page" style="background: transparent;">Top Selling Products</li>
+                    </ol>
+                  </nav>
+            <section class="wro_status">
+                <div class="container-fuild p-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="flex justify-between items-center">
+                                        <h4 class="card-title">  Top Selling Products (<t t-esc="len(product_data)"/>)</h4>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    
+
+                                    <div class="card-header pl-1 pr-1 bg-light">
+                                        <div class="flex justify-between items-center">
+                                            <div class="d-flex justify-content-end mr-3">
+                                                <!-- <div style="margin-right: 1%;padding-top: 2px;">
+                                                     <button class="btn bg-white border record_delete" type="button">
+                                                    <i class="fas fa-trash mr-2"></i>Delete
+                                                 </button>
+                                                </div>
+                                                
+                                                <div style="margin-right: 1%;padding-top: 2px;">
+                                                     <button class="btn bg-white border file_export" type="button">
+                                                    <i class="fas fa-file-export mr-2"></i>Export
+                                                 </button>
+                                                </div> -->
+                                               
+                                                
+                                                
+
+                                               
+                                                
+                                                <!-- <div class="dropdown mr-2 border">
+                                                    <button class="btn bg-white dropdown-toggle" type="button" id="filterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fa fa-sort-amount-down mr-2"></i> Filter 
+                                                      </button>
+                                                    <div class="dropdown-menu" aria-labelledby="filterDropdown">
+                                                      <a class="dropdown-item" href="#">Link 1</a>
+                                                      <a class="dropdown-item" href="#">Link 2</a>
+                                                      <a class="dropdown-item" href="#">Link 3</a>
+                                                    </div>
+                                                </div> -->
+                                                <!-- <a type="button" class="btn btn-primary" href="/send/inventory/portal"> 
+                                                    <i class="fa fa-plus"></i> Add New WRO</a> -->
+                                                
+                                                
+                                               
+                                                   
+                                                    
+                                              </div>
+                                        </div>
+                                    </div>
+                                    <div class="">
+            <t t-if="product_data" t-call="portal.portal_table">
+                <thead>
+                    <tr class="">
+                        <th class="text-left">Product</th>
+                        <th class="text-left">Qty (This month)</th>
+                        
+                       <!--  <th class="text-left">Platform</th>
+                        <th class="text-left">Barcode</th>
+                        <th class="text-left">Lot Item</th>
+                        <th class="text-left">Has Serial</th> -->
+                    </tr>
+                </thead>
+                <t t-foreach="product_data" t-as="data">
+                    <tr>
+                         <td class="text-left"><t t-esc="data[0]"/></td>
+                        <td class="text-left"><t t-esc="data[1]"/></td>
+                        <!-- <td class="text-left"><t t-esc="pl_companie.phone"/></td> -->
+                        
+                    </tr>
+                </t>
+            </t>
+        </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <!-- <t t-call="portal.pager"/> -->
+                            <!-- <div class="py-1 px-4">
+                                <nav class="flex items-center space-x-2">
+                                    
+                                    <a class="text-gray-400  rounded-circle p-4 items-center " style="width: 200px; height: 200px;" href="#"> 
+                                        <span aria-hidden="true">«</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="w-10 h-10 bg-primary text-white p-4 inline-flex items-center text-sm font-medium rounded-full" href="#" aria-current="page">1</a>
+                                    <a class="w-10 h-10 text-gray-400 hover:text-primary p-4 inline-flex items-center text-sm font-medium rounded-full" href="#">2</a>
+                                    <a class="w-10 h-10 text-gray-400 hover:text-primary p-4 inline-flex items-center text-sm font-medium rounded-full" href="#">3</a>
+                                    <a class="text-gray-400 hover:text-primary p-4 inline-flex items-center gap-2 font-medium rounded-md" href="#">
+                                        <span class="sr-only">Next</span>
+                                        <span aria-hidden="true">»</span>
+                                    </a>
+                                </nav>
+                            </div> -->
+                        </div>
+                    </div>
+                    <br/>
+                    
+                </div>
+            </section>
+            
+            
+        </t>
+    </template>
+
+</odoo>

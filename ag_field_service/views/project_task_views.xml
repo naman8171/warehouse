@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+		<record id="view_task_form2_inherit_isn_field_service" model="ir.ui.view">
+	        <field name="name">project.task.form2.inherit.isn</field>
+	        <field name="model">project.task</field>
+	        <field name="inherit_id" ref="project.view_task_form2"/>
+	        <field name="priority">30</field>
+	        <field name="arch" type="xml">
+	        	<xpath expr="//sheet/group//group[1]/field[@name='user_ids']" position="after">
+	        		<field name="is_fm_editable" invisible="1"/>
+					<field name="technician_engineer" attrs="{'readonly': &quot;[('technician_engineer', '=', uid)]&quot;}" options="{'no_create': True, 'no_create_edit': True}"/>
+					<field name="user_id" attrs="{'readonly': [('is_fm_editable', '=', False)]}" options="{'no_create': True, 'no_create_edit': True}"/>
+					<field name="fs_type" options="{'no_create': True, 'no_create_edit': True}"/>
+					<field name="fs_type_scope" invisible="0"/>
+					<field name="currency_id" invisible="1"/>
+	        	</xpath>
+	        	<xpath expr="//sheet/group//group[1]/field[@name='user_ids']" position="attributes">
+	        		<attribute name="attrs">{'readonly': [('is_fm_editable', '=', False)]}</attribute>
+	        		<attribute name="options">{'no_create': True, 'no_create_edit': True}</attribute>
+	        	</xpath>
+	        	<xpath expr="//sheet/group//group[2]/field[@name='partner_id']" position="attributes">
+	        		<attribute name="string">Apartment</attribute>
+	        		<attribute name="options">{'no_create': True, 'no_create_edit': True}</attribute>
+	        		<attribute name="attrs">{'invisible': [('fs_type_scope', '=', 'common_area_maintenance')], 'required': [('is_fsm', '=', True), ('fs_type_scope', '!=', 'common_area_maintenance')]}</attribute>
+	        	</xpath>
+	        	<xpath expr="//sheet/group//group[2]/field[@name='partner_id']" position="after">
+	        		<field name="equipment_id" attrs="{'invisible': [('fs_type_scope', '!=', 'common_area_maintenance')], 'required': [('is_fsm', '=', True), ('fs_type_scope', '=', 'common_area_maintenance')]}"/>
+	        		<field name="partner_name" attrs="{'invisible': [('partner_id', '=', False)]}"/>
+                    <field name="partner_email" widget="email" string="Email" attrs="{'invisible': [('partner_id', '=', False)]}"/>
+	        	</xpath>
+	        	<xpath expr="//sheet/group//group[2]/field[@name='partner_phone']" position="after">
+	        		<field name="site_id" attrs="{'invisible': [('partner_id', '=', False)]}" options="{'no_create': True, 'no_create_edit': True}" force_save="1" readonly="1"/>
+	        		<field name="appartment_status" attrs="{'invisible': [('partner_id', '=', False)]}" force_save="1" readonly="1"/>
+	        		<field name="flat_type" attrs="{'invisible': [('partner_id', '=', False)]}" options="{'no_create': True, 'no_create_edit': True}" force_save="1" readonly="1"/>
+	        	</xpath>
+	        	<xpath expr="//sheet/group//group[2]/field[@name='tag_ids']" position="attributes">
+	        		<attribute name="required">1</attribute>
+	        	</xpath>
+	        	<page name="extra_info" position="after">
+	        		<page name="technician_feedback" string="Technician Feedback">
+		        		<group>
+			        		<field name="findings"/>
+			        		<field name="attachment_ids" widget="many2many_binary"/>
+			        		<field name="create_jo" attrs="{'invisible': [('findings', 'in', ['', False])]}"/>
+			        	</group>
+			        </page>
+			        <page name="job_order" string="Job Order" attrs="{'invisible': [('create_jo', '=', False)]}">
+			        	<div class="row float-right mr-3">
+				        	<button type="object" name="action_submit_job_order" class="btn-danger" string="Submit" attrs="{'invisible': [('technician_submit_jo','=', True)]}"/>
+	        				<button type="object" name="action_fm_approve_jo" class="oe_highlight" string="Approve" attrs="{'invisible': ['|', ('technician_submit_jo','=', False), ('job_order_status','!=', 'fm_not_approved')]}"/>&amp;nbsp;&amp;nbsp;
+	        				<button type="object" name="action_reject_jo" class="btn-danger" string="Reject" attrs="{'invisible': ['|', ('technician_submit_jo','=', False), ('job_order_status','!=', 'fm_not_approved')]}"/>
+	        				<button type="object" name="action_gm_approve_jo" class="oe_highlight" string="Approve" attrs="{'invisible': ['|', ('technician_submit_jo','=', False), ('job_order_status','!=', 'gm_not_approved')]}"/>&amp;nbsp;&amp;nbsp;
+	        				<button type="object" name="action_reject_jo" class="btn-danger" string="Reject" attrs="{'invisible': ['|', ('technician_submit_jo','=', False), ('job_order_status','!=', 'gm_not_approved')]}"/>
+	        				<button type="object" name="action_release_products" class="btn-danger" string="Release Products" attrs="{'invisible': ['|', ('technician_submit_jo','=', False), ('job_order_status','!=', 'product_not_release')]}"/>
+	        				<button type="object" name="action_create_rfq" class="oe_highlight" string="Create RFQ" attrs="{'invisible': ['|', ('procurement_type','=', 'call_for_tendor'), ('job_order_status','!=', 'rfq_not_created')]}"/>
+	        				<button type="object" name="action_create_purchase_agreement" class="oe_highlight" string="CREATE PURCHASE AGREEMENT" attrs="{'invisible': ['|', ('procurement_type','=', 'prefered_vendor'), ('job_order_status','!=', 'pa_not_created')]}"/>
+	        				<button type="object" name="action_jo_completed" class="btn-danger" string="JO Completed" attrs="{'invisible': ['|', ('technician_submit_jo','=', False), ('job_order_status','!=', 'jo_not_complete')]}"/>
+	        				<button type="object" name="action_jo_close" class="btn-danger" string="JO Close" attrs="{'invisible': ['|', ('technician_submit_jo','=', False), ('job_order_status','!=', 'jo_not_close')]}"/>
+	        			</div>
+			        	<group>
+			        		<field name="technician_submit_jo" invisible="1"/>
+			        		<field name="fm_approved_jo" invisible="1"/>
+			        		<field name="gm_approved_jo" invisible="1"/>
+			        		<field name="product_released" invisible="1"/>
+			        		<field name="rfq_created" invisible="1"/>
+			        		<field name="purchase_agreement_created" invisible="1"/>
+			        		<field name="jo_complete" invisible="1"/>
+			        		<field name="job_order_status" invisible="1"/>
+			        		<field name="jo_number" attrs="{'invisible':[('jo_number', '=', False)]}" readonly="1"/>
+			        		<field name="jo_type" widget="radio" options="{'horizontal': true}" attrs="{'required': [('create_jo', '=', True)], 'readonly': [('technician_submit_jo', '=', True)]}" />
+			        		<field name="supporting_document" attrs="{'invisible': [('jo_type', '!=', 'third_party_fulfilment')], 'required': [('jo_type', '=', 'third_party_fulfilment')], 'readonly': [('technician_submit_jo', '=', True)]}"/>
+			        		<field name="consent_form" attrs="{'invisible': [('fs_type_scope', '=', 'common_area_maintenance')], 'readonly': [('technician_submit_jo', '=', True)]}"/>
+			        		<field name="procurement_type" widget="radio" options="{'horizontal': true}" attrs="{'invisible': ['|', ('jo_type', '!=', 'third_party_fulfilment'), '&amp;', ('jo_type', '=', 'third_party_fulfilment'), ('fm_approved_jo', '!=', True)], 'readonly': ['|', ('rfq_created', '=', True), ('purchase_agreement_created', '=', True)]}"/>
+			        		<field name="vendor_id" domain="[('contact_type', '=', 'Vendor')]" attrs="{'invisible': ['|', ('jo_type', '!=', 'third_party_fulfilment'), '&amp;', ('jo_type', '=', 'third_party_fulfilment'), ('fm_approved_jo', '!=', True)], 'required': [('jo_type', '=', 'third_party_fulfilment'), ('procurement_type', '=', 'prefered_vendor')], 'readonly': ['|', ('rfq_created', '=', True), ('purchase_agreement_created', '=', True)]}"/>
+			        	</group>
+		        		<field name="equipment_ids" attrs="{'readonly': [('gm_approved_jo', '=', True)]}">
+		        			<tree editable="bottom">
+				        		<field name="product_id"/>
+				        		<field name="qty"/>
+				        		<field name="price_unit"/>
+				        		<field name="amount" widget="monetary"/>
+				        		<field name="notes" optional="hide"/>
+				        		<field name="currency_id" invisible="1"/>
+				        	</tree>
+			        	</field>
+			        	<group name="group_total" col="6" class="mt-2 mt-md-0">
+                            <group class="oe_subtotal_footer oe_right" colspan="2" name="equipment_total">
+                            	<div class="d-flex">
+	                            	<label for="total_amount" string="Total"/>
+	                                <field name="total_amount" colspan="2"/>
+	                            </div>
+                            </group>
+                            <div class="oe_clear"/>
+                        </group>
+                        <group>
+			        		<field name="job_completion_summary"  attrs="{'readonly': [('jo_complete', '=', True)]}"/>
+			        		<field name="job_satisfaction_feedback"  attrs="{'readonly': [('jo_complete', '=', True)]}"/>
+			        	</group>
+			        </page>
+	        	</page>
+	        </field>
+	    </record>
+
+	    <record id="project_task_view_form_inherit_ag_field_service" model="ir.ui.view">
+	        <field name="name">project.task.form.inherit.ag_field_service</field>
+	        <field name="model">project.task</field>
+	        <field name="inherit_id" ref="project_enterprise.project_task_view_form"/>
+	        <field name="arch" type="xml">
+	        	<field name="planned_date_begin" position="attributes">
+	        		<attribute name="required">1</attribute>
+	        	</field>
+	        	<field name="planned_date_end" position="attributes">
+	        		<attribute name="required">1</attribute>
+	        	</field>
+	        </field>
+	    </record> 
+        	
+</odoo>

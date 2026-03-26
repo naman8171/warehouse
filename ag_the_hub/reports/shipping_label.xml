@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        
+
+         <record id="action_print_shipping_label" model="ir.actions.report">
+            <field name="name">Print Shipping Label</field>
+            <field name="model">thehub.workorder.lines</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ag_the_hub.report_print_shipping_label__report</field>
+            <field name="report_file">ag_the_hub.report_print_shipping_label__report</field>
+            <field name="print_report_name">'Label - %s' % (object.product_id.name)</field>
+            <field name="paperformat_id" ref="ag_the_hub.paperformat_barcode_shipping_lable"/>
+            <field name="binding_model_id" ref="model_thehub_workorder_lines"/>
+            <field name="binding_type">report</field>
+        </record>
+
+
+
+
+        <record id="action_print_shipping_label_package" model="ir.actions.report">
+            <field name="name">Print Shipping Label</field>
+            <field name="model">thehub.workorder.lines.package</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ag_the_hub.report_print_shipping_label__report_package</field>
+            <field name="report_file">ag_the_hub.report_print_shipping_label__report_package</field>
+            <field name="print_report_name">'Label - %s' % (object.product_id.name)</field>
+            <field name="paperformat_id" ref="ag_the_hub.paperformat_barcode_shipping_lable"/>
+            <field name="binding_model_id" ref="model_thehub_workorder_lines"/>
+            <field name="binding_type">report</field>
+        </record>
+
+    </data>
+</odoo>

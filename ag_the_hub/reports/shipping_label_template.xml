@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+    <template id="report_print_shipping_label__report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="ag_the_hub.report_print_shipping_label_document_template"/>
+            </t>
+        </t>
+    </template>
+
+
+    <template id="report_print_shipping_label_document_template">
+        <t t-call="web.basic_layout">
+            <div class="page">
+                    <t t-set="wo_id" t-value="doc.workorder_id"/>
+                    <div class="row w-100 d-flex">
+                        <div class="w-75 text-center">
+                            <h2 style="color:red;">
+                                Shipping Label
+                                
+                            </h2>
+                        </div>
+                        <div class="w-25 d-flex justify-content-end">
+                            <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style="max-height: 45px;" alt="Logo"/>
+                        </div>
+                    </div>
+                    <div class="text-left" style="font-size: 2rem;">
+                        <div  class="row">
+                            <div class="col-5">
+                            Work Order Number :-
+                            </div>
+                            <div class="col-6 text-left">
+                            <t t-esc="wo_id.name"/>
+                            </div>
+                            
+                            <!-- <span>Work Order Number :- <t t-esc="wo_id.name"/></span> -->
+                        </div>
+                        
+                    </div>
+                    <div class="text-center" style="padding-top: 2%;">
+                        <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % ('Code128', doc.stock_picking_id.name, 350, 60)" style="border-top:1px solid #ccc;width: 100%;"/>
+                    </div>
+
+                    
+                    <div class="row text-left" style="font-size: 2rem;padding-top: 2%;">
+                        <div class="col-7">
+                            Customer Name:-
+                            <br/>
+                            Phone Number:-
+                            </div>
+                            <div class="col-5 text-left">
+                            <span t-field="wo_id.partner_id.name"/>
+                            <br/>
+                            <span t-field="wo_id.partner_id.phone"/>
+                            
+                            </div>
+                        <!-- <div >
+                            <span>Shipping Destination Address :- <span t-field="doc.delivery_address"/></span>
+                        </div> -->
+                        
+                    </div>
+                     <div class="row text-left" style="font-size: 2rem;padding-top: 2%;">
+                        <div class="col-7">
+                            Package Weight:-
+                            <br/>
+                            Number Of Pieces:-
+                            <br/>
+                             Payment Type:
+                            </div>
+                            <div class="col-5 text-left">
+                            <span t-field="doc.weight"/> KG
+                            <br/>
+                            <span t-field="doc.product_qty"/>
+                            <br/>
+                            <span t-if="wo_id.partner_id.merchant_billing_method=='prepaid'">Already Paid</span>
+                            <span t-if="wo_id.partner_id.merchant_billing_method=='credit'">POD</span>
+                            
+                            </div>
+                        <!-- <div >
+                            <span>Shipping Destination Address :- <span t-field="doc.delivery_address"/></span>
+                        </div> -->
+                        
+                    </div>
+                    <br/>
+                    <div class="row text-left" style="font-size: 2rem;padding-top: 2%;">
+                        <div class="col-7">
+                            Shipping Destination Address :-
+                            </div>
+                            <div class="col-5 text-left">
+                            <span t-field="doc.delivery_address"/>
+                            </div>
+                        <!-- <div >
+                            <span>Shipping Destination Address :- <span t-field="doc.delivery_address"/></span>
+                        </div> -->
+                        
+                    </div>
+
+                    <div class="row text-left" style="font-size: 2rem;padding-top: 2%;">
+                        <div class="col-6">
+                            <span>Shipping Return Address :- </span>
+                                <!-- <span t-if  t-field="doc.source_location.warehouse_id.partner_id.street"/></span> -->
+                        </div>
+                        <div class="col-6">
+                            <address>
+                                                             <div t-field="doc.source_location.warehouse_id.partner_id" t-options='{
+                                                                 "widget": "contact",
+                                                                 "fields": ["address", "website", "phone", "email"]
+                                                             }'/>
+                                                        </address>
+                        </div>
+                        
+                    </div>
+                        
+                        
+                        <p style="page-break-after:always;"/>
+                    <!-- </t> -->
+                <!-- </t> -->
+            </div>
+        </t>
+    </template>
+
+
+
+
+
+    <template id="report_print_shipping_label__report_package">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="ag_the_hub.report_print_shipping_label_document_template_package"/>
+            </t>
+        </t>
+    </template>
+
+
+    <template id="report_print_shipping_label_document_template_package">
+        <t t-call="web.basic_layout">
+            <div class="page">
+                    <t t-set="wo_id" t-value="doc.wo_id"/>
+                    <div class="row w-100 d-flex">
+                        <div class="w-75 text-center">
+                            <h2 style="color:red;">
+                                Shipping Label
+                                
+                            </h2>
+                        </div>
+                        <div class="w-25 d-flex justify-content-end">
+                            <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" style="max-height: 45px;" alt="Logo"/>
+                        </div>
+                    </div>
+                    <div class="text-left" style="font-size: 2rem;">
+                        <div  class="row">
+                            <div class="col-5">
+                            Work Order Number :-
+                            </div>
+                            <div class="col-6 text-left">
+                            <t t-esc="doc.name"/>
+                            </div>
+                            
+                            <!-- <span>Work Order Number :- <t t-esc="wo_id.name"/></span> -->
+                        </div>
+                        
+                    </div>
+                    <div class="text-center" style="padding-top: 2%;">
+                        <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s&amp;humanreadable=1' % ('Code128', doc.name, 350, 60)" style="border-top:1px solid #ccc;width: 100%;"/>
+                    </div>
+
+                    
+                    <div class="row text-left" style="font-size: 2rem;padding-top: 2%;">
+                        <div class="col-7">
+                            Customer Name:-
+                            <br/>
+                            Phone Number:-
+                            </div>
+                            <div class="col-5 text-left">
+                            <span t-field="wo_id.partner_id.name"/>
+                            <br/>
+                            <span t-field="wo_id.partner_id.phone"/>
+                            
+                            </div>
+                        <!-- <div >
+                            <span>Shipping Destination Address :- <span t-field="doc.delivery_address"/></span>
+                        </div> -->
+                        
+                    </div>
+                     <div class="row text-left" style="font-size: 2rem;padding-top: 2%;">
+                        <div class="col-7">
+                            Package Weight:-
+                            <br/>
+                            Number Of Pieces:-
+                            <br/>
+                             Payment Type:
+                            </div>
+                            <div class="col-5 text-left">
+                            <span t-field="doc.weight"/> KG
+                            <br/>
+                            <!-- <span t-field="doc.product_qty"/> -->
+                            <br/>
+                            <span t-if="wo_id.partner_id.merchant_billing_method=='prepaid'">Already Paid</span>
+                            <span t-if="wo_id.partner_id.merchant_billing_method=='credit'">POD</span>
+                            
+                            </div>
+                        <!-- <div >
+                            <span>Shipping Destination Address :- <span t-field="doc.delivery_address"/></span>
+                        </div> -->
+                        
+                    </div>
+                    <br/>
+                    <div class="row text-left" style="font-size: 2rem;padding-top: 2%;">
+                        <div class="col-7">
+                            Shipping Destination Address :-
+                            </div>
+                            <div class="col-5 text-left">
+                            <span t-field="docs.address"/>
+                            </div>
+                        <!-- <div >
+                            <span>Shipping Destination Address :- <span t-field="doc.delivery_address"/></span>
+                        </div> -->
+                        
+                    </div>
+
+                    <div class="row text-left" style="font-size: 2rem;padding-top: 2%;">
+                        <div class="col-6">
+                            <span>Shipping Return Address :- </span>
+                                <!-- <span t-if  t-field="doc.source_location.warehouse_id.partner_id.street"/></span> -->
+                        </div>
+                        <div class="col-6">
+                            <address>
+                                                             <div t-field="res_company.partner_id" t-options='{
+                                                                 "widget": "contact",
+                                                                 "fields": ["address", "website", "phone", "email"]
+                                                             }'/>
+                                                        </address>
+                        </div>
+                        
+                    </div>
+                        
+                        
+                        <p style="page-break-after:always;"/>
+                    <!-- </t> -->
+                <!-- </t> -->
+            </div>
+        </t>
+    </template>
+    </data>
+</odoo>

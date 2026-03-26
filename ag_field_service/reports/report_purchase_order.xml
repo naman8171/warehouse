@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="purchase.report_purchaseorder_document">
+        <t t-call="web.external_layout">
+            <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+            <t t-if="o.dest_address_id"/>
+            <div t-if="o.date_order"/>
+            <!-- <div class="d-none">
+                <t t-set="address">
+                    <div t-field="o.partner_id"
+                    t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                    <p t-if="o.partner_id.vat"><t t-esc="o.company_id.account_fiscal_country_id.vat_label or 'Tax ID'"/>: <span t-field="o.partner_id.vat"/></span>
+                </t>
+                <t t-if="o.dest_address_id">
+                    <t t-set="information_block">
+                        <strong>Shipping address:</strong>
+                        <div t-if="o.dest_address_id">
+                            <div t-field="o.dest_address_id"
+                                t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}' name="purchase_shipping_address"/>
+                        </div>
+
+                    </t>
+                </t>
+                <div t-if="o.date_order" class="col-3 bm-2">
+                    <strong>Order Date:</strong>
+                    <p t-field="o.date_order" class="m-0"/>
+                </div>
+            </div> -->
+            <div class="page">
+                <div class="row w-100">
+                    <div class="col-6 mb4 d-flex float-left">
+                        <!-- <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" class="img-responsive" style="max-height: 80px;" alt="Logo"/> -->
+                        <img src="/ag_field_service/static/images/image1.png" class="img-responsive" style="max-height: 120px;" alt="Logo"/>
+                        <span><h1 class="text-center" style="font-size:56px"><strong>max</strong></h1></span>
+                    </div>
+                    <div class="col-6 float-right d-flex p-0" name="company_address">
+                        <!-- <img t-if="res_company.logo" t-att-src="image_data_uri(res_company.logo)" class="img-responsive" style="max-height: 80px;" alt="Logo"/> -->
+                        <div style="width:25%;">
+                            <img src="/ag_field_service/static/images/image2.png" class="img-responsive" style="max-height: 120px;border-right:2px solid yellow;" alt="Logo"/>
+                        </div>
+                        <div class="ml-2" style="width:75%;">
+                            <!-- <span t-if="res_company.company_details" t-field="res_company.company_details"></span> -->
+                            <span t-field="o.company_id.street"/>, <span t-field="o.company_id.street2"/>, <span t-field="o.company_id.city"/><br/><br/>
+                            <strong><span t-field="o.company_id.website"/> | <span t-field="o.company_id.email"/></strong><br/>
+                            <strong>Tel: </strong><span t-field="o.company_id.vat"/> | <span t-field="o.company_id.phone"/><br/>
+                            <strong>RC: </strong><span t-field="o.company_id.company_registry"/>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div t-if="res_company.logo or res_company.report_header" class="row zero_min_height">
+                    <div class="col-12">
+                        <div style="border-bottom: 1px solid black;"/>
+                    </div>
+                </div> -->
+                <br/>
+                <div class="row w-100 mb-3">
+                    <div class="col-6">
+                        <h3>Purchase Order</h3>
+                        <h4><strong>Supplier:</strong></h4>
+                        <span t-field="o.partner_id"/><br/>
+                        <br/>
+                        <h4><strong>Supplier Contact:</strong></h4>
+                        <span t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address"], "no_marker": True}'/><br/>
+                        <h4><strong>Deliver To:</strong></h4>
+                        <span t-field="o.location"/><br/>
+                        <span t-field="o.location.location_address"/><br/>
+                    </div>
+                    <div class="col-6">
+                        <h5><strong>Purchase Order Date</strong></h5>
+                        <span t-field="o.date_approve"/><br/><br/>
+                        <h5><strong>PO Number: </strong> <t t-esc="o.name"/></h5><br/>
+                        <h5><strong>Tax ID No</strong></h5>
+                        <span t-field="o.partner_id.vat"/><br/>
+                    </div>
+                </div>
+                <table class="w-100">
+                    <style>
+                        tr, td, tbody, thead, th{
+                            border: 1px solid;
+                        }
+                    </style>
+                    <tbody style="border-top: 1px solid black !important;">
+                        <tr style="background-color:yellow;">
+                            <td class="text-center"><strong>S/N</strong></td>
+                            <td class="text-center"><strong>DESCRIPTION</strong></td>
+                            <td class="text-center"><strong>UOM</strong></td>
+                            <td class="text-center"><strong>UNIT PRICE</strong></td>
+                            <td class="text-center"><strong>QTY</strong></td>
+                            <td class="text-center"><strong>TAX</strong></td>
+                            <td class="text-center"><strong>AMOUNT</strong></td>
+                            <!-- <td colspan="3"><strong><span t-if="o.date_order" t-esc="context_timestamp(o.date_order).strftime('%d.%m.%Y')"/></strong></td> -->
+                        </tr>
+                        <t t-set="count" t-value="0"/>
+                        <t t-foreach="o.order_line" t-as="line">
+                            <t t-set="count" t-value="count+1"/>
+                            <t t-set="taxes" t-value="', '.join(str(tax.name) for tax in line.taxes_id)"/>
+                            <tr>
+                                <td class="text-center"><t t-esc="count"/></td>
+                                <td class="text-center"><t t-esc="line.name"/></td>
+                                <td class="text-center"><t t-esc="line.product_uom.name"/></td>
+                                <td class="text-center"><t t-esc="line.price_unit"/></td>
+                                <td class="text-center"><t t-esc="line.product_qty"/></td>
+                                <td class="text-center"><t t-esc="taxes"/></td>
+                                <td class="text-center"><t t-esc="line.price_subtotal"/></td>
+                            </tr>
+                        </t>
+                        <tr>
+                            <td rowspan="3" colspan="5">
+                            </td>
+                            <td class="text-center"><strong>Sub Total</strong></td>
+                            <td class="text-center"><span t-field="o.amount_untaxed"/></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><strong>Total Tax</strong></td>
+                            <td class="text-center"><span t-field="o.amount_tax"/></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><strong>Total (#)</strong></td>
+                            <td class="text-center"><span t-field="o.amount_total"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row mt-3 ml-2">
+                    <div class="text-left" style="border:none; width:35%;"><strong>Scope of work:</strong></div>              
+                    <div class="text-left" style="border:none;"><span t-field="o.scope_of_work"/></div>
+                </div>
+                <div class="row mt-3 ml-2">
+                    <div class="text-left" style="border:none;width:35%;"><strong>Duration:</strong></div>
+                    <div class="text-left" style="border:none;"><span t-field="o.duration_number"/> <span t-field="o.duration_type"/></div>
+                </div>
+                <div class="row mt-3 ml-2">
+                    <div class="text-left" style="border:none;width:35%;"><strong>Penalty for non-compliance:</strong></div>
+                    <div class="text-left" style="border:none;"><span t-field="o.penalty_non_compilance"/></div>
+                </div>
+                <div class="row mt-3 ml-2">
+                    <div class="text-left" style="border:none;width:35%;"><strong>Warranty:</strong></div>
+                    <div class="text-left" style="border:none;"><span t-field="o.warranty_number"/> <span t-field="o.warranty_type"/></div>
+                </div>
+                <div class="row mt-3 ml-2">
+                    <div class="text-left" style="border:none;width:35%;"><strong>Payment Terms:</strong></div>
+                    <div class="text-left" style="border:none;"><span t-field="o.payment_term_id"/></div>
+                </div>
+                <div class="row mt-3 ml-2">
+                    <div class="text-left" style="border:none;width:35%;"><strong>Other Terms and Conditions:</strong></div>
+                    <div class="text-left" style="border:none;"><span t-field="o.other_term_conditions"/></div>
+                </div>
+
+                <div class="row w-100 mt-5">
+                    <div class="col-8"/>
+                    <div class="col-4">
+                        <img src="/ag_field_service/static/images/image4.jpg" class="img-responsive center" style="width:100px;height:50px" alt="Sign"/>
+                    </div>
+                </div>
+                <div class="row w-100">
+                    <div class="col-7"/>
+                    <div class="col-4 text-center" style="border-top:1px solid;">
+                        Procurement Manager
+                    </div>
+                </div>
+
+                <div class="text-center mt-3">
+                    <img src="/ag_field_service/static/images/image5.jpg" class="img-responsive center" style="max-height: 80px;" alt="clients"/>
+                </div>
+
+
+
+            </div>
+        </t>
+    </template>
+
+</odoo>

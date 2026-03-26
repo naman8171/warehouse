@@ -1,0 +1,36 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+
+        <record model="ir.ui.view" id="reorder_level_notification_list_view">
+            <field name="name">reorder.level.notification.list.view</field>
+            <field name="model">reorder.level.notification</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="merchand_id" class="oe_inline" />
+                    <field name="product_id" />
+                            <field name="old_reorder_level" />
+                            <field name="new_reorder_level"/>
+                           
+                    
+                </tree>
+            </field>
+        </record>
+
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="reorder_level_notification_action_window">
+        <field name="name">Reorder Level Notifications</field>
+        <field name="res_model">reorder.level.notification</field>
+        <field name="view_mode">tree</field>
+        
+    </record>
+    
+    <!-- Top menu item -->
+    <menuitem id="menu_reorder_level_notification" name="Reorder Level Notifications" action="reorder_level_notification_action_window"
+    parent="ag_the_hub.menu_thehub_config" sequence="0"/>
+
+
+
+  </data>
+</odoo>

@@ -1,0 +1,1320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<template id="web.brand_promotion" name="Brand Promotion">
+        <div class="o_brand_promotion d-none">
+            <t t-call="web.brand_promotion_message">
+                <t t-set="_message"></t>
+                <t t-set="_utm_medium" t-valuef="portal"/>
+            </t>
+        </div>
+    </template>
+
+	<template id="portal_layout_the_hub" inherit_id="portal.portal_layout">
+		<xpath expr="//div[hasclass('o_portal_wrap')]" position="replace">
+			 <div id="wrap" class='o_portal_wrap'>
+                <div class="container-fluid mb64">
+                    <t t-if="my_details">
+                        <div class="row justify-content-between mt-4">
+                            <div t-attf-class="col-12 col-md">
+                                <t t-out="0"/>
+                            </div>
+                            <div id="o_my_sidebar" class="pt-3 pt-lg-0 col-12 col-md col-lg-4 col-xl-3 o_my_sidebar">
+                                <div class="o_my_contact" t-if="sales_user">
+                                    <t t-call="portal.portal_contact"/>
+                                </div>
+                                <div class="o_portal_my_details">
+                                    <h4>Details <a role="button" href="/my/account" class="btn btn-sm btn-link"><i class="fa fa-pencil"/> Edit</a></h4>
+                                    <hr class="mt-1 mb-0"/>
+                                    <div t-field="user_id.partner_id" t-options='{"widget": "contact", "fields": ["email", "phone", "address", "name"]}'/>
+                                </div>
+                                <div class="o_portal_my_security mt-3">
+                                    <h4>Account Security </h4>
+                                    <hr class="mt-1 mb-1"/>
+                                    <a href="/my/security"><i class="fa fa-pencil mx-1"/>Edit Security Settings</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <t t-out="0"/>
+                    </t>
+                </div>
+            </div>
+			
+		</xpath>
+		<xpath expr="//div[@id='o_my_sidebar']" position="attributes">
+		<attribute name="style">display:none;</attribute>
+	</xpath> 
+	</template>
+	
+	<template id="portal_searchbar_the_hub" inherit_id="portal.portal_searchbar">
+		<xpath expr="//nav" position="attributes">
+			<attribute name="style">margin-left:auto;</attribute>
+		</xpath>
+	</template>
+
+	<template id="portal_frontend_layout_the_hub" inherit_id="portal.frontend_layout">
+		<xpath expr="//nav" position="replace">
+            <style>
+                button:focus {
+                        outline: 0px !important;
+                        <!-- outline: 5px auto -webkit-focus-ring-color; -->
+                    }
+                .button_icon:hover {
+                    color: rgb(37 136 253) !important;
+                    border-radius: 82% !important;
+                    background: rgb(47 141 253 / 20%) !important;
+                }
+            </style>
+            <div>
+                <div class="modal fade" id="Searchbar" tabindex="-1" role="dialog" aria-labelledby="Searchbar" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="pointer-events-none absolute top-3.5 start-4 text-gray-900 text-opacity-40 dark:text-gray-200">
+                                    <i class="mgc_search_line text-xl"></i>
+                                </div>
+                                <input type="search" class="h-12 w-full border-0 bg-transparent ps-11 pe-4 text-gray-900 placeholder-gray-500 dark:placeholder-gray-300 dark:text-gray-200 focus:ring-0 sm:text-sm" placeholder="Search..."/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+			<nav class="navbar navbar-expand navbar-light bg-light" style="background-color: #fff;">
+                <div class="container-fluid">
+
+                    <button type="button" id="sidebarCollapse" class="btn btn-info">
+                        <i class="fa fa-align-left"></i>
+                    </button>
+                    <button type="button" data-toggle="modal" data-target="#Searchbar" class="button_icon p-2 me-auto" style="border: 0px;background: transparent;margin-left: 1%;color: indianred;/* border-radius: 82%; */width: 3%;">
+                    <span class="sr-only">Search</span>
+                    <span class="flex items-center justify-center h-6 w-6">
+                        <i class="fa fa-search"></i>
+                    </span>
+                </button>
+                   <!--  <button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="fas fa-align-justify"></i>
+                    </button> -->
+
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="nav navbar-nav ml-auto">
+                            <!-- <li class="nav-item">
+                                <a class="nav-link" href="#">Page</a>
+                            </li> -->
+                            <li class="nav-item">
+                                <button data-fc-type="dropdown" data-fc-placement="bottom-end" type="button" class="button_icon p-2 fc-dropdown" style="border: 0px;background: transparent;margin-left: -27%;color: indianred;/* border-radius: 82%; */width: 112%;">
+                        <span class="sr-only">View notifications</span>
+                        <span class="flex items-center justify-center h-6 w-6">
+                            <i class="fa fa-bell"></i>
+                        </span>
+                    </button>
+                            </li>
+                            <li class="nav-item">
+                                <t t-if="user_id.image_1920">
+                                <t t-set="avatar_source" t-value="image_data_uri(user_id.image_1920)"/>
+                            </t>
+                            <t t-else="">
+                                <t t-set="avatar_source" t-value="image_data_uri(user_id.avatar_256)"/>
+                            </t>
+                        
+                                <img t-att-src="avatar_source" t-attf-class="rounded-circle o_object_fit_cover #{_avatar_class}" width="40" height="40" alt="" loading="eager"/>
+                            </li>
+
+                            <t t-call="portal.placeholder_user_sign_in">
+                                <t t-set="_item_class" t-value="'nav-item'"/>
+                                <t t-set="_link_class" t-value="'nav-link'"/>
+                            </t>
+                           
+                            <t t-call="portal.user_dropdown">
+                                <t t-set="_user_name" t-value="true"/>
+                                <t t-set="_item_class" t-value="'nav-item dropdown'"/>
+                                <t t-set="_link_class" t-value="'nav-link'"/>
+                                <t t-set="_dropdown_menu_class" t-value="'dropdown-menu-end'"/>
+                            </t>
+                            <li class="nav-item">
+                                <!-- <button data-fc-type="dropdown" data-fc-placement="bottom-end" type="button" class="nav-link">
+                        <span t-field="user_id.image_1920" t-options="{'widget': 'image','class':'rounded-full h-10'}" role="img" t-att-aria-label="'Logo of %s' % user_id.name" t-att-title="user_id.name"/>
+                       </button>
+                    <div class="fc-dropdown fc-dropdown-open:opacity-100 hidden opacity-0 w-44 z-50 transition-[margin,opacity] duration-300 mt-2 bg-white shadow-lg border rounded-lg p-2 border-gray-200 dark:border-gray-700 dark:bg-gray-800">
+                        <a class="flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="pages-gallery.html">
+                            <i class="mgc_pic_2_line  me-2"></i> 
+                            <span>Account Setting</span>
+                        </a>
+
+                        <hr class="my-2 -mx-2 border-gray-200 dark:border-gray-700"/>
+                        <a class="flex items-center py-2 px-3 rounded-md text-sm text-gray-800 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-300" href="auth-login.html">
+                            <i class="mgc_exit_line  me-2"></i> 
+                            <span>Log Out</span>
+                        </a>
+                    </div> -->
+                    
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+		</xpath>
+		<xpath expr="//nav" position="before">
+			<style>
+                .right_sidebar main, .right_sidebar nav,.right_sidebar footer {
+    font-size: 20px;
+    padding: 0px 10px;
+    margin-left: 4%;
+}
+                #sidebar.active {
+                    min-width: 80px !important;
+                    max-width: 80px !important;
+                    text-align: center !important;
+                }
+				/* Fixed sidenav, full height */
+				.sidenav {
+				  height: 100%;
+				  position: fixed;
+				  z-index: 1;
+				  top: 0;
+				  left: 0;
+				  background-color: white;
+				  overflow-x: hidden;
+				  padding-top: 20px;
+				}
+
+				/* Style the sidenav links and the dropdown button */
+				.sidenav a, .dropdown-btn {
+				  padding: 6px 8px 6px 16px;
+				  text-decoration: none;
+				  font-size: 20px;
+				  color: #818181;
+				  display: block;
+				  border: none;
+				  background: none;
+				  width: 100%;
+				  text-align: left;
+				  cursor: pointer;
+				  outline: none;
+				}
+
+				/* On mouse-over */
+				.sidenav a:hover, .dropdown-btn:hover {
+				  color: #f1f1f1;
+				}
+
+				/* Main content */
+				.main {
+				  margin-left: 200px; /* Same as the width of the sidenav */
+				  font-size: 20px; /* Increased text to enable scrolling */
+				  padding: 0px 10px;
+				}
+				main, nav, footer {
+				   /* Same as the width of the sidenav */
+				  font-size: 20px; /* Increased text to enable scrolling */
+				  padding: 0px 10px;
+                  margin-left: 13%;
+				}
+@media screen and (max-width: 2560px) {
+}
+
+@media screen and (max-width: 1920px) {
+    main, nav, footer {
+                   /* Same as the width of the sidenav */
+                  font-size: 20px; /* Increased text to enable scrolling */
+                  padding: 0px 10px;
+                  margin-left: 14%;
+                }
+                .right_sidebar main, .right_sidebar nav, .right_sidebar footer {
+    font-size: 20px;
+    padding: 0px 10px;
+    margin-left: 5%;
+}
+                }
+
+        @media screen and (max-width: 1680px) {
+    main, nav, footer {
+                   /* Same as the width of the sidenav */
+                  font-size: 20px; /* Increased text to enable scrolling */
+                  padding: 0px 10px;
+                  margin-left: 14%;
+                }
+                .right_sidebar main, .right_sidebar nav, .right_sidebar footer {
+    font-size: 20px;
+    padding: 0px 10px;
+    margin-left: 5%;
+}
+                }
+
+                @media screen and (max-width: 1536px) {
+                main, nav, footer {
+                   /* Same as the width of the sidenav */
+                  font-size: 20px; /* Increased text to enable scrolling */
+                  padding: 0px 10px;
+                  margin-left: 16%;
+                }
+                .right_sidebar main, .right_sidebar nav, .right_sidebar footer {
+    font-size: 20px;
+    padding: 0px 10px;
+    margin-left: 6%;
+}
+
+                }
+                @media screen and (max-width: 1440px) {
+    main, nav, footer {
+                   /* Same as the width of the sidenav */
+                  font-size: 20px; /* Increased text to enable scrolling */
+                  padding: 0px 10px;
+                  margin-left: 16.5%;
+                }
+                .right_sidebar main, .right_sidebar nav, .right_sidebar footer {
+    font-size: 20px;
+    padding: 0px 10px;
+    margin-left: 5%;
+}
+                }
+
+                @media screen and (max-width: 1366px) {
+    main, nav, footer {
+                   /* Same as the width of the sidenav */
+                  font-size: 20px; /* Increased text to enable scrolling */
+                  padding: 0px 10px;
+                  margin-left: 19.5%;
+                }
+                .right_sidebar main, .right_sidebar nav, .right_sidebar footer {
+    font-size: 20px;
+    padding: 0px 10px;
+    margin-left: 7%;
+}
+                }
+                @media screen and (max-width: 1280px) {
+    main, nav, footer {
+                   /* Same as the width of the sidenav */
+                  font-size: 20px; /* Increased text to enable scrolling */
+                  padding: 0px 10px;
+                  margin-left: 20%;
+                }
+                .right_sidebar main, .right_sidebar nav, .right_sidebar footer {
+    font-size: 20px;
+    padding: 0px 10px;
+    margin-left: 6%;
+}
+                }
+                @media screen and (max-width: 1024px) {
+
+    main, nav, footer {
+                   /* Same as the width of the sidenav */
+                  font-size: 12px; /* Increased text to enable scrolling */
+                  padding: 0px 10px;
+                  margin-left: 23.5%;
+                }
+                h2 {
+    font-size: 16px;
+                }
+                h5, .h5 {
+    font-size: 1.0rem;
+}
+
+.right_sidebar main, .right_sidebar nav, .right_sidebar footer{
+    font-size: 20px;
+    padding: 0px 10px;
+    margin-left: 8%;
+}
+}
+
+
+
+
+
+
+
+@media screen and (max-width: 768px) {
+main, nav, footer {
+                   /* Same as the width of the sidenav */
+                  font-size: 12px; /* Increased text to enable scrolling */
+                  padding: 0px 10px;
+                  margin-left: 23.5%;
+                }
+                h2 {
+    font-size: 16px;
+                }
+                h5, .h5 {
+    font-size: 0.6rem;
+}
+#sidebar{
+    min-width: 159px !important;
+    max-width: 187px !important;
+}
+nav .main_logo{
+    width:100%
+}
+
+.table th, .table td {
+    padding: 0.3rem;
+    }
+
+.right_sidebar main, .right_sidebar nav, .right_sidebar footer {
+    font-size: 10px;
+   
+    margin-left: 10.5%;
+}
+    
+
+}
+
+				/* Add an active class to the active dropdown button */
+				.active {
+				  background-color: green;
+				  color: white;
+				}
+
+				/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+				.dropdown-container {
+				  display: none;
+				  background-color: #262626;
+				  padding-left: 8px;
+				}
+
+				/* Optional: Style the caret down icon */
+				.fa-caret-down {
+				  float: right;
+				  padding-right: 8px;
+				}
+
+				/* Some media queries for responsiveness */
+				@media screen and (max-height: 450px) {
+				  .sidenav {padding-top: 15px;}
+				  .sidenav a {font-size: 18px;}
+				}
+				.menu>.menu-item {
+    				padding: 4%;
+				}
+				.menu .menu-title {
+    color: var(--tw-menu-item-color);
+    font-size: calc(var(--tw-menu-item-font-size) * .8);
+    padding: 5%;
+    cursor: default;
+    white-space: nowrap;
+    font-weight: 500;
+    letter-spacing: .1em;
+    opacity: .75;
+}
+.collapse {
+    visibility: visible;
+}
+.sidenav a:hover, .dropdown-btn:hover {
+    color: red;
+}
+.active {
+    color: white;
+    background: red;
+}
+.main_logo .active{
+    width:40px;
+    color: #818181;
+    background: none;
+}
+
+
+.sidenav .active a{
+    font-size:8px;
+}
+
+
+			</style>
+			    <div class="sidenav">
+                    <a></a>
+       <nav id="sidebar" style="min-width: 250px;max-width: 250px;background: #fff;color: #8A92A6;transition: all 0.3s;padding-left: 10px;margin-left:0%">
+            <div class="sidebar-header">
+                <h3> <a href="/"  class="main_logo">
+                            <img class="main_logo" t-att-src="'/logo.png?company=%s' % res_company.id" t-att-alt="'Logo of %s' % res_company.name" t-att-title="res_company.name"/>
+                        </a></h3>
+                <!-- <strong> <img src="boostrap/images/logothl.png" style="width: 50px; height: 50px" alt="Small logo"/></strong> -->
+            </div>
+
+            <ul class="list-unstyled components">
+                <li t-att-style="'color: white;background: red;' if current and current == 'wallet' else ''">
+                    <a href="/wallet"  >
+                        <img src="/ag_the_hub/static/images/icons/dashboard.png"/>
+                        Wallet Dashboard
+                    </a>
+                    
+                </li>
+                <li t-att-class="'selected_menu' if current and current == 'analytic' else ''" >
+                    <a href="/my/analytic">
+                        <img src="/ag_the_hub/static/images/icons/Analytics.png"/>
+                        Analytics
+                    </a>
+                </li>
+               
+                <li t-att-class="'selected_menu' if current and current == 'home' else ''">
+                    <a href="/my/home">
+                        <img class="menu-icon" src="/ag_the_hub/static/images/icons/bxs_home.png"/>
+                        Home
+                    </a>
+                </li>
+               
+                <li t-att-class="'selected_menu' if current and current == 'operation' else ''">
+                    <a href="#">
+                        <img class="menu-icon" src="/ag_the_hub/static/images/icons/operation.png"/>
+                        Operations
+                    </a>
+                </li>
+               
+                <li t-att-class="'main_selected_menu_a' if current and current in ['products','customers','3pl','orders'] else ''">
+                    <a t-att-class="'selected_menu_a' if current and current == 'products' else ''" href="/my/products">
+                        <img class="menu-icon" src="/ag_the_hub/static/images/icons/product.png"/>
+                        My Products
+                    </a>
+                    <a t-att-class="'selected_menu_a' if current and current == 'customers' else ''" href="/my/customers">
+                        <img class="menu-icon" src="/ag_the_hub/static/images/icons/customers.png"/>
+                        Customers
+                    </a>
+                    <a t-att-class="'selected_menu_a' if current and current == '3pl' else ''" href="/my/3plcompanies">
+                        <img class="menu-icon" src="/ag_the_hub/static/images/3pl.png" style="width: 9%;"/>
+                        3PL Company
+                    </a>
+                    <a t-att-class="'selected_menu_a' if current and current == 'orders' else ''" href="#Orders" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <img class="menu-icon" src="/ag_the_hub/static/images/icons/order.png"/>
+                        My Orders
+                    </a>
+                    <ul class="collapse list-unstyled" id="Orders">
+                        <li t-att-class="'selected_menu' if current and current == 'wro' else ''">
+                            <a href="/my/wros">Warehouse Receiving Order</a>
+                        </li>
+                        <li t-att-class="'selected_menu' if current and current == 'wo' else ''">
+                            <a href="/my/workorders">Work Order</a>
+                        </li>
+                        <li t-att-class="'selected_menu' if current and current == 'onhand' else ''">
+                            <a href="/my/hold/receiving">On-Hold Receiving</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    
+                    <a href="#Inventory" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <img class="menu-icon" src="/ag_the_hub/static/images/icons/inventory.png"/>
+                        Inventory
+                    </a>
+                    <ul class="collapse list-unstyled" id="Inventory">
+                        <li t-att-class="'selected_menu' if current and current == 'sendinve' else ''">
+                            <a href="/send/inventory/portal">Send Inventory</a>
+                        </li>
+                        <li t-att-class="'selected_menu' if current and current == 'invenstat' else ''">
+                            <a href="/my/inventory">Inventory Status</a>
+                        </li>
+                        <li t-att-class="'selected_menu' if current and current == 'invenhis' else ''">
+                            <a href="/my/inventory/history">Inventory History</a>
+                        </li>
+                        <li t-att-class="'selected_menu' if current and current == 'invtran' else ''">
+                            <a href="#">Inventory Transfer</a>
+                        </li>
+                        <li t-att-class="'selected_menu' if current and current == 'invenloc' else ''">
+                            <a href="#">Inventory Location</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <!-- <a t-att-class="'selected_menu_a' if current and current == 'invoicepage' else ''" href="/my/invoices/custom">
+                        <img class="menu-icon" src="/ag_the_hub/static/images/icons/inventory.png"/>
+                        My Invoices
+                    </a> -->
+                    <!-- <a href="#Finance" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <img class="menu-icon" src="/ag_the_hub/static/images/icons/inventory.png"/>
+                        Finance
+                    </a>
+                    <ul class="collapse list-unstyled" id="Finance">
+                        <li>
+                            <a href="/wallet">Wallet Top-Up</a>
+                        </li>
+                        <li>
+                            <a href="/my/wallet/transaction">Wallet Transaction</a>
+                        </li>
+                        <li>
+                            <a href="/my/invoices">Invoicing </a>
+                        </li>
+                        <li>
+                            <a href="/my/wallet/transaction">Statement</a>
+                        </li>
+                    </ul> -->
+                </li>
+                <li>
+                    
+                    <a href="#Profile" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <img class="menu-icon" src="/ag_the_hub/static/images/icons/profile.png"/>
+                        My Profile
+                    </a>
+                    <ul class="collapse list-unstyled" id="Profile">
+                        <li>
+                            <a href="/my/account/setting">Account Setting</a>
+                        </li>
+                        <li>
+                            <a href="/web/session/logout?redirect=/">Logout</a>
+                        </li>
+                        <li>
+                            <a href="/wallet">Wallet Top-Up</a>
+                        </li>
+                        <li>
+                            <a href="/my/wallet/transaction">Wallet Transaction</a>
+                        </li>
+                    </ul>
+                </li>
+                
+            </ul>
+
+           
+        </nav>
+    </div>
+
+
+    <style>
+                /* Custom CSS for the circular button */
+                .circular-button {
+                    width: 100px; /* Adjust the width as needed */
+                    height: 100px; /* Adjust the height as needed */
+                    border-radius: 50%; /* Makes the button circular */
+                    font-size: 19px; /* Adjust the font size */
+                    position: fixed;
+                    right: 20px; /* Adjust the distance from the right edge */
+                    bottom: 50px; /* Adjust the distance from the bottom edge */
+                  }
+            </style>
+            <!-- <button class="btn btn-primary circular-button">Click</button> -->
+
+            <div class="fixed container-fluid d-flex justify-content-center align-items-end vh-80  z-10  cursor-pointer" style="z-index: 100000;position: fixed;">
+                <!-- Circular Rounded Button -->
+                <button class="btn btn-danger circular-button" data-toggle="modal" data-target="#topup">
+                    <span>Wallet <br/>Top-Up </span> </button>
+            </div>
+
+               <!-- The Modal -->
+            <div class="modal fade" id="topup">
+                <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+                
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                        <h4 class="modal-title"> Top-Up Balance</h4>
+                        <button type="button" class="close" data-dismiss="modal">&amp;times;</button>
+                        </div>
+                
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <div class="card rounded shadow mb-3" style=" margin-bottom: 20px; ">
+                                    
+                                <div class="card-body rounded" style="background-color: #EE3137 !important;;">
+                                    <div class="p-4 md:p-7 d-flex justify-content-between items-center">
+                                        <div>
+                                            <h4 class="text-base mb-1 text-gray-600 text-white"> <span t-field="user_id.partner_id.wallet_balance"
+                                                   t-options='{"widget": "monetary", "display_currency": user_id.partner_id.currency_id}'/></h4>
+                                            <p class="font-normal text-sm text-gray-400 truncate text-white">Wallet Balance</p>
+                                        </div>
+                                        <div>
+                                            <div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye text-white">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z">
+                                                </path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                                </svg>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- <form action="#" class="card p-4">
+                                        <div class="form-group">
+                                            <label for="name"> Enter your amount</label>
+                                            <input type="text" class="form-control" id="uname" placeholder="Enter Amount" value="₦80,000" name="name" required='required'/>
+                                            
+                                        </div>
+                                        <button class="btn bg-primary text-white">
+                                            Top-Up Balance</button>
+                                    </form>  -->
+
+                                    <form t-attf-action="/wallet/balance/confirm" method="post">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                            
+                                        <div class="form-group">
+                                            <label for="name"> Enter your amount</label>
+                                            <input type="text" class="form-control" id="uname" placeholder="Enter Amount" value="80000" name="amount" required="required"/>
+                                            
+                                        </div>
+                                        <button href="/add/wallet/balance" type="submit" id="add_wallet_payment" class="btn bg-primary text-white">
+                                             Top-Up Balance</button>
+
+                                     </form>                                    
+                                </div>
+                                
+                            </div>
+
+                        </div>
+                
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                                    
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+                
+                    </div>
+                </div>
+            </div>
+
+			<!-- <div class="sidenav">
+				
+				<a href="/my/home">The Platform</a>
+				<a href="/my/products">Products</a>
+				<a href="/my/3plcompanies">3PL Companies</a>
+			    
+			    <a href="/send/inventory/portal">Send Inventory</a>
+			    <a href="/my/wros">Warehouse Receiving Orders</a>
+			    <a href="/my/inventory">Inventory Status</a>
+			    <a href="#">Inventory History</a>
+			    <a href="#">Inventory Transfer</a>
+			    <a href="#">On Hold Receiving</a>
+			    <a href="/my/workorders">Work Orders</a>
+				<a href="/my/customers">Customers</a>
+				<a href="#">Pricings</a>
+				<a href="#">Returns</a>
+				<a href="/my/analytics">Analytics</a>
+				<a href="#">Billing</a>
+				<a href="#">Locations</a>
+			</div> -->
+			<!-- <script>
+				var dropdown = document.getElementsByClassName("dropdown-btn");
+				var i;
+
+				for (i = 0; i &lt; dropdown.length; i++) {
+				  dropdown[i].addEventListener("click", function() {
+				    this.classList.toggle("active");
+				    var dropdownContent = this.nextElementSibling;
+				    if (dropdownContent.style.display === "block") {
+				      dropdownContent.style.display = "none";
+				    } else {
+				      dropdownContent.style.display = "block";
+				    }
+				  });
+				}
+			</script> -->
+		</xpath>
+		<!-- <xpath expr="//nav/div/a/img" position="attributes">
+			<attribute name="style">height:75px;</attribute>
+		</xpath> -->
+	</template>
+
+	<template id="portal_add_products" name="Add Products">
+		<!-- Add Products Modal -->
+            <div class="modal fade" id="addProducts" tabindex="-1" role="dialog" aria-labelledby="addProducts" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <h1 class="text-center d-block mt-2">Add Products</h1>
+                            <div class="mt-2 d-flex" style="text-align: center;">
+                                <a data-dismiss="modal" class="w-50 border m-4" data-toggle="modal" href="#importProductManually">
+                                	<span style="font-size: 100px;"><i class="fa fa-file-excel-o"/></span>
+                                	<p style="font-size:16px !important">Import from Excel</p>
+                                	<p style="font-size:10px !important">We'll provide a template</p>
+                                </a>
+                                <a data-dismiss="modal" class="w-50 border m-4" data-toggle="modal" href="#addProductManually">
+                                	<span style="font-size: 100px;"><i class="fa fa-bars"/></span>
+                                	<p style="font-size:16px !important">Add Products Manually</p>
+                                	<p style="font-size:10px !important">Add products one-by-one</p>
+                                </a>
+                            </div>
+
+                            <!-- Close Button -->
+                            <div class="text-center d-block mt-2">
+                                <a class="font-size:14px" href="#" data-dismiss="modal" aria-label="Close">
+                                    Close
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+                <nav aria-label="breadcrumb flex justify-between" style="background-color:#e9ecef;margin-left: 0%;">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item "><a class="bold text-danger" href="/my">THL</a></li>
+                      <li class="breadcrumb-item active" aria-current="page" style="background: transparent;">My Products</li>
+                    </ol>
+                  </nav>
+            <section>
+                <div class="container-fuild p-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="flex justify-between items-center">
+                                        <h4 class="card-title">  Products (<t t-esc="products_count"/>)</h4>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    
+
+                                    <div class="card-header pl-1 pr-1">
+                                        <div class="flex justify-between items-center">
+                                            <div class="d-flex justify-content-end mr-3">
+                                                 <form action="" method="get" class="navbar-search ml-auto pagination form-inline">
+                             <div t-attf-class="input-group #{_classes}" role="search">
+        <t t-set="search_placeholder">Search...</t>
+        <input type="search" name="search" t-att-class="'search-query form-control oe_search_box %s' % _input_classes" t-att-placeholder="placeholder if placeholder else search_placeholder" t-att-value="search"/>
+        <div class="input-group-append">
+            <button type="submit" t-att-class="'btn oe_search_button %s' % (_submit_classes or 'btn-primary')" aria-label="Search" title="Search"><i class="fa fa-search"/></button>
+        </div>
+    </div>
+                    </form>
+
+                                               
+                                                
+                                                <!-- <div class="dropdown mr-2 border">
+                                                    <button class="btn bg-white dropdown-toggle" type="button" id="filterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fa fa-sort-amount-down mr-2"></i> Filter 
+                                                      </button>
+                                                    <div class="dropdown-menu" aria-labelledby="filterDropdown">
+                                                      <a class="dropdown-item" href="#">Link 1</a>
+                                                      <a class="dropdown-item" href="#">Link 2</a>
+                                                      <a class="dropdown-item" href="#">Link 3</a>
+                                                    </div>
+                                                </div> -->
+                                                <t t-set="list_price_asc_label">Filter by Popularity</t>
+            <t t-set="list_price_desc_label">Filter by Newest</t>
+                                                 <t t-set="website_sale_sortable" t-value="[
+                
+                ('Popular', 'popular'),
+                ('Newest', 'create_date asc'),
+                
+            ]"/>
+            <t t-set="website_sale_sortable_current" t-value="website_sale_sortable"/>
+                                                 <div class="o_sortby_dropdown dropdown dropdown_sorty_by ml-3 pb-2">
+                <span class="d-none d-lg-inline font-weight-bold text-muted">Filter By:</span>
+                <a role="button" href="#" class="dropdown-toggle btn btn-light border-0 px-0 text-muted align-baseline" data-toggle="dropdown">
+                    <span class="d-none d-lg-inline">
+                        <t t-if='website_sale_sortable_current'>
+                            <t t-esc="website_sale_sortable_current[0][0]"/>
+                        </t>
+                        <t t-else='1'>
+                            Featured
+                        </t>
+                    </span>
+                    <i class="fa fa-sort-amount-asc d-lg-none"/>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                    <t t-foreach="website_sale_sortable" t-as="sortby">
+                        <a role="menuitem" rel="noindex,nofollow" t-att-href="keep('/my/products', order=sortby[1])"  class="dropdown-item">
+                            <span t-out="sortby[0]"/>
+                        </a>
+                    </t>
+                </div>
+            </div>
+
+                                                <!-- <form class="form-inline pr-2">
+                                                    <div class="input-group">
+                                                      <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                          <i class="fas fa-search"></i>
+                                                        </span>
+                                                      </div>
+                                                      <input type="text" class="form-control" placeholder="Search"/>
+                                                    </div>
+                                                </form>
+ -->
+                                               
+                                               
+                                               <!--  <div class="dropdown mr-2 border">
+                                                    <button class="btn bg-white dropdown-toggle" type="button" id="filterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fa fa-filter mr-2"></i> Filter 
+                                                      </button>
+                                                    <div class="dropdown-menu" aria-labelledby="filterDropdown">
+                                                      <a class="dropdown-item" href="#">Link 1</a>
+                                                      <a class="dropdown-item" href="#">Link 2</a>
+                                                      <a class="dropdown-item" href="#">Link 3</a>
+                                                    </div>
+                                                </div> -->
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"> 
+                                                    <i class="fa fa-plus"></i> Add New Product</button>
+                                               
+                                                <!-- The Modal -->
+                                                <div class="modal fade" id="myModal">
+                                                    <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                
+                                                        <!-- Modal Header -->
+                                                        <div class="modal-header">
+                                                        <h4 class="modal-title"> Add New Product</h4>
+                                                        <button type="button" class="close" data-dismiss="modal">&amp;times;</button>
+                                                        </div>
+                                                
+                                                        <!-- Modal body -->
+                                                        <div class="modal-body">
+                                                            <div class="d-flex justify-content-center">
+                                                               
+                                                                <div class="card mr-3" style="width:400px">
+                                                                    <a data-dismiss="modal"  data-toggle="modal" href="#importProductManually">
+                                   
+                                   
+                               
+                                                                    <img class="card-img-top" src="/ag_the_hub/static/images/import.png" alt="Card image"/>
+                                                                    <div class="card-body">
+                                                                      <h5 class="card-title text-center">Import from Excel </h5>
+                                                                      <p style="font-size:10px !important">We'll provide a template</p>
+                                                                    </div>
+
+                                </a>
+                                                                </div>
+                                                                
+
+                                                                <div class="card" style="width:400px">
+                                                                     <a data-dismiss="modal"  data-toggle="modal" href="#addProductManually">
+                                                                        <img class="card-img-top" src="/ag_the_hub/static/images/product.png" alt="Card image"/>
+                                                                        
+                                
+                                                                    
+                                                                    <div class="card-body">
+                                                                      <h5 class="card-title text-center">Add Products Manually</h5>
+                                                                      <p style="font-size:10px !important">Add products one-by-one</p>
+                                                                    </div>
+                                                                    </a>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            
+                                                        </div>
+                                                
+                                                        <!-- Modal footer -->
+                                                        <div class="modal-footer">
+                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                
+                                                    </div>
+                                                    </div>
+                                                </div>
+                                                   
+                                                    
+                                              </div>
+                                        </div>
+                                    </div>
+                                    <div >
+                                        <table class="table table-hover">
+                                            <thead class="bg-light">
+                                              <tr>
+                                                <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >
+                                                    <div class="flex items-center h-5">
+                                                                <input id="table-search-checkbox-all" type="checkbox" class="form-checkbox rounded"/>
+                                                                <label for="table-search-checkbox-all" class="sr-only">Checkbox</label>
+                                                            </div>
+                                                </th>
+                                                
+                                                <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Name</th>
+                                                <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >SKU</th>
+                                                <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >On Hand</th>
+                                                <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Platform</th>
+                                                <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Barcode</th>
+                                                <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Lot Item</th>
+                                                <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Has Serial</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr t-foreach="products" t-as="product">
+                                                <td class="px-6 py-4 ">
+                                                            <div class="flex items-center h-5">
+                                                                <input t-att-id="'table-search-checkbox-'+str(product.id)" type="checkbox" class="form-checkbox rounded"/>
+                                                                <label for="table-search-checkbox-1" class="sr-only">Checkbox</label>
+                                                            </div>
+                                                        </td>
+                                                <td class="px-6 py-4 "> 
+                                                    <a href="#"  data-toggle="modal" t-att-data-target="'#edit_product_'+str(product.id)">
+                                                    <t t-esc="product.name"/>
+                                                </a>
+                                                    <div  t-att-id="'edit_product_'+str(product.id)" class="modal fade" role="dialog" >
+                                                          <div class="modal-dialog">
+                                                            <div class="modal-content welcome-box">
+                                                              <div class="modal-header bb-0">
+                                                                
+                                                              </div>
+                                                              <div class="modal-body welcome-box-body">
+                                                                <form id="update_product_manually" action="/update/product/manually" method="post"
+                                  enctype="form-data">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            
+                                                                <h4 class="modal-title text-center">
+                                                                    Update Product Name
+                                                                </h4>
+                                                                <div class="text-center">
+                                                                    <input type="text" class="product_name" name="product_name" t-att-value="product.name"/>
+                                                                    <input type="hidden" class="product_id" name="product_id" t-att-value="product.id"/>
+                                                                        
+                                                                </div>
+                                                                <h4 class="modal-title text-center">
+                                                                    Update Reorder Limit
+                                                                </h4>
+                                                                <div class="text-center">
+                                                                    <input type="number" class="reorder_limit" name="reorder_limit" t-att-value="product.reorder_level
+"/>
+                                                                    
+                                                                        
+                                                                </div>
+                                                                <div class="text-center" style="padding-top: 4%;">
+                                                                    <button href="#" type="submit"  class="btn bg-primary text-white submit_form"    style="background: red;">
+                                                                            
+                                                                        
+                                                                         Update</button>
+
+                                                                                                                                
+                                                                   <!--  <button type="button" class="btn btn-primary" data-dismiss="modal" style="
+                                                            background: red;
+                                                        ">Let's Go</button> -->
+                                                                </div>
+                                                        </form>
+                                                            </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+
+
+                                                </td>
+                                                <td class="px-6 py-4 "><t t-esc="product.default_code"/></td>
+                                                <td class="px-6 py-4 "><t t-esc="product.qty_available"/></td>
+                                                <td class="px-6 py-4 "><t t-esc="product.platform"/></td>
+                                                <td class="px-6 py-4 "> <t t-esc="product.barcode"/></td>
+                                                <td class="px-6 py-4 ">
+                                                    <t t-if="product.tracking == 'lot'">Yes</t>
+                                                             <t t-else="">No</t>
+                                                </td>
+                                                <td class="px-6 py-4 "><t t-if="product.tracking == 'serial'">Yes</t>
+                            <t t-else="">No</t></td>
+                                              </tr>
+                                              
+                                              
+                                            </tbody>
+                                          </table>
+                                          
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            <!-- <div class="py-1 px-4">
+                                <nav class="flex items-center space-x-2">
+                                    
+                                    <a class="text-gray-400  rounded-circle p-4 items-center " style="width: 200px; height: 200px;" href="#"> 
+                                        <span aria-hidden="true">«</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <t t-foreach="pager['page_count']" t-as="count">
+                                    <a  class="w-10 h-10 bg-primary text-white p-4 inline-flex items-center text-sm font-medium rounded-full" href="#" aria-current="page">1</a>
+                                </t>
+                                    <a class="text-gray-400 hover:text-primary p-4 inline-flex items-center gap-2 font-medium rounded-md" href="#">
+                                        <span class="sr-only">Next</span>
+                                        <span aria-hidden="true">»</span>
+                                    </a>
+                                </nav>
+                            </div> -->
+                            <t t-call="portal.pager"/>
+                        </div>
+                    </div>
+                    <br/>
+                    
+                </div>
+            </section>
+            
+
+            <!-- Impor Product Excel Modal -->
+            <div class="modal fade" id="importProductManually" tabindex="-1" role="dialog" aria-labelledby="importProductManually" aria-hidden="true">
+            	<style>
+            		.file-drop-area {
+						position: relative;
+						display: flex;
+						align-items: center;
+						width: 450px;
+						max-width: 100%;
+						padding: 25px;
+						border: 1px dashed;
+						border-radius: 3px;
+						transition: 0.2s;
+
+					}
+
+					.choose-file-button {
+						flex-shrink: 0;
+						background-color: rgba(255, 255, 255, 0.04);
+						border: 1px solid #ccc;
+						border-radius: 3px;
+						padding: 12px 18px;
+						margin-right: 10px;
+						font-size: 14px;
+						text-transform: uppercase;
+					}
+
+					.file-message {
+						font-size: medium;
+						font-weight: 300;
+						line-height: 1.4;
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
+					}
+
+					.file-input {
+						position: absolute;
+						left: 0;
+						top: 0;
+						height: 100%;
+						width: 100%;
+						cursor: pointer;
+						opacity: 0;
+
+					}
+            	</style>
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <h1 class="text-center d-block mt-2">Import Products via Excel</h1>
+                            <div class="text-center d-block mt-2">
+                            	To import your products in Excel we require a SKU number and Item Name.Beyond that you can add extra information. <a href="/report/product/template/xls" target="blank">Download our Product Import Template.</a>
+                            </div>
+                            <form id="import_product_excel" action="/import/product/excel" method="post"
+                                  enctype="multipart/form-data">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+								<div class="container d-flex justify-content-center mt-4 mb-4">
+									<div class="row">
+									    <div class="col-md-12">
+											<div class="file-drop-area">
+												<span class="choose-file-button">Choose file</span>
+												<span class="file-message">or drag and drop file here</span>
+												<input class="file-input" type="file" name="file" required="True" onchange="get_file_name();" accept=".xlsx,.xls"/>
+											</div>
+
+										</div>
+									</div>
+								</div>
+								<button type="submit" id="fileUploadBtn" class="btn btn-success float-right d-none" style="font-size:20px;font-weight:bold;">Upload</button>
+							</form>
+
+                            <!-- Close Button -->
+                            <div class="text-center d-block mt-2">
+                                <a style="font-size:10px" href="#" data-dismiss="modal" aria-label="Close">
+                                    Close
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                	function get_file_name() {
+                		var file_content = document.getElementsByClassName("file-input");
+                		var filesCount = file_content[0].files.length;
+                		var textbox = document.getElementsByClassName("file-message");
+                		var uploadBtn = document.getElementById("fileUploadBtn");
+                		if (filesCount === 1) {
+							var fileName = file_content[0].value.split('\\').pop();
+							textbox[0].textContent = fileName;
+							uploadBtn.classList.remove("d-none");
+						} else {
+							textbox.text(filesCount + ' files selected');
+						}
+					}
+				</script>
+            </div>
+
+            <!-- Add Product Manually Modal -->
+            <div class="modal fade" id="addProductManually" tabindex="-1" role="dialog" aria-labelledby="addProductManually" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <h1 class="text-center d-block mt-2">Add Product</h1>
+                            <div class="text-center d-block mt-2">
+                            	You can add extra information later.
+                            </div>
+                            <form id="add_product_manually" action="/add/product/manually" method="post"
+                                  enctype="form-data">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+								<div class="form-group">
+									<label for="product_name">Product Name</label>
+									<input type="text" class="form-control" id="product_name" name="product_name" placeholder="Enter Product Name" required="1"/>
+								</div>
+								<div class="form-group">
+									<label for="sku_number">SKU Number</label>
+									<input type="text" class="form-control" id="sku_number" name="sku_number" placeholder="Enter SKU Number"/>
+									<small id="sku" class="form-text text-muted">This field is optional</small>
+								</div>
+                                <div class="form-group">
+                                    <label for="sku_number">Barcode</label>
+                                    <input type="text" class="form-control" id="barcode" name="barcode" placeholder="Enter Barcode"/>
+                                    <small id="sku" class="form-text text-muted">This field is optional</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="gender">Gender</label>
+                                    <select  class="form-control"  name="product_gender">
+                                                                            <!-- <option value="" selected="selected" disabled="True">Please select an option...</option> -->
+                                                                           <option value="male" selected="selected">Male</option>
+                                                                            <option value="female" >Female</option>
+                                                                            <option value="unisex" >Unisex</option>
+                                                                           
+                                                                            
+                                                                        </select>
+                                    <small id="sku" class="form-text text-muted">This field is optional</small>
+                                    <!-- <input type="text" class="form-control" id="gender" name="gender" placeholder="Enter SKU Number"/> -->
+                                    <!-- <small id="sku" class="form-text text-muted">This field is optional</small> -->
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <label for="color">Color</label>
+                                    <input type="text" class="form-control" id="color" name="color" placeholder="Enter Product Color"/>
+                                    <small id="sku" class="form-text text-muted">This field is optional</small>
+                                        </div>
+                                        <div class="col-6">
+                                            <label for="size">Size</label>
+                                    <input type="text" class="form-control" id="size" name="size" placeholder="Enter Product Size" maxlength="10"/>
+                                    <small id="sku" class="form-text text-muted">This field is optional</small>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+								<button type="submit" class="btn btn-success float-right" style="font-size:20px;font-weight:bold;">Add Product</button>
+							</form>
+
+                            <!-- Close Button -->
+                            <div class="text-center d-block mt-2">
+                                <a class="font-size:14px" href="#" data-dismiss="modal" aria-label="Close">
+                                    Close
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+	</template>
+
+	<template id="portal_my_home_the_hub" inherit_id="portal.portal_my_home" name="My Portal"> 
+
+		<xpath expr="//div[hasclass('o_portal_my_home')]" position="replace">
+            <style>
+                .breadcrumb {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    list-style: none;
+    background-color: #e9ecef !important;
+    border-radius: 0.25rem;
+}
+            </style>
+			<t t-set="my_details" t-value="True"/>
+			<div class="o_portal_my_home">
+                <!-- <div class="oe_structure" id="oe_structure_portal_my_home_1"/>
+                <h1>Welcome, <span t-field="user_id.partner_id"/></h1>
+                <p>Complete the steps below to start shipping with The Hub.</p>
+                <t t-if="user_id.partner_id and user_id.partner_id.thehub_account_activated">
+                	<div class="o_portal_docs list-group d-none">
+                	</div>
+                	<div class="card mt-4">
+					  	<div class="card-body">
+					  		<div class="d-flex">
+					    		<h3 class="card-title">Connect to The Hub</h3>
+					    	</div>
+					    	<h4 class="card-title ml-3">Add your Products</h4>
+					    	<p class="card-text ml-3">Integrate your ecommerce platform with The Hub to sync your products, or <a data-toggle="modal" data-target="#addProducts" href="#">add products manually.</a></p>
+					    	<t t-call="ag_the_hub.portal_add_products"/>
+					  	</div>
+					</div> -->
+					<t t-if="user_id.partner_id and user_id.partner_id.thehub_account_activated">
+                        <div class="o_portal_docs list-group d-none">
+                    </div>
+						 
+                <nav aria-label="breadcrumb flex justify-between" style="margin-left: 0px;">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item "><a class="bold text-danger" href="/my">THL</a></li>
+                      <li class="breadcrumb-item active" aria-current="page" style="background-color: transparent;">Home</li>
+                    </ol>
+                  </nav>
+            <section>
+                <div class="container-fuild">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card " style="background-color: rgb(59 130 246 / 0.1);">
+                                <div class="d-flex justify-content-between">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="card-body" style="background-color: inherit !important;">
+                                                <h5 class="card-title" style="">Welcome back <t t-esc="user_id.partner_id.name"/>!</h5>
+                                                <p class="card-text text-gray " style=" font-size:20px; text-align: justify; color:#8A92A6"  >
+                                                    Welcome to THE HUB TERMINUS LIMITED! Your space for secure storage solutions. Discover our range of storage options for businesses and individuals. Safe, reliable, and ready to accommodate your needs. Explore our website to find your perfect storage fit. Thank you for choosing us!
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <img style="width: 500px; height:400px" src="/ag_the_hub/static/images/warehouse.png" class="card-img-top" alt="..."/>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card " style="background-color: #FFA600;">
+                                <div class="d-flex justify-content-between">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="card-body" style="background: inherit !important;">
+                                                 <p class="card-text text-white " style="text-align: justify;"  >
+                                                    Connect to The HUb Integrate your ecommerce platform with The Hub to your products, or add products Manually.
+                                                </p>
+                                                <a href="/my/products" class="btn bg-primary text-white">
+                                                    <i class="fas fa-plus"></i> Go To Products</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+
+                </t>
+                <t t-else="">
+                	<div class="alert alert-danger" role="alert">
+					  	Your account is awaiting administrator’s activation !
+					</div>
+                </t>
+
+
+ 
+
+
+<!-- <div t-if="request.env.user.welcome_done == False" id="welcome-user" class="modal fade" role="dialog" >
+  <div class="modal-dialog">
+    <div class="modal-content welcome-box">
+      <div class="modal-header bb-0">
+        
+      </div>
+      <div class="modal-body welcome-box-body">
+        <h4 class="modal-title text-center">
+            Welcome
+        </h4>
+        <div class="text-center">
+            Welcome to the hub
+        </div>
+        <div class="text-center">
+            <button href="#" type="submit"  class="btn bg-primary text-white submit_form" data-dismiss="modal"   style="background: red;">
+                <input type="text" class="user_env d-none" t-att-value="request.env.user.id"/>
+                    
+                
+                 Let's Go</button>
+
+                                                                        
+           
+        </div>
+    </div>
+    </div>
+  </div>
+</div> -->
+ 
+            </div>
+		</xpath>
+    </template>
+
+</odoo>

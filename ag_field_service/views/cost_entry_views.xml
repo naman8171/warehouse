@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	    <record id="view_cost_entry_tree" model="ir.ui.view">
+            <field name="name">cost.entry.tree</field>
+            <field name="model">cost.entry</field>
+            <field name="arch" type="xml">
+                <tree string="Cost Entries">
+                    <field name="partner_id"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="cost_category_id"/>
+                    <field name="effective_date"/>
+                    <field name="amount" widget="monetary"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_cost_entry_search" model="ir.ui.view">
+            <field name="name">cost.entry.search</field>
+            <field name="model">cost.entry</field>
+            <field name="arch" type="xml">
+                <search string="Cost Entries">
+                    <field name="partner_id"/>
+                    <field name="cost_category_id"/>
+                    <field name="effective_date"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_cost_entry" model="ir.actions.act_window">
+            <field name="name">Cost Entries</field>
+            <field name="res_model">cost.entry</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="context">{'group_by': ['branch_id','effective_date:month']}</field>
+        </record>
+
+        <menuitem id="menu_cost_entry" action="action_cost_entry" name="Cost Entries" parent="ag_multi_branch.menu_branch_root" sequence="5"/>
+
+</odoo>

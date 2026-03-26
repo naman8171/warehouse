@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="portal_layout" name="Portal layout: product menu entry" inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'product' or product" class="col-lg-2" t-attf-class="breadcrumb-item">
+                <a t-if="product" t-attf-href="/my/product?{{ keep_query() }}">Products</a>
+                <t t-else="">Products</t>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_products" name="My Products">
+        <t t-call="portal.frontend_layout">
+            <!-- <div class="col-12 d-flex flex-row-reverse">
+                <button type="button" data-toggle="modal" data-target="#addProducts" class="btn btn-success" style="font-size:20px;font-weight:bold;">Add Products</button>
+            </div> -->
+            <t t-call="ag_the_hub.portal_add_products"/>
+
+            <!--  <div class="overflow-hidden">
+                                            <table t-if="products" class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                                <thead class="bg-gray-50 dark:bg-gray-700">
+                                                    <tr>
+                                                        <th scope="col" class="py-3 px-4 pe-0">
+                                                            <div class="flex items-center h-5">
+                                                                <input id="table-search-checkbox-all" type="checkbox" class="form-checkbox rounded"/>
+                                                                <label for="table-search-checkbox-all" class="sr-only">Checkbox</label>
+                                                            </div>
+                                                        </th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">SKU</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">On Hand</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Platform</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Barcode</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Lot Item</th>
+                                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Has Serial</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                                    <tr t-foreach="products" t-as="product">
+                                                        <td class="py-3 ps-4">
+                                                            <div class="flex items-center h-5">
+                                                                <input t-att-id="'table-search-checkbox-'+str(product.id)" type="checkbox" class="form-checkbox rounded"/>
+                                                                <label for="table-search-checkbox-1" class="sr-only">Checkbox</label>
+                                                            </div>
+                                                        </td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"> <t t-esc="product.name"/></td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200"><t t-esc="product.default_code"/></td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200"><t t-esc="product.qty_available"/></td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200"><t t-esc="product.platform"/></td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200"> <t t-esc="product.barcode"/></td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200"><t t-if="product.tracking == 'lot'">Yes</t>
+                                                             <t t-else="">No</t></td>
+                                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200"><t t-if="product.tracking == 'serial'">Yes</t>
+                            <t t-else="">No</t></td>
+                                                    </tr>
+                            </tbody>
+                        </table>
+                    </div> -->
+                                                    
+
+            <!-- <div class="col-12 d-flex flex-row-reverse">
+                <button type="button" data-toggle="modal" data-target="#addProducts" class="btn btn-success" style="font-size:20px;font-weight:bold;">Add Products</button>
+            </div>
+            <t t-call="ag_the_hub.portal_add_products"/>
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Products</t>
+            </t>
+            <t t-if="not products">
+                <p>There are currently no products for your account.</p>
+            </t>
+            <t t-if="products" t-call="portal.portal_table">
+                <thead>
+                    <tr class="">
+                        <th class="text-left">Name</th>
+                        <th class="text-left">SKU</th>
+                        <th class="text-left">On Hand</th>
+                        <th class="text-left">Platform</th>
+                        <th class="text-left">Barcode</th>
+                        <th class="text-left">Lot Item</th>
+                        <th class="text-left">Has Serial</th>
+                    </tr>
+                </thead>
+                <t t-foreach="products" t-as="product">
+                    <tr>
+                        <td class="text-left"><t t-esc="product.name"/></td>
+                        <td class="text-left"><t t-esc="product.default_code"/></td>
+                        <td class="text-left"><t t-esc="product.qty_available"/></td>
+                        <td class="text-left"><t t-esc="product.platform"/></td>
+                        <td class="text-left"><t t-esc="product.barcode"/></td>
+                        <td class="text-left">
+                            <t t-if="product.tracking == 'lot'">Yes</t>
+                            <t t-else="">No</t>
+                        </td>
+                        <td class="text-left">
+                            <t t-if="product.tracking == 'serial'">Yes</t>
+                            <t t-else="">No</t>
+                        </td>
+                    </tr>
+                </t>
+            </t> -->
+        </t>
+    </template>
+
+</odoo>

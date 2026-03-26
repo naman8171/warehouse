@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="jo_commaon_area_view_list_fsm" model="ir.ui.view">
+        <field name="name">project.task.tree.jo.common.area</field>
+        <field name="model">project.task</field>
+        <field name="arch" type="xml">
+            <tree string="Job Order" multi_edit="1" sample="1" default_order="planned_date_begin">
+                <field name="child_text" invisible="1"/>
+                <field name="priority" widget="priority" optional="hide" nolabel="1"/>
+                <field name="name" widget="name_with_subtask_count"/>
+                <field name="project_id" readonly="1" optional="show"/>
+                <field name="equipment_id" optional="show"/>
+                <field name="user_ids" widget="many2many_avatar_user" optional="show" invisible="context.get('user_invisible', False)" domain="[('share', '=', False), ('active', '=', True)]"/>
+                <field name="company_id" optional="show" groups="base.group_multi_company" readonly="1"/>
+                <field name="planned_date_begin" optional="hide"/>
+                <field name="planned_date_end" optional="hide"/>
+                <field name="jo_number" string="JO Number" optional="show"/>
+                <field name="description" optional="show"/>
+                <field name="activity_ids" widget="list_activity" invisible="context.get('set_visible',False)" optional="show" readonly="1"/>
+                <field name="tag_ids" optional="show" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="kanban_state" widget="state_selection" optional="hide" readonly="1"/>
+                <field name="stage_id" optional="show"/>
+                <field name="total_amount" optional="hide"/>
+                <field name="activity_exception_decoration" widget="activity_exception"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="jo_apartment_view_list_fsm" model="ir.ui.view">
+        <field name="name">project.task.tree.jo.apartment</field>
+        <field name="model">project.task</field>
+        <field name="arch" type="xml">
+            <tree string="Job Order" multi_edit="1" sample="1" default_order="planned_date_begin">
+                <field name="child_text" invisible="1"/>
+                <field name="priority" widget="priority" optional="hide" nolabel="1"/>
+                <field name="name" widget="name_with_subtask_count"/>
+                <field name="project_id" readonly="1" optional="show"/>
+                <field name="partner_id" optional="show"/>
+                <field name="user_ids" widget="many2many_avatar_user" optional="show" invisible="context.get('user_invisible', False)" domain="[('share', '=', False), ('active', '=', True)]"/>
+                <field name="company_id" optional="show" groups="base.group_multi_company" readonly="1"/>
+                <field name="planned_date_begin" optional="hide"/>
+                <field name="planned_date_end" optional="hide"/>
+                <field name="jo_number" string="JO Number" optional="show"/>
+                <field name="flat_type" optional="show"/>
+                <field name="activity_ids" widget="list_activity" invisible="context.get('set_visible',False)" optional="show" readonly="1"/>
+                <field name="tag_ids" optional="show" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="kanban_state" widget="state_selection" optional="hide" readonly="1"/>
+                <field name="stage_id" optional="show"/>
+                <field name="total_amount" optional="hide"/>
+                <field name="activity_exception_decoration" widget="activity_exception"/>
+            </tree>
+        </field>
+    </record>
+
+
+
+    <menuitem id="menu_jo_order"
+        name="Job Orders"
+        parent="ag_multi_branch.menu_branch_root"
+        sequence="3"/>
+
+    <record id="action_jo_for_common_area" model="ir.actions.act_window">
+        <field name="name">JO for Common Area</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_id" eval="jo_commaon_area_view_list_fsm"/>
+        <field name="domain">[('is_fsm', '=', True), ('create_jo', '=', True), ('equipment_id', '!=', False)]</field>
+        <field name="context">{'group_by':['site_id']}</field>
+    </record>
+
+    <menuitem id="menu_jo_for_common_area"
+            name="JO For Common Area"
+            action="action_jo_for_common_area"
+            parent="menu_jo_order"
+            sequence="2"/>
+
+    <record id="action_jo_order_apartment" model="ir.actions.act_window">
+        <field name="name">Job Order for Apartment</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_id" eval="jo_apartment_view_list_fsm"/>
+        <field name="domain">[('is_fsm', '=', True), ('create_jo', '=', True), ('partner_id', '!=', False)]</field>
+        <field name="context">{'group_by':['site_id']}</field>
+    </record>
+
+    <menuitem id="menu_jo_order_apartment"
+            name="JO For Apartment"
+            action="action_jo_order_apartment"
+            parent="menu_jo_order"
+            sequence="3"/>
+
+</odoo>

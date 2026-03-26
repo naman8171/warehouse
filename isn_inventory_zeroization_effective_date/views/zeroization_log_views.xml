@@ -1,0 +1,45 @@
+<odoo>
+    <record id="view_zeroization_log_tree" model="ir.ui.view">
+        <field name="name">inventory.zeroization.log.tree</field>
+        <field name="model">inventory.zeroization.log</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="owner_id"/>
+                <field name="effective_date"/>
+                <field name="create_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_zeroization_log_form" model="ir.ui.view">
+        <field name="name">inventory.zeroization.log.form</field>
+        <field name="model">inventory.zeroization.log</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="owner_id"/>
+                    <field name="effective_date"/>
+                    <field name="create_date" readonly="1"/>
+                </group>
+                <notebook>
+                    <page string="Zeroized Items">
+                        <field name="line_ids">
+                            <tree editable="bottom">
+                                <field name="product_id"/>
+                                <field name="location_id"/>
+                                <field name="old_quantity"/>
+                                <field name="old_effective_date"/>
+                            </tree>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_zeroization_log" model="ir.actions.act_window">
+        <field name="name">Zeroization Logs</field>
+        <field name="res_model">inventory.zeroization.log</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

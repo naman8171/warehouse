@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_commom_equipment_tree" model="ir.ui.view">
+        <field name="name">common.equipment.tree</field>
+        <field name="model">common.equipment</field>
+        <field name="arch" type="xml">
+        	<tree string="Common Equipment">
+        		<field name="name"/>
+        	</tree>
+        </field>
+    </record>
+
+	<record id="view_commom_equipment_form" model="ir.ui.view">
+        <field name="name">common.equipment.form</field>
+        <field name="model">common.equipment</field>
+        <field name="arch" type="xml">
+        	<form string="Common Equipment">
+        		<header>
+        			<button type="object" name="action_create_maintenance_activity" class="oe_highlight" string="Create Maintenance Activity"/>
+        		</header>
+        		<sheet>
+        			<div class="oe_button_box" name="button_box">
+	                    <button class="oe_stat_button" name="action_view_fsm_tasks" type="object" icon="fa-tasks" attrs="{'invisible': [('fsm_task_count', '=', 0)]}" groups="industry_fsm.group_fsm_user">
+	                        <field string="Tasks" name="fsm_task_count" widget="statinfo"/>
+	                    </button>
+                    </div>
+        			<div class="oe_title" style="width: 100%;">
+                        <h1><field name="name" required="1" placeholder="Name"/></h1>
+                    </div>
+                    <group>
+                    	<group>
+                    		<field name="technical_details" required="1"/>
+                    		<field name="status" required="1"/>
+                    		<field name="site_id" options="{'no_create': True, 'no_create_edit': True}" required="1"/>
+                    	</group>
+                    	<group>
+                    		<field name="equipment_type" required="1"/>
+                    		<field name="date_commencement" required="1"/>
+                    	</group>
+                    </group>
+                    <notebook>
+                    	<page name="maintenance_history" string="Maintenance History">
+		                    <field name="fsm_task_ids" readonly="1">
+		                        <tree>
+		                        	<field name="create_date"/>
+		                            <field name="name"/>
+		                            <field name="description"/>
+		                            <field name="currency_id" invisible="1"/>
+		                            <field name="user_id"/>
+		                            <field name="technician_engineer"/>
+		                            <field name="total_amount" widget="monetary"/>
+		                        </tree>
+		                    </field>
+		                </page>
+		                <page name="expense_history" string="Expense History">
+		                    <field name="expense_history_ids" readonly="1">
+		                        <tree>
+		                            <field name="currency_id" invisible="1"/>
+		                            <field name="date"/>
+		                            <field name="ref"/>
+		                            <field name="expense_amount" widget="monetary"/>
+		                        </tree>
+		                    </field>
+		                </page>
+                        <page name="meter_reading" string="Meter Readings">
+                            <field name="meter_reading_ids">
+                                <tree editable="bottom">
+                                    <field name="date" required="1"/>
+                                    <field name="previous_reading"/>
+                                    <field name="present_reading"/>
+                                    <field name="consume_reading"/>
+                                    <field name="remarks"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+        		</sheet>
+        		<div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+        	</form>
+        </field>
+    </record>
+
+    <record id="action_common_equipment" model="ir.actions.act_window">
+        <field name="name">Asset Maintenance</field>
+        <field name="res_model">common.equipment</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" eval="False"/>
+    </record>
+
+    <menuitem id="menu_common_equipment_root"
+            name="Asset Maintenance"
+            web_icon="ag_field_service,static/description/icon.png"
+            active="True"
+            sequence="22"/>
+
+    <menuitem id="menu_commom_equipment"
+            name="Asset Maintenance"
+            action="action_common_equipment"
+            parent="menu_common_equipment_root"
+            sequence="2"/>
+
+
+</odoo>

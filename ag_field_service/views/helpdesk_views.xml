@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="helpdesk_ticket_view_form_inherit_daleji" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form.inherit.daleji</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="attributes">
+                <attribute name="options">{'no_create': True, 'no_create_edit': True}</attribute>
+            </field>
+            <field name="ticket_type_id" position="attributes">
+                <attribute name="options">{'no_create': True, 'no_create_edit': True}</attribute>
+            </field>
+        	<field name="partner_id" position="attributes">
+        		<attribute name="string">Apartment</attribute>
+                <attribute name="attrs">{'invisible': [('fs_type_scope', '=', 'common_area_maintenance')], 'required': [('fs_type_scope', '!=', 'common_area_maintenance')]}</attribute>
+                <attribute name="options">{'no_create': True, 'no_create_edit': True}</attribute>
+        	</field>
+        	<field name="partner_name" position="attributes">
+        		<attribute name="string">Resident Name</attribute>
+        		<attribute name="attrs">{'invisible': [('partner_id', '=', False)]}</attribute>
+        	</field>
+        	<field name="partner_email" position="attributes">
+        		<attribute name="attrs">{'invisible': [('partner_id', '=', False)]}</attribute>
+        	</field>
+        	<field name="partner_phone" position="attributes">
+        		<attribute name="attrs">{'invisible': [('partner_id', '=', False)]}</attribute>
+        	</field>
+        	<field name="partner_phone" position="after">
+        		<field name="site_id" attrs="{'invisible': [('partner_id', '=', False)]}" options="{'no_create': True, 'no_create_edit': True}" force_save="1" readonly="1"/>
+                <field name="appartment_status" attrs="{'invisible': [('partner_id', '=', False)]}" force_save="1" readonly="1"/>
+        		<field name="flat_type" attrs="{'invisible': [('partner_id', '=', False)]}" options="{'no_create': True, 'no_create_edit': True}" force_save="1" readonly="1"/>
+        	</field>
+        	<field name="ticket_type_id" position="after">
+                <field name="fs_type_scope" invisible="1"/>
+        		<field name="scope_work_id" required="1" options="{'no_create': True, 'no_create_edit': True}"/>
+        	</field>
+        	<field name="description" position="replace">
+        		<notebook>
+        			<page string="Complaint Summary">
+        				<field name="description" class="oe-bordered-editor field_description" placeholder="Description of the ticket..." required="1"/>
+        			</page>
+        		</notebook>
+        	</field>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_type_view_tree_inherit_daleji" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.type.tree.inherit.daleji</field>
+        <field name="model">helpdesk.ticket.type</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_type_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="scope" required="1"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

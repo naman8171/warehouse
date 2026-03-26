@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	    <record id="view_power_cost_tree" model="ir.ui.view">
+            <field name="name">power.cost.tree</field>
+            <field name="model">power.cost</field>
+            <field name="arch" type="xml">
+                <tree string="Power Cost">
+                    <field name="currency_id" invisible="1"/>
+                    <field name="name" options="{'no_create': True, 'no_create_edit': True}" required="1"/>
+                    <field name="branch_id"/>
+                    <field name="date"/>
+                    <field name="total_capu"/>
+                    <field name="total_capc" widget="monetary"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_power_cost_form" model="ir.ui.view">
+            <field name="name">power.cost.form</field>
+            <field name="model">power.cost</field>
+            <field name="arch" type="xml">
+                <form string="Power Cost">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="currency_id" invisible="1"/>
+                                <field name="name" options="{'no_create': True, 'no_create_edit': True}" required="1"/>
+                                <field name="branch_id"/>
+                            </group>
+                            <group>
+                                <field name="date"/>
+                                <field name="total_capu"/>
+                                <!-- <field name="rate_per_unit"/> -->
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Power Cost" name="power_cost">
+                                <field name="power_cost_line_ids">
+                                    <tree editable="bottom">
+                                        <field name="name" required="1"/>
+                                        <field name="currency_id" invisible="1"/>
+                                        <field name="units" required="1"/>
+                                        <field name="unit_price" required="1" widget="monetary"/>
+                                        <field name="admin_vat" widget="monetary"/>
+                                        <field name="subtotal" widget="monetary"/>
+                                        <field name="total_power_cost" widget="monetary"/>
+                                    </tree>
+                                </field>
+                                <group name="group_total" col="6" class="mt-2 mt-md-0">
+                                    <group class="oe_subtotal_footer oe_right" colspan="2" name="total_capc">
+                                        <div class="d-flex">
+                                            <label for="total_capc" string="CAPC"/>
+                                            <field name="total_capc" widget="monetary" colspan="2"/>
+                                        </div>
+                                    </group>
+                                    <div class="oe_clear"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_power_cost_search" model="ir.ui.view">
+            <field name="name">power.cost.search</field>
+            <field name="model">power.cost</field>
+            <field name="arch" type="xml">
+                <search string="Power Cost">
+                    <field name="name"/>
+                    <field name="date"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_power_cost" model="ir.actions.act_window">
+            <field name="name">Power Cost</field>
+            <field name="res_model">power.cost</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="context">{'group_by': ['branch_id','date:month']}</field>
+        </record>
+
+        <menuitem id="menu_power_cost" action="action_power_cost" name="Power Cost" parent="ag_multi_branch.menu_branch_root" sequence="12"/>
+
+</odoo>

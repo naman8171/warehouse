@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+        <record id="mail_activity_activate_thehub_account" model="mail.activity.type">
+            <field name="name">Activate The Hub Account</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">res.partner</field>
+        </record>
+
+
+         <record id="mail_activity_restriction_thehub_account" model="mail.activity.type">
+            <field name="name">Remove Restriction from  The Hub Account</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">res.partner</field>
+        </record>
+
+        <record id="mail_activity_process_submitted_wro" model="mail.activity.type">
+            <field name="name">Process WRO</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">warehouse.receive.order</field>
+        </record>
+
+        <record id="mail_activity_pick_up_wro" model="mail.activity.type">
+            <field name="name">Pick Up WRO</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">warehouse.receive.order</field>
+        </record>
+
+        <record id="mail_activity_process_pending_wo" model="mail.activity.type">
+            <field name="name">Process Pending Workorder</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">thehub.workorder</field>
+        </record>
+
+        <record id="mail_activity_process_return_wo" model="mail.activity.type">
+            <field name="name">Process Return WO</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">thehub.workorder</field>
+        </record>
+
+
+        <record id="mail_activity_return_process_pending_wo" model="mail.activity.type">
+            <field name="name">Return Process Pending Workorder</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">thehub.workorder</field>
+        </record>
+
+        <record id="mail_activity_process_packing" model="mail.activity.type">
+            <field name="name">Process Packing</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">thehub.workorder</field>
+        </record>
+
+        <record id="mail_activity_process_dispatch" model="mail.activity.type">
+            <field name="name">Process Dispatching Workorder</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">thehub.workorder</field>
+        </record>
+
+
+
+        <record id="mail_activity_wro_dispute" model="mail.activity.type">
+            <field name="name">Dispute </field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">helpdesk.ticket</field>
+        </record>
+
+
+        <record id="mail_activity_wo_dispatch" model="mail.activity.type">
+            <field name="name">WO Delivery Done </field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">helpdesk.ticket</field>
+        </record>
+        <record id="mail_activity_wo_dispute" model="mail.activity.type">
+            <field name="name">WO Dispute </field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">helpdesk.ticket</field>
+        </record>
+
+
+        <record id="mail_activity_picker_process_wro" model="mail.activity.type">
+            <field name="name">PickerProcess WRO</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">warehouse.receive.order</field>
+        </record>
+
+        <!-- <record id="mail_activity_activate_thehub_account" model="mail.activity.type">
+            <field name="name">Activate The Hub Account</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">res.partner</field>
+        </record> -->
+<!-- 
+        <record id="mail_activity_activate_thehub_account" model="mail.activity.type">
+            <field name="name">Activate The Hub Account</field>
+            <field name="icon">fa-check-circle</field>
+            <field name="sequence">12</field>
+            <field name="res_model">res.partner</field>
+        </record> -->
+
+    </data>
+</odoo>

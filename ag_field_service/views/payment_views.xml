@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+	<record id="view_account_payment_form_inherit_daleji" model="ir.ui.view">
+        <field name="name">account.payment.form.inherit.daleji</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_post']" position="replace">
+                <field name="show_confirm_button" invisible="1"/>
+                <button name="action_post" string="Confirm" type="object" class="oe_highlight" attrs="{'invisible': [('show_confirm_button', '=', False)]}" data-hotkey="v"/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id'][1]" position="attributes">
+                <attribute name="required">1</attribute>
+                <attribute name="options">{'no_create': True, 'no_create_edit': True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_id'][2]" position="attributes">
+                <attribute name="required">1</attribute>
+                <attribute name="options">{'no_create': True, 'no_create_edit': True}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='amount']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+            <xpath expr="//field[@name='ref']" position="attributes">
+                <attribute name="required">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

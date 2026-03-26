@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+        <record id="res_config_settings_view_form_the_hub_account" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.the.hub.account</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='users_setting_container']/div[@id='active_user_setting']" position="after">
+                    <div class="col-12 col-lg-6 o_setting_box" id="the_hub_account_user_setting">
+                        <div class="o_setting_right_pane">
+                            <div class="content-group">
+                                <label for="the_hub_account_activation"/>
+                                <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." aria-label="Values set here are company-specific." groups="base.group_multi_company" role="img"/>
+                                <div class="text-muted">
+                                   Select Users who activate the The Hub Account
+                                </div>
+                                <div class="mt16">
+                                    <field name="the_hub_account_activation" domain="[('share','=',False)]" widget="many2many_tags" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.ag.the.hub</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="40"/>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <div class="app_settings_block" data-string="The Hub Settings" string="The Hub Settings" data-key="ag_the_hub">
+                        <div id="the_hub_user_settings">
+                            <h2>The Hub User's Settings</h2>
+                            <div class="row mt16 o_settings_container" id="functional_the_hub_users">
+                                <div class="col-12 col-lg-6 o_setting_box" id="the_hub_picker">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">Picker</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="picker_users">
+                                                <label for="picker_user_ids" class="col-lg-3"/>
+                                                <field name="picker_user_ids" widget="many2many_tags" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="the_hub_receiver">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">Receiver</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="csuite_functional_leads_users">
+                                                <label for="receiver_user_ids" class="col-lg-3"/>
+                                                <field name="receiver_user_ids" widget="many2many_tags" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="the_hub_packer">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">Packer</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="csuite_functional_leads_users">
+                                                <label for="packer_user_ids" class="col-lg-3"/>
+                                                <field name="packer_user_ids" widget="many2many_tags" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="the_hub_dispatch">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">Dispatch</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="csuite_functional_leads_users">
+                                                <label for="dispatch_user_ids" class="col-lg-3"/>
+                                                <field name="dispatch_user_ids" widget="many2many_tags" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="the_hub_supervisor">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">Supervisor</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="csuite_functional_leads_users">
+                                                <label for="supervisor_user_ids" class="col-lg-3"/>
+                                                <field name="supervisor_user_ids" widget="many2many_tags" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="the_hub_wro_picker">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">WRO Picker</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="csuite_functional_leads_users">
+                                                <label for="wro_picker_user_ids" class="col-lg-3"/>
+                                                <field name="wro_picker_user_ids" widget="many2many_tags" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h2>THL Shipment</h2>
+                            <div class="row mt16 o_settings_container" id="functional_the_hub_users">
+                                <div class="col-12 col-lg-6 o_setting_box" id="thl_shipping_cost">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">THL Shipment Cost</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" >
+                                                <label for="thl_shipping_cost" class="col-lg-3"/>
+                                                <field name="thl_shipping_cost" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="thl_shipping_product">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">THL Shipment Product</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" >
+                                                <label for="thl_shipping_product_id" class="col-lg-3"/>
+                                                <field name="thl_shipping_product_id" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+
+                            <h2>Consolidated</h2>
+                            <div class="row mt16 o_settings_container" id="functional_the_hub_users">
+                                <div class="col-12 col-lg-6 o_setting_box" id="the_hub_picker">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">Pallet Inbound</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" >
+                                                <label for="incoming_pallet_cost_cons" class="col-lg-3"/>
+                                                <field name="incoming_pallet_cost_cons" />
+                                            </div>
+                                        </div>
+                                        <div class="content-group">
+                                            <div class="row mt16" >
+                                                <label for="incoming_pallet_cost_cons_product" class="col-lg-3"/>
+                                                <field name="incoming_pallet_cost_cons_product" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="the_hub_receiver">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">Box Inbound</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="csuite_functional_leads_users">
+                                                <label for="incoming_box_cost_cons" class="col-lg-3"/>
+                                                <field name="incoming_box_cost_cons" />
+                                            </div>
+                                        </div>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="csuite_functional_leads_users">
+                                                <label for="incoming_box_cost_cons_product" class="col-lg-3"/>
+                                                <field name="incoming_box_cost_cons_product" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" >
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">Pallet Outbound</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="outgoing_pallet_cost_cons">
+                                                <label for="outgoing_pallet_cost_cons" class="col-lg-3"/>
+                                                <field name="outgoing_pallet_cost_cons" />
+                                            </div>
+                                        </div>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="outgoing_pallet_cost_cons">
+                                                <label for="outgoing_pallet_cost_cons_product" class="col-lg-3"/>
+                                                <field name="outgoing_pallet_cost_cons_product" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="the_hub_dispatch">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">Box Outbound</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="outgoing_box_cost_cons">
+                                                <label for="outgoing_box_cost_cons" class="col-lg-3"/>
+                                                <field name="outgoing_box_cost_cons" />
+                                            </div>
+                                        </div>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="outgoing_box_cost_cons">
+                                                <label for="outgoing_box_cost_cons_product" class="col-lg-3"/>
+                                                <field name="outgoing_box_cost_cons_product" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              
+                            </div>
+
+
+                            <h2>Non-Consolidated</h2>
+                            <div class="row mt16 o_settings_container" id="functional_the_hub_users">
+                                <div class="col-12 col-lg-6 o_setting_box" id="incoming_pallet_cost_noncons">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">Pallet Inbound</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" >
+                                                <label for="incoming_pallet_cost_noncons" class="col-lg-3"/>
+                                                <field name="incoming_pallet_cost_noncons" />
+                                            </div>
+                                        </div>
+                                        <div class="content-group">
+                                            <div class="row mt16" >
+                                                <label for="incoming_pallet_cost_noncons_product" class="col-lg-3"/>
+                                                <field name="incoming_pallet_cost_noncons_product" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="incoming_box_cost_noncons">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">Box Inbound</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="incoming_box_cost_noncons">
+                                                <label for="incoming_box_cost_noncons" class="col-lg-3"/>
+                                                <field name="incoming_box_cost_noncons" />
+                                            </div>
+                                        </div>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="incoming_box_cost_noncons_product">
+                                                <label for="incoming_box_cost_noncons_product" class="col-lg-3"/>
+                                                <field name="incoming_box_cost_noncons_product" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" >
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">Pallet Outbound</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="outgoing_pallet_cost_noncons">
+                                                <label for="outgoing_pallet_cost_noncons" class="col-lg-3"/>
+                                                <field name="outgoing_pallet_cost_noncons" />
+                                            </div>
+                                        </div>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="outgoing_pallet_cost_noncons_product">
+                                                <label for="outgoing_pallet_cost_noncons_product" class="col-lg-3"/>
+                                                <field name="outgoing_pallet_cost_noncons_product" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="outgoing_box_cost_noncons">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">Box Outbound</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="outgoing_box_cost_noncons">
+                                                <label for="outgoing_box_cost_noncons" class="col-lg-3"/>
+                                                <field name="outgoing_box_cost_noncons" />
+                                            </div>
+                                        </div>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="outgoing_box_cost_noncons_product">
+                                                <label for="outgoing_box_cost_noncons_product" string="Outgoing Box Cost Non-Cons Product" class="col-lg-3"/>
+                                                <field name="outgoing_box_cost_noncons_product" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+</odoo>

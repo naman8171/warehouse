@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="portal_add_customer" name="Add Customer">
+        <!-- Add Product Manually Modal -->
+
+        <!-- The Modal -->
+    <div class="modal fade" id="addCustomer">
+        <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+    
+            <!-- Modal Header -->
+            <div class="modal-header">
+            <h4 class="modal-title"> Add New Customers</h4>
+            <button type="button" class="close" data-dismiss="modal">&amp;times;</button>
+            </div>
+    
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form id="add_new_customer" action="/add/new/customer" method="post"
+                              enctype="form-data">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        
+                <div class="row">
+                  
+                    <div class="col-md-6">
+                        
+                            <div class="form-group">
+                              <label for="name">Customer Name</label>
+                              <input type="text" class="form-control" id="customer_name" name="customer_name" placeholder="Enter Customer Name" required="1"/>
+                            </div>
+                            <div class="form-group">
+                              <label for="email">Customer Email</label>
+                              <input type="email" class="form-control" id="email" name="email" placeholder="Enter Customer Email" required="1"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Street Adress 1</label>
+                               <input type="text" class="form-control" id="street" name="street" placeholder="Enter street address" required="1"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="unit">Unit</label>
+                                <input type="text" class="form-control" id="unit" name="unit"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="zip">Zip</label>
+                                <input type="text" class="form-control" id="zip" name="Zip" required="1"/>
+                            </div>
+                            
+
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="zip">Select Country</label>
+                           <select id="country_id" class="form-control" required="required" name="country_id">
+                                        <option value="" selected="selected" disabled="True">Please select country...</option>
+                                        <t t-foreach="country_ids" t-as="country">
+                                            <option  t-att-value="country.id" t-att-selected="'selected' if country_id and country_id.id == country.id else None">
+                                                <t t-esc="country.name"/>
+                                            </option>
+                                        </t>
+                                    </select>
+                        </div>
+                            <div class="form-group">
+                              <label for="uname">Phone Number:</label>
+                              <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter Number"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Street Adress 2</label>
+                                <input type="text" class="form-control" id="street2" name="street2" placeholder="Enter street address"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="zip">select state</label>
+                                <select id="state_id" class="form-control" required="required" name="state_id">
+                                        <option value="" selected="selected" disabled="True">Please select State...</option>
+                                        <t t-foreach="state_ids" t-as="state">
+                                            <option  t-att-value="state.id" t-att-selected="'selected' if state_id and state_id.id == state.id else None">
+                                                <t t-esc="state.name"/>
+                                            </option>
+                                        </t>
+                                    </select>
+                            </div>
+                            
+                    </div>
+              
+                </div>
+                <div class="modal-footer">
+                 <button type="submit" class="btn btn-success float-right" style="font-size:20px;font-weight:bold;">Add Customer</button>
+                          
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+                </form>
+
+            </div>
+    
+            <!-- Modal footer -->
+            
+    
+        </div>
+        </div>
+    </div>
+
+
+
+        
+        
+    </template>
+
+    <template id="portal_layout" name="Portal layout: customer menu entry" inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'customer' or customer" class="col-lg-2" t-attf-class="breadcrumb-item">
+                <a t-if="customer" t-attf-href="/my/customer?{{ keep_query() }}">Customers</a>
+                <t t-else="">Customers</t>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_customers" name="My Customers">
+        <t t-call="portal.frontend_layout">
+            
+            <t t-call="ag_the_hub.portal_add_customer"/>
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+
+            <nav aria-label="breadcrumb flex justify-between" style="background-color:#e9ecef;margin-left: 0%;">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item "><a class="bold text-danger" href="/my">THL</a></li>
+                      <li class="breadcrumb-item active" aria-current="page" style="background: transparent;">Customers</li>
+                    </ol>
+                  </nav>
+            <section>
+                <div class="container-fuild p-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="flex justify-between items-center">
+                                        <h4 class="card-title">  Customers</h4>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    </div>
+
+                                    <div class="card-header pl-1 pr-1">
+                                        <div class="flex justify-between items-center">
+                                            <div class="d-flex justify-content-end mr-3">
+                                                
+
+                                               
+                                                <form action="" method="get" class="navbar-search ml-auto pagination form-inline">
+                                                                     <div t-attf-class="input-group #{_classes}" role="search">
+                                                <t t-set="search_placeholder">Search...</t>
+                                                <input type="search" name="search" t-att-class="'search-query form-control oe_search_box %s' % _input_classes" t-att-placeholder="placeholder if placeholder else search_placeholder" t-att-value="search"/>
+                                                <div class="input-group-append">
+                                                    <button type="submit" t-att-class="'btn oe_search_button %s' % (_submit_classes or 'btn-primary')" aria-label="Search" title="Search"><i class="fa fa-search"/></button>
+                                                </div>
+                                            </div>
+                                            </form>
+
+                                               
+                                                <div class="d-flex align-items-center pr-2"  >
+                                                    <a href="#" id="sweetalert-params" style="color: #666d7d;">
+                                                        <!-- Delete Icon -->
+                                                        <i class="fa fa-trash-alt mr-2"></i>
+                                                        <!-- Delete Text -->
+                                                        <span>Delete</span>
+                                                    </a>
+                                                </div>
+                                                <!-- <div class="dropdown mr-2 border">
+                                                    <button class="btn bg-white dropdown-toggle" type="button" id="filterDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fa fa-sort-amount-down mr-2"></i> Filter 
+                                                      </button>
+                                                    <div class="dropdown-menu" aria-labelledby="filterDropdown">
+                                                      <a class="dropdown-item" href="#">Link 1</a>
+                                                      <a class="dropdown-item" href="#">Link 2</a>
+                                                      <a class="dropdown-item" href="#">Link 3</a>
+                                                    </div>
+                                                </div> -->
+                                                <div t-if="searchbar_groupby" class="form-inline ml-lg-2">
+                        <span class="small mr-1 navbar-text">Group By:</span>
+                        <div class="btn-group">
+                            <button id="portal_searchbar_groupby" data-toggle="dropdown" class="btn btn-secondary btn-sm dropdown-toggle">
+                                <t t-esc="searchbar_groupby[groupby].get('label', 'None')"/>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="portal_searchbar_groupby">
+                                <t t-foreach="searchbar_groupby" t-as="option">
+                                    <a t-att-href="default_url + '?' + keep_query('*', groupby=option)"
+                                       t-attf-class="dropdown-item#{groupby == option and ' active' or ''}">
+                                        <span t-esc="searchbar_groupby[option].get('label')"/>
+                                    </a>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                                                 <!-- <t t-set="list_price_asc_label">Filter by Popularity</t>
+            <t t-set="list_price_desc_label">Filter by None</t>
+                                                 <t t-set="website_sale_sortable" t-value="[
+                                                    ('None', 'None'),
+                ('City', 'city asc'),
+                ('State', 'state_id asc'),
+                
+            ]"/>
+            <t t-set="website_sale_sortable_current" t-value="[sort for sort in website_sale_sortable if sort[1]==request.params.get('order', '')]"/>
+                                                 <div class="o_sortby_dropdown dropdown dropdown_sorty_by ml-3 " style="margin-right: 2%;">
+                <span class="d-none d-lg-inline font-weight-bold text-muted">Filter By:</span>
+                <a role="button" href="#" class="dropdown-toggle btn btn-light border-0 px-0 text-muted align-baseline" data-toggle="dropdown">
+                    <span class="d-none d-lg-inline">
+                        <t t-if='website_sale_sortable_current'>
+                            <t t-esc="website_sale_sortable_current[0][0]"/>
+                        </t>
+                        <t t-else='1'>
+                            Featured
+                        </t>
+                    </span>
+                    <i class="fa fa-sort-amount-asc d-lg-none"/>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                    <t t-foreach="website_sale_sortable" t-as="sortby">
+                        <a role="menuitem" rel="noindex,nofollow" t-att-href="keep('/my/customers', order=sortby[1])"  class="dropdown-item">
+                            <span t-out="sortby[0]"/>
+                        </a>
+                    </t>
+                </div>
+            </div> -->
+                                                
+                                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCustomer"> 
+                                                    <i class="fa fa-plus"></i> Add New Customers</button>
+                                               
+                                                <!-- The Modal -->
+
+                                                
+                                                   
+                                                    
+                                              </div>
+                                        </div>
+                                    </div>
+                                    <div class="">
+                                        <table class="table table-hover">
+                                            <t t-foreach="grouped_customers" t-as="customers">
+                    
+                                            <thead class="bg-light">
+                                                <tr>
+                                                    <th colspan="6">
+                                                        <em t-if="groupby=='City'" class="font-weight-normal text-muted">Customer in City:</em>
+                                                        <em t-if="groupby=='State'" class="font-weight-normal text-muted">Customer in State:</em>
+                                    <span t-if="groupby=='State'" t-field="customers[0].state_id.name"/>
+                                    <span t-if="groupby=='City'" t-field="customers[0].city"/>
+                                                    </th>
+                                                </tr>
+                                              <tr>
+                                                <th scope="col" t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}" class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Name</th>
+                                                <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Company Name</th>
+                                                <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Email</th>
+                                                <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >City</th>
+                                                <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >State</th>
+                                                <th scope="col"  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Country</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr t-foreach="customers" t-as="customer">
+                                                <td class="px-6 py-4 "> <t t-esc="customer.name"/> </td>
+                                                <td class="px-6 py-4 "><t t-esc="customer.company_name"/></td>
+                                                <td class="px-6 py-4 "><t t-esc="customer.email"/></td>
+                                                <td class="px-6 py-4"><t t-esc="customer.city"/></td>
+                                                <td class="px-6 py-4 "> <span t-field="customer.state_id"/> </td>
+                                                <td class="px-6 py-4 "><span t-field="customer.country_id"/></td>
+                                              </tr>
+                                              
+                                              
+                                            </tbody>
+                                        </t>
+                                          </table>
+                                          
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            
+                        <t t-call="portal.pager"/>
+                            <!-- <div class="py-1 px-4">
+                                <nav class="flex items-center space-x-2">
+                                    
+                                    <a class="text-gray-400  rounded-circle p-4 items-center " style="width: 200px; height: 200px;" href="#"> 
+                                        <span aria-hidden="true">«</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="w-10 h-10 bg-primary text-white p-4 inline-flex items-center text-sm font-medium rounded-full" href="#" aria-current="page">1</a>
+                                    <a class="w-10 h-10 text-gray-400 hover:text-primary p-4 inline-flex items-center text-sm font-medium rounded-full" href="#">2</a>
+                                    <a class="w-10 h-10 text-gray-400 hover:text-primary p-4 inline-flex items-center text-sm font-medium rounded-full" href="#">3</a>
+                                    <a class="text-gray-400 hover:text-primary p-4 inline-flex items-center gap-2 font-medium rounded-md" href="#">
+                                        <span class="sr-only">Next</span>
+                                        <span aria-hidden="true">»</span>
+                                    </a>
+                                </nav>
+                            </div> -->
+                        </div>
+                        
+                    </div>
+                    <br/>
+                    
+               
+            </section>
+
+            
+            
+        </t>
+    </template>
+
+</odoo>

@@ -1,0 +1,25 @@
+<odoo>
+
+    <record id="view_effective_date_wizard_form" model="ir.ui.view">
+        <field name="name">inventory.effective.date.wizard.form</field>
+        <field name="model">inventory.effective.date.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Cascade Effective Date">
+                <group>
+                    <field name="effective_date" required="1"/>
+                </group>
+                <footer>
+                    <button name="action_cascade_effective_date" type="object" string="Confirm" class="btn-danger"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cascade_effective_date_wizard" model="ir.actions.act_window">
+        <field name="name">Cascade Effective Date</field>
+        <field name="res_model">inventory.effective.date.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

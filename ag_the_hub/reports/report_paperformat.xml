@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<data>
+
+		<!-- <record id="paperformat_a4_account_move_custom" model="report.paperformat">
+            <field name="name">A4 Account Custom</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">5</field>
+            <field name="margin_bottom">5</field>
+            <field name="margin_left">5</field>
+            <field name="margin_right">5</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">40</field>
+            <field name="dpi">96</field>
+        </record> -->
+
+        <record id="paperformat_barcode" model="report.paperformat">
+            <field name="name">Barcode Format</field>
+            <field name="default" eval="True" />
+            <field name="format">custom</field>
+            <field name="page_height">100</field>
+            <field name="page_width">35</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">1</field>
+            <field name="margin_bottom">1</field>
+            <field name="margin_left">1</field>
+            <field name="margin_right">1</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">25</field>
+            <field name="dpi">96</field>
+        </record>
+
+
+        <record id="paperformat_barcode_shipping_lable" model="report.paperformat">
+            <field name="name">Shipping Format</field>
+            <field name="default" eval="True" />
+            <field name="format">custom</field>
+            <field name="page_height">200</field>
+            <field name="page_width">200</field>
+            <field name="orientation">Landscape</field>
+            <field name="margin_top">1</field>
+            <field name="margin_bottom">1</field>
+            <field name="margin_left">1</field>
+            <field name="margin_right">1</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">25</field>
+            <field name="dpi">96</field>
+        </record>
+
+        <record id="paperformat_wo_manifest" model="report.paperformat">
+            <field name="name">A4 WO Manifest</field>
+            <field name="default" eval="True" />
+            <field name="format">A4</field>
+            <field name="page_height">0</field>
+            <field name="page_width">0</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">20</field>
+            <field name="margin_bottom">10</field>
+            <field name="margin_left">10</field>
+            <field name="margin_right">10</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">25</field>
+            <field name="dpi">96</field>
+        </record>
+
+
+        <!-- <record id="purchase.action_report_purchase_order" model="ir.actions.report">
+            <field name="paperformat_id" ref="ag_field_service.paperformat_a4_po_custom"/>
+        </record>
+
+        <record id="purchase.report_purchase_quotation" model="ir.actions.report">
+            <field name="paperformat_id" ref="ag_field_service.paperformat_a4_po_custom"/>
+        </record> -->
+
+    </data>
+</odoo>

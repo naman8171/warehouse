@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_update_quantoty_form" model="ir.ui.view">
+            <field name="name">wizard.update.quantity.form</field>
+            <field name="model">wizard.update.quantity</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+	                    <group attrs="{'invisible': [('is_package', '=', True)]}">
+                            <field name="product_qty"/>
+                            <field name="qty_per_box"/>
+                            <field name="no_of_boxes"/>
+                            <field name="package_value"/>
+                            <field name="product_per_box_id" invisible="1"/>
+                            <field name="product_per_pallet_id" invisible="1"/>
+                            <field name="box_size" attrs="{'invisible': [('product_per_box_id', '=', False)]}"/>
+                            <!-- <field name="product_qty"/> -->
+                        </group>
+                        <group attrs="{'invisible': [('is_package', '=', False)]}">
+                            <field name="is_package" invisible="1"/>
+                            <field name="packing_categ"/>
+                            <field name="packing_type_id"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="update_quantity" string="Update Quantity" type="object" class="btn-primary" attrs="{'invisible': [('is_package', '=', True)]}"/>
+                        <button name="update_packing" string="Update Packing" type="object" class="btn-primary" attrs="{'invisible': [('is_package', '=', False)]}"/>
+                        
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_update_quantity" model="ir.actions.act_window">
+            <field name="name">Add Money to Wallet</field>
+            <field name="res_model">wizard.update.quantity</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_update_quantoty_form"/>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

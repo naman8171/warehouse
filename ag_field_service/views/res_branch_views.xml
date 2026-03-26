@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_branch_form_account_inherit_ag_field_service" model="ir.ui.view">
+        <field name="name">res.branch.form.account.inherit.daleji</field>
+        <field name="model">res.branch</field>
+        <field name="inherit_id" ref="ag_multi_branch.view_branch_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='contact_info']" position="after">
+                <page string="Residents" name="residents_info">
+                    <field name="resident_ids" readonly="1">
+                        <tree>
+                            <field name="name"/>
+                            <field name="contact_type"/>
+                            <field name="residence_type"/>
+                            <field name="landlord_name"/>
+                            <field name="resident_commencement_date"/>
+                            <field name="resident_end_date"/>
+                        </tree>
+                    </field>
+                </page>
+                <page string="Cost Entries" name="cost_info">
+                    <field name="currency_id" invisible="1"/>
+                    <field name="cost_entry_ids" readonly="1">
+                        <tree>
+                            <field name="partner_id"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="cost_category_id"/>
+                            <field name="effective_date"/>
+                            <field name="amount" widget="monetary"/>
+                        </tree>
+                    </field>
+                    <group name="group_total" col="6" class="mt-2 mt-md-0">
+                        <group class="oe_subtotal_footer oe_right" colspan="2" name="cost_entries_total">
+                            <div class="d-flex">
+                                <label for="total_amount" string="Total"/>
+                                <field name="total_amount" colspan="2"/>
+                            </div>
+                        </group>
+                        <div class="oe_clear"/>
+                    </group>
+                </page>
+                <page string="Distribution Ratio" name="tdr">
+                    <field name="tdr_ids">
+                        <tree editable="bottom">
+                            <field name="flat_type_id" options="{'no_create': True, 'no_create_edit': True}" required="1"/>
+                            <field name="total_resident_count"/>
+                            <field name="factor" required="1"/>
+                            <field name="total"/>
+                        </tree>
+                    </field>
+                    <group name="group_total" col="6" class="mt-2 mt-md-0">
+                        <group class="oe_subtotal_footer oe_right" colspan="2" name="total_tdr">
+                            <div class="d-flex">
+                                <label for="total_tdr" string="TDR"/>
+                                <field name="total_tdr" colspan="2"/>
+                            </div>
+                        </group>
+                        <div class="oe_clear"/>
+                    </group>
+                </page>
+                <page string="Common Area Cost" name="common_area_cost">
+                    <field name="common_area_cost_ids" readonly="0">
+                        <tree create="0">
+                            <field name="currency_id" invisible="1"/>
+                            <field name="flat_type_id" options="{'no_create': True, 'no_create_edit': True}" required="1"/>
+                            <field name="effective_date"/>
+                            <field name="amount" widget="monetary"/>
+                            <field name="common_area_power_unit"/>
+                            <field name="common_area_power_cost" widget="monetary"/>
+                        </tree>
+                    </field>
+                </page>
+                <page string="Power Cost" name="power_cost">
+                    <field name="power_cost_ids">
+                        <tree>
+                            <field name="name" required="1"/>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="date" required="1"/>
+                            <field name="total_capu"/>
+                            <field name="total_capc" widget="monetary"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

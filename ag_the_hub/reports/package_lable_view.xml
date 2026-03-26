@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_print_label_single_sku_per_box" model="ir.actions.report">
+            <field name="name">Print Label</field>
+            <field name="model">wro.single.sku.per.box</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ag_the_hub.report_print_label_single_sku_per_box</field>
+            <field name="report_file">ag_the_hub.report_print_label_single_sku_per_box</field>
+            <field name="print_report_name">'Label - %s' % (object.wro_id.name)</field>
+            <field name="paperformat_id" ref="ag_the_hub.paperformat_barcode"/>
+            <field name="binding_model_id" ref="model_wro_single_sku_per_box"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_print_label_single_sku_per_box_product_line" model="ir.actions.report">
+            <field name="name">Print Label</field>
+            <field name="model">wro.single.sku.per.box</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ag_the_hub.report_print_label_single_sku_per_box_per_storage_location</field>
+            <field name="report_file">ag_the_hub.report_print_label_single_sku_per_box_per_storage_location</field>
+            <field name="print_report_name">'Label - %s' % (object.wro_id.name)</field>
+            <field name="paperformat_id" ref="ag_the_hub.paperformat_barcode"/>
+            <field name="binding_model_id" ref="model_wro_single_sku_per_box"/>
+            <field name="binding_type">report</field>
+        </record>
+
+        <record id="action_print_label_single_sku_per_pallet" model="ir.actions.report">
+            <field name="name">Print Label</field>
+            <field name="model">wro.single.sku.per.pallet</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ag_the_hub.report_print_label_single_sku_per_pallet</field>
+            <field name="report_file">ag_the_hub.report_print_label_single_sku_per_pallet</field>
+            <field name="print_report_name">'Label - %s' % (object.package_number)</field>
+            <field name="paperformat_id" ref="ag_the_hub.paperformat_barcode"/>
+            <field name="binding_model_id" ref="model_wro_single_sku_per_pallet"/>
+            <field name="binding_type">report</field>
+        </record>
+
+
+         <record id="action_print_label_single_sku_per_pallet_with_storage_location" model="ir.actions.report">
+            <field name="name">Print Label</field>
+            <field name="model">wro.single.sku.per.pallet</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ag_the_hub.report_print_label_single_sku_per_pallet_with_storage_location</field>
+            <field name="report_file">ag_the_hub.report_print_label_single_sku_per_pallet_with_storage_location</field>
+            <field name="print_report_name">'Label - %s' % (object.package_number)</field>
+            <field name="paperformat_id" ref="ag_the_hub.paperformat_barcode"/>
+            <field name="binding_model_id" ref="model_wro_single_sku_per_pallet"/>
+            <field name="binding_type">report</field>
+        </record>
+
+    </data>
+</odoo>

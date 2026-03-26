@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="view_move_form_isn_approval_inherit" model="ir.ui.view">
+            <field name="name">account.move.form.inherit.isn.approval</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+            	<button name="action_register_payment" position="replace">
+                        <field name="show_register_payment_button" invisible="1"/>
+                        <button name="action_register_payment" id="account_invoice_payment_btn"
+                                type="object" class="oe_highlight"
+                                attrs="{'invisible': [('show_register_payment_button', '=', False)]}"
+                                context="{'dont_redirect_to_payments': True}"
+                                string="Register Payment"
+                                groups="account.group_account_invoice"/>
+            	</button>
+                <xpath expr="//form/header/button[2]" position="replace">
+                    <field name="show_confirm_button" invisible="1"/>
+                    <button name="action_post" string="Confirm" class="oe_highlight" type="object" groups="account.group_account_invoice" attrs="{'invisible': [('show_confirm_button', '=', False)]}"/>
+                </xpath>
+            	<xpath expr="//form/header/button[2]" position="after">
+            		<field name="user_status" invisible="1"/>
+            		<field name="reapprove_request" invisible="1"/>
+                    <button name="action_approve" class="btn-primary" string="Approve" type="object" confirm="Are you sure, you want to Approve?" attrs="{'invisible':[('user_status','!=','pending')]}"/>
+                    <button name="action_refuse" class="btn-primary" string="Refuse" type="object" confirm="Are you sure, you want to Refuse?" attrs="{'invisible':[('user_status','!=','pending')]}"/>
+                    <button name="action_reapprove" class="btn-primary" string="Reapprove" type="object" confirm="Are you sure, you want to Reapprove?" attrs="{'invisible':['|',('user_status','!=','refused'),('reapprove_request','=',False)]}"/>
+                    <button name="action_rerefuse" class="btn-primary" string="Refuse" type="object" confirm="Are you sure, you want to Refuse?" attrs="{'invisible':['|',('user_status','!=','refused'),('reapprove_request','=',False)]}"/>
+                    <button name="%(ag_field_service.action_vendor_bill_reapproval)d" class="btn-primary" type="action" string="Reapproval Request" attrs="{'invisible':['|',('request_status','!=','refused'),('reapprove_request','=',True)]}"/>
+            	</xpath>
+            	<field name="edi_state" position="after">
+            		<field name="request_status"  attrs="{'invisible':[('move_type','!=','in_invoice')]}" decoration-success="request_status=='approved'" decoration-warning="request_status=='pending'" decoration-danger="request_status=='refused'"/>
+            	</field>
+                <field name="invoice_line_ids" position="attributes">
+                    <attribute name="attrs">{'readonly':['|', ('invoice_origin', '!=', False), ('state', 'not in', ['draft'])]}</attribute>
+                </field>
+            	<page name="other_info" position="after">
+            		<page string="Approval" name="approval" attrs="{'invisible':[('move_type','!=','in_invoice')]}">
+                        <field name="approver_ids" mode="tree,kanban" style="pointer-events:none;"  force_save="1">
+                            <tree editable="bottom" decoration-success="status=='approved'" decoration-warning="status=='pending'" decoration-danger="status=='refused'">
+                                <field name="user_id" string="Approver" attrs="{'readonly':[('status','!=','new')]}"/>
+                                <field name="status"/>
+                                <field name="company_id" invisible="1"/>
+                            </tree>
+                            <kanban class="o_kanban_mobile">
+                                <field name="company_id" invisible="1"/>
+                                <field name="user_id"/>
+                                <field name="status"/>
+                                <templates>
+                                    <t t-name="kanban-box">
+                                        <div class="oe_kanban_card oe_kanban_global_click">
+                                            <div class="o_kanban_content">
+                                                <t t-esc="record.user_id.value"/>
+                                                <t t-if="record.status.raw_value">
+                                                    <t t-set="classname" t-value="{'approved': 'badge-success', 'pending': 'badge-warning', 'refused': 'badge-danger'}[record.status.raw_value] || 'badge-light'"/>
+                                                    <span t-esc="record.status.raw_value" t-attf-class="float-right badge-pill {{ classname }}"/>
+                                                </t>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </templates>
+                            </kanban>
+                            <form>
+                                <group>
+                                    <field name="company_id" invisible="1"/>
+                                    <field name="user_id"/>
+                                </group>
+                            </form>
+                        </field>
+        		</page>
+            	</page>
+            </field>
+        </record>
+</odoo>

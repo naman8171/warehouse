@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="ir_cron_update_cost_entry_management_fee_entry" model="ir.cron">
+        <field name="name">Update Cost Entry for Management Fee</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">months</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="ag_multi_branch.model_management_fee"/>
+        <field name="code">model._update_cost_entries_management_fee()</field>
+        <field name="state">code</field>
+    </record>
+
+    <record id="ir_cron_update_common_area_cost_expense" model="ir.cron">
+        <field name="name">Update Common Area Cost Expense</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">months</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="model_id" ref="ag_multi_branch.model_res_branch"/>
+        <field name="code">model._update_common_cost_area_expense()</field>
+        <field name="state">code</field>
+    </record>
+
+</odoo>

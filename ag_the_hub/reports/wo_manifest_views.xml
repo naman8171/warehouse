@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_print_wo_manifest_report" model="ir.actions.report">
+            <field name="name">Print WO Manifest Report</field>
+            <field name="model">thehub.workorder</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">ag_the_hub.report_print_wo_manifest</field>
+            <field name="report_file">ag_the_hub.report_print_wo_manifest</field>
+            <field name="print_report_name">'WO Manifest - %s' % (object.name)</field>
+            <field name="paperformat_id" ref="ag_the_hub.paperformat_wo_manifest"/>
+            <field name="binding_model_id" ref="model_thehub_workorder"/>
+            <field name="binding_type">report</field>
+        </record>
+
+    </data>
+</odoo>

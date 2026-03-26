@@ -1,0 +1,64 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+
+        <record model="ir.ui.view" id="thehub_3plcompanies_list_view">
+            <field name="name">thehub.3plcompanies.list.view</field>
+            <field name="model">thehub.3plcompanies</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="email"/>
+                    <field name="phone"/>
+                    
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="thehub_3plcompanies_form_view">
+            <field name="name">thehub.3plcompanies.form.view</field>
+            <field name="model">thehub.3plcompanies</field>
+            <field name="arch" type="xml">
+            <form>
+                
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" class="oe_inline" />
+                            </h1>
+                        </div>
+                    <group>
+                        <group>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            <field name="merchand_id"/>
+                            <field name="responsible_id"/>
+                        </group>
+                    </group>
+                        
+                </sheet>
+                
+            </form>
+        </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="thehub_3plcompanies_action_window">
+        <field name="name">3PL Companies</field>
+        <field name="res_model">thehub.3plcompanies</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new 3PL Company
+            </p>
+        </field>
+    </record>
+    
+    <!-- Top menu item -->
+    <menuitem id="menu_3pl_company" name="3PL Companies" action="thehub_3plcompanies_action_window"
+    parent="ag_the_hub.menu_thehub_config" sequence="1"/>
+
+
+  </data>
+</odoo>

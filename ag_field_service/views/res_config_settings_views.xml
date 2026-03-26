@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+        <record id="res_config_settings_view_form_po_amount" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.po.amount</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="purchase.res_config_settings_view_form_purchase"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='purchase_setting_container']/div[@id='po_order_approval']/div[hasclass('o_setting_right_pane')]" position="replace">
+                    <div class="o_setting_right_pane">
+                        <label for="po_order_approval"/>
+                        <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." aria-label="Values set here are company-specific." groups="base.group_multi_company" role="img"/>
+                        <div class="text-muted">
+                            Request managers to approve orders above a maximum amount
+                        </div>
+                        <div class="content-group" attrs="{'invisible': [('po_order_approval', '=', False)]}">
+                            <div class="row mt16">
+                                <label for="po_double_validation_amount" string="Maximum Amount" class="col-lg-4 o_light_label"/>
+                                <field name="po_double_validation_amount"/>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.ag</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="40"/>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[hasclass('settings')]" position="inside">
+                    <div class="app_settings_block" data-string="Technical Settings" string="Technical Settings" data-key="ag_field_service">
+                        <div id="technical_users">
+                            <h2>Technical Settings</h2>
+                            <div class="row mt16 o_settings_container" id="daleji_users">
+                                <div class="row ml16 w-100" id="sites_selection">
+                                    <field name="branch_id" invisible="0"/>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="store_officer_users">
+                                    <div class="o_setting_right_pane">
+                                        <span class="fa fa-lg fa-building-o" title="Values set here are Site-specific."/>
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label for="store_user_ids" class="col-lg-3 o_light_label"/>
+                                                <field name="store_user_ids" widget="many2many_tags" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}" placeholder="Select Store Officer..."/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="facility_manager_users">
+                                    <div class="o_setting_right_pane">
+                                        <div class="content-group">
+                                            <span class="fa fa-lg fa-building-o" title="Values set here are Site-specific."/>
+                                            <div class="row mt16">
+                                                <label for="facility_manager_id" class="col-lg-3 o_light_label"/>
+                                                <field name="facility_manager_id" widget="many2many_tags" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}" placeholder="Select Facility Manager..."/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="procurement_users">
+                                    <div class="o_setting_right_pane">
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label for="procurement_user_ids" class="col-lg-3 o_light_label"/>
+                                                <field name="procurement_user_ids" widget="many2many_tags" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}" placeholder="Select Procurement Officer..."/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="procurement_manager">
+                                    <div class="o_setting_right_pane">
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label for="procurement_manager_id" class="col-lg-3 o_light_label"/>
+                                                <field name="procurement_manager_id" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}" placeholder="Select Procurement Manager..."/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="account_receviable_user">
+                                    <div class="o_setting_right_pane">
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label for="account_receviable_user_ids" class="col-lg-3 o_light_label"/>
+                                                <field name="account_receviable_user_ids" widget="many2many_tags" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}" placeholder="Select Account Receviable Officers..."/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="account_payable_users">
+                                    <div class="o_setting_right_pane">
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label for="account_payable_user_ids" class="col-lg-3 o_light_label"/>
+                                                <field name="account_payable_user_ids" widget="many2many_tags" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}" placeholder="Select Account Payable Officers..."/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="hoa_authorizer">
+                                    <div class="o_setting_right_pane">
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label for="hoa_authorizer" class="col-lg-3 o_light_label"/>
+                                                <field name="hoa_authorizer" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}" placeholder="Select HOA Authorizer..."/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="head_of_account">
+                                    <div class="o_setting_right_pane">
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label for="head_of_account" class="col-lg-3 o_light_label"/>
+                                                <field name="head_of_account" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}" placeholder="Select Head of Accounts..."/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="general_manager_user">
+                                    <div class="o_setting_right_pane">
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label for="general_manager_id" class="col-lg-3 o_light_label"/>
+                                                <field name="general_manager_id" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}" placeholder="Select General Manager..."/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="mgt_user_ids">
+                                    <div class="o_setting_right_pane">
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label for="mgt_user_ids" class="col-lg-3 o_light_label"/>
+                                                <field name="mgt_user_ids" widget="many2many_tags" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}" placeholder="Select Users..."/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="engineering_manager_user">
+                                    <div class="o_setting_right_pane">
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label for="engineering_manager_id" class="col-lg-3 o_light_label"/>
+                                                <field name="engineering_manager_id" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}" placeholder="Select Engineeing Manager..."/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="max_functional_approvers">
+                            <h2>MAX FUNCTIONAL APPROVERS</h2>
+                            <div class="row mt16 o_settings_container" id="functional_approvers_users">
+                                <div class="col-12 col-lg-6 o_setting_box" id="l1_autorised_functional_approver">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">L1 Authorised Approver</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="functional_vps_users">
+                                                <label for="functional_vps_ids" class="col-lg-3"/>
+                                                <field name="functional_vps_ids" widget="many2many_tags" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}"/>
+                                            </div>
+                                            <div class="row mt16" id="country_manager_users">
+                                                <label for="country_managers_ids" class="col-lg-3"/>
+                                                <field name="country_managers_ids" widget="many2many_tags" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="l2_autorised_functional_approver">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">L2 Authorised Approver</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="csuite_functional_leads_users">
+                                                <label for="csuite_functional_leads_id" class="col-lg-3"/>
+                                                <field name="csuite_functional_leads_id" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="l3_autorised_functional_approver">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">L3 Authorised Approver</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="eds_users">
+                                                <label for="eds_ids" class="col-lg-3"/>
+                                                <field name="eds_ids" widget="many2many_tags" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="l4_autorised_functional_approver">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">L4 Authorised Approver</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="group_ceo_users">
+                                                <label for="ceo_group_id" class="col-lg-3"/>
+                                                <field name="ceo_group_id" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="max_functional_approvers_bank">
+                            <h2>MAX FUNCTIONAL APPROVERS - BANK</h2>
+                            <div class="row mt16 o_settings_container" id="functional_approvers_users">
+                                <div class="col-12 col-lg-6 o_setting_box" id="l0_autorised_functional_bank_approver">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">L0 Authorised Approver</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="vo_finance_users">
+                                                <label for="vp_finance_id" class="col-lg-3"/>
+                                                <field name="vp_finance_id" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}"/>
+                                            </div>
+                                            <div class="row mt16" id="treasury_users">
+                                                <label for="treasury_users_ids" class="col-lg-3"/>
+                                                <field name="treasury_users_ids" widget="many2many_tags" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="l1_autorised_functional_bank_approver">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">L1 Authorised Approver</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="cfp_users">
+                                                <label for="cfo_id" class="col-lg-3"/>
+                                                <field name="cfo_id" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6 o_setting_box" id="l2_autorised_functional_bank_approver">
+                                    <div class="o_setting_right_pane">
+                                        <strong style="font-size: 16px;font-weight: 800;">L2 Authorised Approver</strong>
+                                        <div class="content-group">
+                                            <div class="row mt16" id="eds_bank_users">
+                                                <label for="eds_bank_ids" class="col-lg-3"/>
+                                                <field name="eds_bank_ids" widget="many2many_tags" options="{'no_create_edit': True, 'no_open':True, 'no_create':True}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+</odoo>

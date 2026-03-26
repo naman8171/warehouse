@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- <template id="portal_layout" name="Portal layout: product menu entry" inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+           
+            <li t-if="page_name == 'inventory_status' or inventory_status" class="col-lg-2" t-attf-class="breadcrumb-item">
+                <a t-if="inventory_ids" t-attf-href="/my/inventory?{{ keep_query() }}">Inventory Status</a>
+                <t t-else="">Inventory Status</t>
+            </li>
+        </xpath>
+    </template> -->
+
+    <template id="portal_my_inventory" name="My Inventory Status">
+        <div id="custom_loader" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.6); z-index: 9999; text-align: center; padding-top: 200px; font-size: 20px;">
+            🔄 Please wait...
+        </div>
+        <t t-call="portal.frontend_layout">
+            <!-- <t t-set="breadcrumbs_searchbar" t-value="True"/> -->
+
+            <!-- <t t-call="portal.portal_searchbar">
+                <t t-set="title">Inventory Status</t>
+            </t> -->
+            <t t-if="not inventory_ids">
+                <p>There are currently no Inventory for your account.</p>
+            </t>
+                <nav aria-label="breadcrumb flex justify-between" style="background-color:#e9ecef;margin-left: 0%;">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item "><a class="bold text-danger" href="/my">THL</a></li>
+                      <li class="breadcrumb-item active" aria-current="page" style="background: transparent;">Inventory Status</li>
+                    </ol>
+                  </nav>
+            <section class="inventory_status">
+                <div class="container-fuild p-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="flex justify-between items-center">
+                                        <h4 class="card-title"> Inventory Status (<t t-esc="wro_count" t-options='{"widget": "float", "precision": 0}'/>)</h4>
+                                    </div>
+                                    Stock Count (<t t-esc="total_quantity_products" t-options='{"widget": "float", "precision": 0}'/>)
+                                </div>
+                                <div class="p-6">
+                                    
+
+                                    <div class="card-header pl-1 pr-1 bg-light">
+                                        <div class="flex justify-between items-center">
+                                            <div class="d-flex justify-content-end mr-3">
+                                                
+
+                                               
+                                               
+                                               
+                                                <button class="btn bg-white border file_export" type="button">
+                                                    <i class="fas fa-file-export mr-2"></i>Export
+                                                </button>
+                                                
+                                              </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="">
+                                        <t t-if="inventory_ids" t-call="portal.portal_table">
+                                       <table class="table table-hover inventory_status">
+                                            <thead class="bg-light">
+                                              <tr>
+                                                <th>
+                                                    
+
+                                                    <input type="checkbox" id="select_all" name="select_all" value="1"/>
+                                                </th> 
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Barcode</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Size</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Color</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Item Name</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Gender</th>
+                                                <!-- <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Item id</th> -->
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Total on hand Quanlity</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" > Reorder Level</th>
+                                                <!-- <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >WRO Tracked </th> -->
+                                                
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr t-foreach="inventory_ids" t-as="line">
+                                                    <td class="px-6 py-4 ">
+                                                        <input type="checkbox" id="inventory_status_line" name="inventory_status_line" t-att-value="line['id']"/>
+                                                    </td> 
+                                                    <td class="px-6 py-4 " id="product_barcode">  <t t-esc="line['barcode']"/></td>
+                                                    <td class="px-6 py-4 ">  <t t-esc="line['size']"/></td>
+                                                    <td class="px-6 py-4 ">  <t t-esc="line['color']"/></td>
+                                                    <td class="px-6 py-4 " id="product_name">  <t t-esc="line['product_name']"/></td>
+                                                    <td class="px-6 py-4 ">  <t t-esc="line['gender']"/></td>
+                                                    <!-- <td class="px-6 py-4 ">  <t t-esc="line.lot_id.name"/></td> -->
+                                                    <td class="px-6 py-4 " id="product_qty"><span t-esc="line['on_hand_qty']"/></td>
+                                                    <td class="px-6 py-4 " id="product_reorder_level"><span t-esc="line['product_reorder_level']"/></td>
+
+
+                                                    <td class="px-6 py-4 "><a t-att-href="'/my/inventory/detail/%s' %(line['product_id'])" href="/inventory/status/detail" class="btn bg-primary text-white mr-2 border">
+                                                            View
+                                                          </a></td>
+                                                   
+                                                </tr>
+                                              
+                                            </tbody>
+                                          </table>
+                                      </t>
+                                          
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            
+                        </div>
+                    </div>
+                    <br/>
+                    
+                </div>
+            </section>
+            
+        </t>
+    </template>
+
+
+
+
+    <template id="portal_my_inventory_history" name="My Inventory History">
+        <t t-call="portal.frontend_layout">
+           <!--  <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Inventory History</t>
+            </t> -->
+            <t t-if="not inventory_ids">
+                <p>There are currently no Inventory for your account.</p>
+            </t>
+                <nav aria-label="breadcrumb flex justify-between" style="background-color:#e9ecef;margin-left: 0%;">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item "><a class="bold text-danger" href="/my">THL</a></li>
+                      <li class="breadcrumb-item active" aria-current="page" style="background: transparent;">Inventory History</li>
+                    </ol>
+                  </nav>
+            <section class="inventory_status">
+                <div class="container-fuild p-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="flex justify-between items-center">
+                                        <h4 class="card-title"> Inventory History</h4>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    
+
+                                    <div class="card-header pl-1 pr-1 bg-light">
+                                        <div class="flex justify-between items-center">
+                                            <div class="d-flex justify-content-end mr-3">
+                                                
+                                                <form action="" method="get" class="navbar-search ml-auto pagination form-inline">
+                                                    <div t-attf-class="input-group #{_classes}" role="search">
+                                                        <t t-set="search_placeholder">Search...</t>
+                                                        <input type="search" name="search" t-att-class="'search-query form-control oe_search_box %s' % _input_classes" t-att-placeholder="placeholder if placeholder else search_placeholder" t-att-value="search"/>
+                                                        <div class="input-group-append">
+                                                            <button type="submit" t-att-class="'btn oe_search_button %s' % (_submit_classes or 'btn-primary')" aria-label="Search" title="Search"><i class="fa fa-search"/></button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                               
+                                               <!-- <t t-set="list_price_desc_label">Filter by None</t>
+                                                 <t t-set="website_sale_sortable" t-value="[
+                                                    ('None', 'None'),
+                ('Consolidation type', 'consolidated_type asc'),
+                ('WRO Tracked', 'wro_id asc'),
+                
+                
+            ]"/>
+            <t t-set="website_sale_sortable_current" t-value="[sort for sort in website_sale_sortable if sort[1]==request.params.get('order', '')]"/>
+                                                 <div class="o_sortby_dropdown dropdown dropdown_sorty_by ml-3 " style="margin-right: 2%;">
+                <span class="d-none d-lg-inline font-weight-bold text-muted">Filter By:</span>
+                <a role="button" href="#" class="dropdown-toggle btn btn-light border-0 px-0 text-muted align-baseline" data-toggle="dropdown">
+                    <span class="d-none d-lg-inline">
+                        <t t-if='website_sale_sortable_current'>
+                            <t t-esc="website_sale_sortable_current[0][0]"/>
+                        </t>
+                        <t t-else='1'>
+                            Featured
+                        </t>
+                    </span>
+                    <i class="fa fa-sort-amount-asc d-lg-none"/>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                    <t t-foreach="website_sale_sortable" t-as="sortby">
+                        <a role="menuitem" rel="noindex,nofollow" t-att-href="keep(default_url, order=sortby[1])"  class="dropdown-item">
+                            <span t-out="sortby[0]"/>
+                        </a>
+                    </t>
+                </div>
+            </div> -->
+                                               
+                                                <!-- <button class="btn bg-white border file_export" type="button">
+                                                    <i class="fas fa-file-export mr-2"></i>Export
+                                                 </button> -->
+                                                
+                                              </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="">
+                                        <t t-if="inventory_ids" t-call="portal.portal_table">
+                                        <table class="table table-hover inventory_status">
+                                            <thead class="bg-light">
+                                              <tr>
+                                                <th>
+                                                    
+
+                                                    <input type="checkbox" id="select_all" name="select_all" value="1"/>
+                                                </th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Product Name</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Item id</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Total on hand Quanlity</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" > Consolidation Status</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >WRO Tracked </th>
+                                                
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr t-foreach="inventory_ids" t-as="line">
+                                                <td class="px-6 py-4 ">
+                                                    <input type="checkbox" id="inventory_status_line" name="inventory_status_line" t-att-value="line.id"/>
+                                                </td>
+                                                <td class="px-6 py-4 ">  <t t-esc="line.product_id.name"/></td>
+                                                <td class="px-6 py-4 ">  <t t-esc="line.lot_id.name"/></td>
+                                                <td class="px-6 py-4 "><span t-field="line.quantity"/></td>
+                                                <td class="px-6 py-4 "><span t-field="line.consolidated_type"/></td>
+                                                <td class="px-6 py-4 "><t t-esc="line.wro_id.name"/></td>
+                                                   
+                                              </tr>
+                                              
+                                            </tbody>
+                                          </table>
+                                      </t>
+                                          
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            
+                        </div>
+                    </div>
+                    <br/>
+                    
+                </div>
+            </section>
+            
+        </t>
+    </template>
+
+
+
+
+    <template id="portal_my_inventory_detail" name="My Inventory History">
+        <t t-call="portal.frontend_layout">
+           <!--  <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Inventory History</t>
+            </t> -->
+            <t t-if="not inventory_ids">
+                <p>There are currently no Inventory for your account.</p>
+            </t>
+                <nav aria-label="breadcrumb flex justify-between" style="background-color:#e9ecef;margin-left: 0%;">
+                    <ol class="breadcrumb">
+                      <li class="breadcrumb-item "><a class="bold text-danger" href="/my">THL</a></li>
+                      <li class="breadcrumb-item "><a class="bold text-danger" href="/my/inventory">THL History</a></li>
+                      <li class="breadcrumb-item active" aria-current="page" style="background: transparent;">Inventory Detail</li>
+                    </ol>
+                  </nav>
+            <section class="inventory_status">
+                <div class="container-fuild p-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="flex justify-between items-center">
+                                        <h4 class="card-title"> Inventory History</h4>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+                                    
+
+                                    <div class="card-header pl-1 pr-1 bg-light">
+                                        <div class="flex justify-between items-center">
+                                            <div class="d-flex justify-content-end mr-3">
+                                                
+
+                                               
+                                               
+                                               
+                                                <button class="btn bg-white border file_export" type="button">
+                                                    <i class="fas fa-file-export mr-2"></i>Export
+                                                 </button>
+                                                
+                                              </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="">
+                                        <t t-if="inventory_ids" t-call="portal.portal_table">
+                                        <table class="table table-hover inventory_status">
+                                            <thead class="bg-light">
+                                              <tr>
+                                                <th>
+                                                    
+
+                                                    <input type="checkbox" id="select_all" name="select_all" value="1"/>
+                                                </th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Product Name</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Item id</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >Total on hand Quanlity</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" > Consolidation Status</th>
+                                                <th  class="px-6 py-3 text-left text-uppercase" style="font-size: 12px; color:#666d7d" >WRO Tracked </th>
+                                                
+                                              </tr>
+                                            </thead>
+                                            <tbody>
+                                              <tr t-foreach="inventory_ids" t-as="line">
+                                                <td class="px-6 py-4 ">
+                                                    <input type="checkbox" id="inventory_status_line" name="inventory_status_line" t-att-value="line.id"/>
+                                                </td>
+                                                <td class="px-6 py-4 ">  <t t-esc="line.product_id.name"/></td>
+                                                <td class="px-6 py-4 ">  <t t-esc="line.lot_id.name"/></td>
+                                                <td class="px-6 py-4 "><span t-esc="line.quantity-line.reserved_quantity"/></td>
+                                                <td class="px-6 py-4 "><span t-field="line.consolidated_type"/></td>
+                                                <td class="px-6 py-4 "><t t-esc="line.wro_id.name"/></td>
+                                                   
+                                              </tr>
+                                              
+                                            </tbody>
+                                          </table>
+                                      </t>
+                                          
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                            
+                        </div>
+                    </div>
+                    <br/>
+                    
+                </div>
+            </section>
+            
+        </t>
+    </template>
+
+</odoo>

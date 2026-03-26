@@ -1,0 +1,15 @@
+<odoo>
+    <menuitem id="menu_inventory_zeroization_root"
+              name="Inventory Zeroization"
+              parent="stock.menu_stock_warehouse_mgmt"/>
+
+    <menuitem id="menu_inventory_zeroization_action"
+              name="Zeroize Stock"
+              parent="menu_inventory_zeroization_root"
+              action="action_zeroization_wizard"/>
+
+    <menuitem id="menu_inventory_zeroization_log"
+              name="Zeroization Logs"
+              parent="menu_inventory_zeroization_root"
+              action="action_zeroization_log"/>
+</odoo>

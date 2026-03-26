@@ -1,0 +1,17 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_deposit_history_user,deposit.history.user,model_deposit_history,,1,1,1,1
+access_expense_history_user,expense.history.user,model_expense_history,,1,1,1,1
+access_equipment_items_user,equipment.items.user,model_equipment_items,industry_fsm.group_fsm_user,1,1,1,1
+access_scope_work_user,scope.work.user,model_scope_work,,1,1,1,1
+access_flat_type_user,flat.type.user,model_flat_type,,1,1,1,1
+access_meter_reading_user,meter.reading.user,model_meter_reading,,1,1,1,1
+access_common_equipment_user,common.equipment,model_common_equipment,,1,1,1,1
+access_equipment_create_fsm_task_user,equipment.create.fsm.task,model_equipment_create_fsm_task,,1,1,1,1
+access_cost_entry_user,cost.entry,model_cost_entry,,1,1,1,1
+access_total_distribution_ratio,total.distribution.ratio,model_total_distribution_ratio,,1,1,1,1
+access_common_area_cost,common.area.cost,model_common_area_cost,,1,1,1,1
+access_power_cost,power.cost,model_power_cost,,1,1,1,1
+access_power_cost_line,power.cost.line,model_power_cost_line,,1,1,1,1
+access_common_area_power_cost,common.area.power.cost,model_common_area_power_cost,,1,1,1,1
+access_vendorbill_approver,vendorbill.approver,model_vendorbill_approver,,1,1,1,1
+

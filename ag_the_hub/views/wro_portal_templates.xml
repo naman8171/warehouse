@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="portal_layout" name="Portal layout: product menu entry"
+        inherit_id="portal.portal_breadcrumbs" priority="40">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'product' or product" class="col-lg-2"
+                t-attf-class="breadcrumb-item">
+                <a t-if="product" t-attf-href="/my/product?{{ keep_query() }}">Products</a>
+                <t t-else="">Products</t>
+            </li>
+            <li t-if="page_name == 'wro' or wro" class="col-lg-2" t-attf-class="breadcrumb-item">
+                <a t-if="wro" t-attf-href="/my/wros?{{ keep_query() }}">Warehouse Receiving Orders</a>
+                <t t-else="">Warehouse Receiving Orders</t>
+            </li>
+        </xpath>
+    </template>
+
+    <template id="portal_my_wros" name="My WROs">
+        <t t-call="portal.frontend_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True" />
+
+            <nav aria-label="breadcrumb flex justify-between"
+                style="background-color:#e9ecef;margin-left: 0%;">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item ">
+                        <a class="bold text-danger" href="/my">THL</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page"
+                        style="background: transparent;">Warehouse Receiving Order</li>
+                </ol>
+            </nav>
+            <section class="wro_status">
+                <div class="container-fuild p-3">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="flex justify-between items-center">
+                                        <h4 class="card-title"> Warehouse Receiving Order (<t
+                                                t-esc="wro_count" />)</h4>
+                                    </div>
+                                </div>
+                                <div class="p-6">
+
+
+                                    <div class="card-header pl-1 pr-1 bg-light">
+                                        <div class="flex justify-between items-center">
+                                            <div class="d-flex justify-content-end mr-3">
+                                                <!-- <div style="margin-right: 1%;padding-top:
+                                                2px;">
+                                                     <button class="btn bg-white border record_delete" type="button">
+                                                    <i class="fas fa-trash mr-2"></i>Delete
+                                                 </button>
+                                                </div>
+                                                
+                                                <div style="margin-right: 1%;padding-top: 2px;">
+                                                     <button class="btn bg-white border file_export" type="button">
+                                                    <i class="fas fa-file-export mr-2"></i>Export
+                                                 </button>
+                                                </div> -->
+
+
+                                                <form action="" method="get"
+                                                    class="navbar-search ml-auto pagination form-inline">
+                                                    <div t-attf-class="input-group #{_classes}"
+                                                        role="search">
+                                                        <t t-set="search_placeholder">Search...</t>
+                                                        <input type="search" name="search"
+                                                            t-att-class="'search-query form-control oe_search_box %s' % _input_classes"
+                                                            t-att-placeholder="placeholder if placeholder else search_placeholder"
+                                                            t-att-value="search" />
+                                                        <div class="input-group-append">
+                                                            <button type="submit"
+                                                                t-att-class="'btn oe_search_button %s' % (_submit_classes or 'btn-primary')"
+                                                                aria-label="Search" title="Search">
+                                                                <i class="fa fa-search" />
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+
+
+                                                <!--                      
+                                               <t t-set="list_price_asc_label">Filter by Popularity</t>
+            <t t-set="list_price_desc_label">Filter by None</t>
+                                                 <t t-set="website_sale_sortable" t-value="[
+                                                    ('None', 'None'),
+                ('Warehouse', 'warehouse_id asc'),
+                ('Picking Method', 'pickup_method asc'),
+                ('Shipping Type', 'shipping_type asc'),
+                ('Status', 'status asc'),
+                
+            ]"/>
+            <t t-set="website_sale_sortable_current" t-value="[sort for sort in website_sale_sortable if
+                                                sort[1]==request.params.get('order', '')]"/>
+                                                 <div class="o_sortby_dropdown dropdown dropdown_sorty_by ml-3 " style="margin-right: 2%;">
+                <span class="d-none d-lg-inline font-weight-bold text-muted">Filter By:</span>
+                <a role="button" href="#" class="dropdown-toggle btn btn-light border-0 px-0 text-muted
+                                                align-baseline" data-toggle="dropdown">
+                    <span class="d-none d-lg-inline">
+                        <t t-if='website_sale_sortable_current'>
+                            <t t-esc="website_sale_sortable_current[0][0]"/>
+                        </t>
+                        <t t-else='1'>
+                            Featured
+                        </t>
+                    </span>
+                    <i class="fa fa-sort-amount-asc d-lg-none"/>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                    <t t-foreach="website_sale_sortable" t-as="sortby">
+                        <a role="menuitem" rel="noindex,nofollow" t-att-href="keep(default_url, order=sortby[1])"
+                                                class="dropdown-item">
+                            <span t-out="sortby[0]"/>
+                        </a>
+                    </t>
+                </div>
+            </div> -->
+
+
+                                                <div t-if="searchbar_groupby"
+                                                    class="form-inline ml-lg-2">
+                                                    <span class="small mr-1 navbar-text">Group By:</span>
+                                                    <div class="btn-group">
+                                                        <button id="portal_searchbar_groupby"
+                                                            data-toggle="dropdown"
+                                                            class="btn btn-secondary btn-sm dropdown-toggle">
+                                                            <t
+                                                                t-esc="searchbar_groupby[groupby].get('label', 'None')" />
+                                                        </button>
+                                                        <div class="dropdown-menu"
+                                                            aria-labelledby="portal_searchbar_groupby">
+                                                            <t t-foreach="searchbar_groupby"
+                                                                t-as="option">
+                                                                <a
+                                                                    t-att-href="default_url + '?' + keep_query('*', groupby=option)"
+                                                                    t-attf-class="dropdown-item#{groupby == option and ' active' or ''}">
+                                                                    <span
+                                                                        t-esc="searchbar_groupby[option].get('label')" />
+                                                                </a>
+                                                            </t>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <a type="button" class="btn btn-primary"
+                                                    href="/send/inventory/portal">
+                                                    <i class="fa fa-plus"></i> Add New WRO</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="">
+                                        <table class="table table-hove wro_table">
+                                            <t t-foreach="grouped_wros" t-as="wro_ids">
+                                                <thead class="bg-light">
+                                                    <tr>
+                                                        <th colspan="6">
+                                                            <em t-if="groupby=='Warehouse'"
+                                                                class="font-weight-normal text-muted">WRO
+                                                                in Warhouse:</em>
+                                                            <em t-if="groupby=='Merchant'"
+                                                                class="font-weight-normal text-muted">WRO
+                                                                in Merchant:</em>
+                                                            <em t-if="groupby=='Picking Method'"
+                                                                class="font-weight-normal text-muted">WRO
+                                                                in Pickup Method:</em>
+                                                            <em t-if="groupby=='Shipping Type'"
+                                                                class="font-weight-normal text-muted">WRO
+                                                                in Shipping Type:</em>
+                                                            <em t-if="groupby=='Status'"
+                                                                class="font-weight-normal text-muted">WRO
+                                                                in Status:</em>
+                                                            <span t-if="groupby=='Warehouse'"
+                                                                t-field="wro_ids[0].warehouse_id.name" />
+                                                            <span t-if="groupby=='Merchant'"
+                                                                t-field="wro_ids[0].merchand_id.name" />
+                                                            <span t-if="groupby=='Picking Method'"
+                                                                t-field="wro_ids[0].pickup_method" />
+                                                            <span t-if="groupby=='Shipping Type'"
+                                                                t-field="wro_ids[0].shipping_type" />
+
+                                                            <span t-if="groupby=='Status'"
+                                                                t-field="wro_ids[0].status" />
+
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>
+
+
+                                                            <input type="checkbox" id="select_all"
+                                                                name="select_all" value="1" />
+                                                        </th>
+                                                        <th scope="col"
+                                                            t-attf-class="{{'thead-light' if not groupby == 'none' else ''}}"
+                                                            class="px-6 py-3 text-left text-uppercase"
+                                                            style="font-size: 12px; color:#666d7d">
+                                                            Name</th>
+                                                        <th scope="col"
+                                                            class="px-6 py-3 text-left text-uppercase"
+                                                            style="font-size: 12px; color:#666d7d">
+                                                            Merchant</th>
+                                                        <th scope="col"
+                                                            class="px-6 py-3 text-left text-uppercase"
+                                                            style="font-size: 12px; color:#666d7d">Third
+                                                            Party Ref #</th>
+                                                        <th scope="col"
+                                                            class="px-6 py-3 text-left text-uppercase"
+                                                            style="font-size: 12px; color:#666d7d">
+                                                            Warehouse</th>
+                                                        <th scope="col"
+                                                            class="px-6 py-3 text-left text-uppercase"
+                                                            style="font-size: 12px; color:#666d7d">Shipping
+                                                            Type</th>
+                                                        <th scope="col"
+                                                            class="px-6 py-3 text-left text-uppercase"
+                                                            style="font-size: 12px; color:#666d7d">Picking
+                                                            Method</th>
+                                                        <!-- <th scope="col"  class="px-6 py-3
+                                                        text-left text-uppercase" style="font-size:
+                                                        12px; color:#666d7d" >Custom Packaging</th> -->
+                                                        <!-- <th scope="col"  class="px-6 py-3
+                                                        text-left text-uppercase" style="font-size:
+                                                        12px; color:#666d7d" >Size</th> -->
+                                                        <th scope="col"
+                                                            class="px-6 py-3 text-left text-uppercase"
+                                                            style="font-size: 12px; color:#666d7d">Arrival
+                                                            Date</th>
+                                                        <th scope="col"
+                                                            class="px-6 py-3 text-left text-uppercase"
+                                                            style="font-size: 12px; color:#666d7d">
+                                                            Status </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr t-foreach="wro_ids" t-as="wro_id">
+                                                        <td class="px-6 py-4 ">
+                                                            <input type="checkbox"
+                                                                id="wro_status_line"
+                                                                name="wro_status_line"
+                                                                t-att-value="wro_id.id" />
+                                                        </td>
+
+                                                        <td class="px-6 py-4 ">
+                                                            <a
+                                                                t-att-href="'/my/wros/%s' %(wro_id.id)">
+                                                                <t t-esc="wro_id.name" />
+                                                            </a>
+                                                        </td>
+                                                        <td class="px-6 py-4 ">
+                                                            <span t-field="wro_id.merchand_id" />
+                                                        </td>
+                                                        <td class="px-6 py-4 ">
+                                                            <span t-field="wro_id.third_party_ref" />
+                                                        </td>
+                                                        <td class="px-6 py-4 ">
+                                                            <t t-esc="wro_id.warehouse_id.name" />
+                                                        </td>
+                                                        <td class="px-6 py-4 ">
+                                                            <span t-field="wro_id.shipping_type" />
+                                                        </td>
+                                                        <td class="px-6 py-4">
+                                                            <span t-field="wro_id.pickup_method" />
+                                                        </td>
+                                                        <!-- <td class="px-6 py-4 "> <t
+                                                        t-esc="wro_id.arrival_date"/> </td> -->
+                                                        <!-- <td class="px-6 py-4 ">22.2 </td> -->
+                                                        <td class="px-6 py-4 ">
+                                                            <t t-esc="wro_id.arrival_date" />
+                                                        </td>
+                                                        <td t-if="wro_id.status">
+                                                            <button
+                                                                t-if="wro_id.status=='request_submitted'"
+                                                                type="submit"
+                                                                class="btn btn-primary">
+                                                                <span t-field="wro_id.status" />
+                                                            </button>
+                                                            <button t-elif="wro_id.status=='stored'"
+                                                                type="submit"
+                                                                class="btn btn-success">
+                                                                <span t-field="wro_id.status" />
+                                                            </button>
+                                                            <button t-else="" type="submit"
+                                                                class="btn btn-primary"
+                                                                style="background:grey;">
+                                                                <span t-field="wro_id.status" />
+                                                            </button>
+
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </t>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <t t-call="portal.pager" />
+                            <!-- <div class="py-1 px-4">
+                                <nav class="flex items-center space-x-2">
+                                    
+                                    <a class="text-gray-400  rounded-circle p-4 items-center " style="width: 200px; height: 200px;"
+                            href="#"> 
+                                        <span aria-hidden="true">«</span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="w-10 h-10 bg-primary text-white p-4 inline-flex items-center text-sm font-medium
+                            rounded-full" href="#" aria-current="page">1</a>
+                                    <a class="w-10 h-10 text-gray-400 hover:text-primary p-4 inline-flex items-center text-sm
+                            font-medium rounded-full" href="#">2</a>
+                                    <a class="w-10 h-10 text-gray-400 hover:text-primary p-4 inline-flex items-center text-sm
+                            font-medium rounded-full" href="#">3</a>
+                                    <a class="text-gray-400 hover:text-primary p-4 inline-flex items-center gap-2 font-medium
+                            rounded-md" href="#">
+                                        <span class="sr-only">Next</span>
+                                        <span aria-hidden="true">»</span>
+                                    </a>
+                                </nav>
+                            </div> -->
+                        </div>
+                    </div>
+                    <br />
+
+                </div>
+            </section>
+
+
+        </t>
+    </template>
+
+</odoo>

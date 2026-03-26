@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_update_location_lines_form" model="ir.ui.view">
+            <field name="name">update.location.number.form</field>
+            <field name="model">update.package.number</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+	                    <group >
+                            <field name="line_ids" widget="many2many_tags" invisible="1"/>
+                            <field name="scan_location"/>
+                           
+                        </group>
+                        
+                    </group>
+                    <footer>
+                        <button name="update_location_name" string="Update Location Label" type="object" class="btn-primary" />
+                       
+                        
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        
+
+    </data>
+</odoo>
