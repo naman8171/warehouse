@@ -1,98 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="portal_import_wro_lines" name="Portal Import WRO Lines">
-        <div class="modal fade" id="importbulkWro" tabindex="-1" role="dialog"
-            aria-labelledby="importbulkWro" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document"
-                style="max-width:75% !important;">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <t t-set="merchant_ids"
-                            t-value="request.env['res.partner'].sudo().search([('contact_type', '=', 'Merchant'), '|', ('id', '=', request.env.user.partner_id.id), ('id', 'in', request.env.user.partner_id.child_ids.ids)])" />
-                        <t t-set="warehouse_ids"
-                            t-value="request.env['stock.warehouse'].sudo().search([])" />
-                        <h1 class="text-center d-block mt-2">Create New Warehouse Receiving Order</h1>
-                        <form id="import_new_wro" action="/import/new/wro" method="post"
-                            enctype="multipart/form-data" class="oe_import">
-                            <input type="hidden" name="csrf_token"
-                                t-att-value="request.csrf_token()" />
-                            <div class="form-group">
-                                <h3>Merchant</h3>
-                                <select id="merchand_id" class="form-control" required="required"
-                                    name="merchand_id">
-                                    <option value="" selected="selected" disabled="True">Search Here...</option>
-                                    <t t-foreach="merchant_ids" t-as="merchant_id">
-                                        <option t-att-value="merchant_id.id">
-                                            <t t-esc="merchant_id.name" />
-                                        </option>
-                                    </t>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <h3>Warehouse</h3>
-                                <select id="warehouse_id" class="form-control" required="required"
-                                    name="warehouse_id">
-                                    <option value="" selected="selected" disabled="True">Please select warehouse...</option>
-                                    <t t-foreach="warehouse_ids" t-as="warehouse_id">
-                                        <option t-att-value="warehouse_id.id">
-                                            <t t-esc="warehouse_id.name" />
-                                        </option>
-                                    </t>
-                                </select>
-                            </div>
-                            <div class="form-group" style="font-size:20px;">
-                                <h3>Shipping Type</h3>
-                                <label class="radio-inline">
-                                    <input type="radio" name="shipping_type" value="parcel"
-                                        required="true" /> Parcel </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="shipping_type" value="pallet" />
-                                    Palletized container </label>
-                            </div>
-                            <div class="form-group" style="font-size:20px;">
-                                <h3>Picking Method</h3>
-                                <label class="radio-inline">
-                                    <input type="radio" name="pickup_method" value="the_hub"
-                                        required="true" /> THL Logistics </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="pickup_method" value="order_courier_company" />
-                                    Other Courier Company </label>
-                            </div>
-                            <div class="form-group">
-                                <h3>Third Party Ref #</h3>
-                                <input type="text" name="third_party_ref" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <h3>Expected Arrival Date</h3>
-                                <input type="date" name="arrival_date" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <h3>Upload Bulk Lines</h3>
-                                <input type="file" name="att" multiple="true"
-                                    accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
-                            </div>
-                            <a class="btn btn-primary" target="_blank"
-                                href="/wro/download/sample/template" role="button">Sample File Download</a>
-                            <button type="submit" class="btn btn-success float-right"
-                                style="font-size:20px;font-weight:bold;">Add WRO</button>
-                        </form>
-                        <div class="text-center d-block mt-2">
-                            <a class="font-size:14px" href="#" data-dismiss="modal"
-                                aria-label="Close">Close</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </template>
-
     <template id="portal_my_wros_bulk_import_inherit" inherit_id="ag_the_hub.portal_my_wros">
         <xpath expr="//a[@href='/send/inventory/portal']" position="after">
-            <t t-call="ag_wro_portal_bulk_import.portal_import_wro_lines" />
             <button type="button" class="btn btn-primary" data-toggle="modal"
                 data-target="#importbulkWro">
                 <i class="fa fa-plus" /> Import Bulk WRO With Lines
             </button>
+            <t t-set="merchant_ids"
+                t-value="request.env['res.partner'].sudo().search([('contact_type', '=', 'Merchant'), '|', ('id', '=', request.env.user.partner_id.id), ('id', 'in', request.env.user.partner_id.child_ids.ids)])" />
+            <t t-set="warehouse_ids" t-value="request.env['stock.warehouse'].sudo().search([])" />
+            <div class="modal fade" id="importbulkWro" tabindex="-1" role="dialog"
+                aria-labelledby="importbulkWro" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document"
+                    style="max-width:75% !important;">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <h1 class="text-center d-block mt-2">Create New Warehouse Receiving Order</h1>
+                            <form id="import_new_wro" action="/import/new/wro" method="post"
+                                enctype="multipart/form-data" class="oe_import">
+                                <input type="hidden" name="csrf_token"
+                                    t-att-value="request.csrf_token()" />
+                                <div class="form-group">
+                                    <h3>Merchant</h3>
+                                    <select id="merchand_id" class="form-control" required="required"
+                                        name="merchand_id">
+                                        <option value="" selected="selected" disabled="True">Search Here...</option>
+                                        <t t-foreach="merchant_ids" t-as="merchant_id">
+                                            <option t-att-value="merchant_id.id">
+                                                <t t-esc="merchant_id.name" />
+                                            </option>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <h3>Warehouse</h3>
+                                    <select id="warehouse_id" class="form-control" required="required"
+                                        name="warehouse_id">
+                                        <option value="" selected="selected" disabled="True">Please select warehouse...</option>
+                                        <t t-foreach="warehouse_ids" t-as="warehouse_id">
+                                            <option t-att-value="warehouse_id.id">
+                                                <t t-esc="warehouse_id.name" />
+                                            </option>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="font-size:20px;">
+                                    <h3>Shipping Type</h3>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="shipping_type" value="parcel"
+                                            required="true" /> Parcel </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="shipping_type" value="pallet" />
+                                        Palletized container </label>
+                                </div>
+                                <div class="form-group" style="font-size:20px;">
+                                    <h3>Picking Method</h3>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="pickup_method" value="the_hub"
+                                            required="true" /> THL Logistics </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="pickup_method" value="order_courier_company" />
+                                        Other Courier Company </label>
+                                </div>
+                                <div class="form-group">
+                                    <h3>Third Party Ref #</h3>
+                                    <input type="text" name="third_party_ref" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <h3>Expected Arrival Date</h3>
+                                    <input type="date" name="arrival_date" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <h3>Upload Bulk Lines</h3>
+                                    <input type="file" name="att" multiple="true"
+                                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                                </div>
+                                <a class="btn btn-primary" target="_blank"
+                                    href="/wro/download/sample/template" role="button">Sample File Download</a>
+                                <button type="submit" class="btn btn-success float-right"
+                                    style="font-size:20px;font-weight:bold;">Add WRO</button>
+                            </form>
+                            <div class="text-center d-block mt-2">
+                                <a class="font-size:14px" href="#" data-dismiss="modal"
+                                    aria-label="Close">Close</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </xpath>
     </template>
 </odoo>
